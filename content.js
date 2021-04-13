@@ -82,15 +82,3 @@ function runAddRange(zrm, hf_VPP, br_hf, b_zoom){
     statsWindow.appendChild(divBar); // add div to stats window
     divBar.textContent = 'm'; // add text to new div
 }
-
-/*
-
-//-------------------------------------------------DEBUG-BUTON------------------------------------------------------------//
-chrome.runtime.onMessage.addListener(function(request){
-
-    console.log((zoomValue - b_zoom) / 10 + hf_VPP);
-    console.log('AutoRifle' + 'AdaptiveFrame');
-})
-//------------------------------------------------------------------------------------------------------------------------//
-
-*/
