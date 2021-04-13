@@ -1,0 +1,13 @@
+chrome.runtime.onMessage.addListener(function(request){
+    const weapon_frame = document.querySelector('._2XDzu')
+    const weapon_type = document.querySelector('.Xyg7s')
+    const weapon_range = document.querySelector('._3utrN')
+    const weapon_reload = document.querySelector('._3utrN _93ARi')
+
+
+//stuff.remove() Xyg7s
+console.log(weapon_type.textContent)
+console.log(weapon_frame.textContent)
+console.log(weapon_range.textContent)
+console.log(weapon_reload.textContent)
+})
