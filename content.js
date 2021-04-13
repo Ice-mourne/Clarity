@@ -15,11 +15,12 @@ DIMs_stalker.observe(document, {
 //------------------------------------------------------------------------------------------------------------------------//
 // Looks then you press on your trash rools
 function startGrinding (){
-document.querySelectorAll('._2--vS').forEach(item => {
-    item.addEventListener('click', event => {
-        filterGodRols()
-    })
-  })    
+    document.querySelectorAll('._2--vS').forEach(item => {
+        item.addEventListener('click', event => {
+            filterGodRols()
+            hoverOver()
+        });
+    });  
 };
 
 
@@ -82,3 +83,34 @@ function runAddRange(zrm, hf_VPP, br_hf, b_zoom){
     statsWindow.appendChild(divBar); // add div to stats window
     divBar.textContent = 'm'; // add text to new div
 }
+
+
+function hoverOver(){
+    setTimeout(function(){
+        document.querySelectorAll('[class^="socket-container"]').forEach(item => {
+            item.addEventListener('mouseover', event => {
+                let perk_stalker = new MutationObserver(function (observe ,Quit) {
+                    let perk_Explanations = document.querySelector('._1kew0');
+                    if (perk_Explanations){
+                        changeWepPerks()
+                        Quit.disconnect();
+                    };
+                });
+                perk_stalker.observe(document, {
+                    childList: true,
+                    subtree: true
+                });
+            });
+        });  
+    },1)
+};
+
+
+
+
+
+
+
+
+
+

@@ -1,49 +1,61 @@
 function filterGodRols(){
     setTimeout(function(){
-        if(document.querySelector('._3ywbI') == null){}
-        else;
         var wepType = document.querySelector('.Xyg7s').innerHTML.replace(/ /g, '');
         var wepFrame = document.querySelector('._3sBrL').innerHTML.replace(/ /g, '');
 
-        switch(wepType){
+        // Numbers for reload formula
+        var AutoRifle_reload = [0.000105640666666667, -0.0290040666666667, 3.08620666666667]
+        //var CombatBow_reload = [, ,]
+        var FusionRifle_reload = [0.0000759606666666667, -0.0235252333333333, 3.05622666666667]
+        var SpecialGL_reload = [0.0000894073333333333, -0.0258361333333333, 3.49046666666667]
+        var HeavyGL_reload = [0.0000932386666666667, -0.0295255666666667, 4.41473333333333]
+        var HandCannon_reload = [0.000159282666666667, -0.043624, 4.61606666666667]
+        var LinearFusion_reload = [0.0000726496666666667, -0.0236623666666667, 4.38473333333333]
+        var MachineGun_reload = [0.000111771666666667, -0.0362153333333333, 6.47296666666667]
+        var PulseRifle_reload = [0.000114346666666667, -0.0308288666666667, 3.22312666666667]
+        var RocketLauncher_reload = [0.000128344666666667, -0.0305745666666667, 4.38473333333333]
+        var ScoutRifle_reload = [0.000127055666666667, -0.0333065333333333, 3.43833333333333]
+        var Shotgun_reload = [0.0000790693333333333, -0.0173282, 1.41598333333333]
+        var Sidearm_reload = [0.0000294211666666667, -0.0144276333333333, 2.28800666666667]
+        var SniperRifle_reload = [0.0000832713333333333, -0.0273923666666667, 4.104]
+        var SubmachineGun_reload = [0.000075141, -0.0227633333333333, 2.84781333333333]
+        //var TraceRifle_reload = [, ,]
 
+        switch(wepType){
             case 'AutoRifle':
                 switch(wepFrame){
                     case 'VolatileLight': // Hard Light
-                        runAddReload(0.000105640666666667, -0.0290040666666667, 3.08620666666667);
+                        runAddReload(AutoRifle_reload[0],AutoRifle_reload[1],AutoRifle_reload[2]);
                         // funky range
                         break
                     case 'Four-HeadedDog': // Cerberus+1
                         // funky range
-                        runAddReload(0.000105640666666667, -0.0290040666666667, 3.08620666666667);
+                        runAddReload(AutoRifle_reload[0],AutoRifle_reload[1],AutoRifle_reload[2]);
                         break
                     case 'Payday': // Sweet Business
                         // reload funky
                         // funky range
                         break
                     default:
-                        runAddReload(0.000105640666666667, -0.0290040666666667, 3.08620666666667);
+                        runAddReload(AutoRifle_reload[0],AutoRifle_reload[1],AutoRifle_reload[2]);
                         runAddRange(1.575, 0.107, 10.05, 16)
                         break
                 }
                 break
-
             case 'CombatBow':
                 //runAddReload()
                 break // no data on bows right now
-
             case 'FusionRifle':
                 switch(wepFrame){
                     case 'UnplannedReprieve': // Telesto
-                        runAddReload(0.0000759606666666667, -0.0235252333333333, 3.05622666666667);
+                        runAddReload(FusionRifle_reload[0],FusionRifle_reload[1],FusionRifle_reload[2]);
                         // funky range
                         break
                     default:
-                        runAddReload(0.0000759606666666667, -0.0235252333333333, 3.05622666666667);
+                        runAddReload(FusionRifle_reload[0],FusionRifle_reload[1],FusionRifle_reload[2]);
                         break
                 }
                 break
-
             case 'GrenadeLauncher': 
                 switch(wepFrame){
                     // Special GL's
@@ -51,76 +63,69 @@ function filterGodRols(){
                     case 'WaveFrame':
                     case "Primeval'sTorment":
                     case 'DelayedGratification':
-                        runAddReload(0.0000894073333333333, -0.0258361333333333, 3.49046666666667);
+                        runAddReload(SpecialGL_reload[0],SpecialGL_reload[1],SpecialGL_reload[2]);
                         break
                     // Heavy GL's
                     case 'Rapid-FireFrame':
                     case 'AdaptiveFrame':
                     case 'Cryocannon':
-                        runAddReload(0.0000932386666666667, -0.0295255666666667, 4.41473333333333);
+                        runAddReload(HeavyGL_reload[0],HeavyGL_reload[1],HeavyGL_reload[2]);
                         break
                 }
                 break
-
             case 'HandCannon':
                 switch(wepFrame){
                     case 'AggressiveFrame': // different range
-                        runAddReload(0.000159282666666667, -0.043624, 4.61606666666667);
+                        runAddReload(HandCannon_reload[0],HandCannon_reload[1],HandCannon_reload[2]);
                         runAddRange(1.375, 0.115, 20.8, 14)
                         break
                     default:
-                        runAddReload(0.000159282666666667, -0.043624, 4.61606666666667);
+                        runAddReload(HandCannon_reload[0],HandCannon_reload[1],HandCannon_reload[2]);
                         runAddRange(1.375, 0.096, 16, 14)
                         break
                 }
                 break
-
             case 'LinearFusionRifle':
-                runAddReload(0.0000726496666666667, -0.0236623666666667, 4.38473333333333);
+                runAddReload(LinearFusion_reload[0],LinearFusion_reload[1],LinearFusion_reload[2]);
                 break
-
             case 'MachineGun':
                 switch (wepFrame){
                     case 'PyrotoxinRounds': // Xenophage
-                        runAddReload(0.000111771666666667, -0.0362153333333333, 6.47296666666667);
+                        runAddReload(MachineGun_reload[0],MachineGun_reload[1],MachineGun_reload[2]);
                         // funky range
                         break
                     default:
-                        runAddReload(0.000111771666666667, -0.0362153333333333, 6.47296666666667);
+                        runAddReload(MachineGun_reload[0],MachineGun_reload[1],MachineGun_reload[2]);
                 }
                 break
-
             case 'PulseRifle':
                 switch(wepFrame){
                     case 'BlackHole': // Graviton Lance
                         //
                         break
                     default:
-                        runAddReload(0.000114346666666667, -0.0308288666666667, 3.22312666666667);
+                        runAddReload(PulseRifle_reload[0],PulseRifle_reload[1],PulseRifle_reload[2]);
                         runAddRange(1.675, 0.08, 15.4, 17)
                     break
                 }
                 break
-
             case 'RocketLauncher':
-                runAddReload(0.000128344666666667, -0.0305745666666667, 4.38473333333333);
+                runAddReload(RocketLauncher_reload[0],RocketLauncher_reload[1],RocketLauncher_reload[2]);
                 break
-
             case 'ScoutRifle':
                 switch(wepFrame){
                     case 'CranialSpike': // Dead Man's Tale
                         //
                         break
                     case 'SlugRifle': // Skyburner's Oath
-                    runAddReload(0.000127055666666667, -0.0333065333333333, 3.43833333333333);
+                    runAddReload(ScoutRifle_reload[0],ScoutRifle_reload[1],ScoutRifle_reload[2]);
                         // funky range
                         break
                 default:
-                    runAddReload(0.000127055666666667, -0.0333065333333333, 3.43833333333333);
+                    runAddReload(ScoutRifle_reload[0],ScoutRifle_reload[1],ScoutRifle_reload[2]);
                     runAddRange(1.975, 0.169, 29.2, 20)
                 }
                 break
-
             case 'Shotgun':
                 switch(wepFrame){
                     case 'CompressionChamber': // Duality
@@ -131,33 +136,27 @@ function filterGodRols(){
                         // range who knows
                         break
                     default: // still need to fix formula
-                        runAddReload(0.0000790693333333333, -0.0173282, 1.41598333333333);
+                        runAddReload(Shotgun_reload[0],Shotgun_reload[1],Shotgun_reload[2]);
                         break
                 }
                 break
-
             case 'Sidearm':
-                runAddReload(0.0000294211666666667, -0.0144276333333333, 2.28800666666667);
+                runAddReload(Sidearm_reload[0],Sidearm_reload[1],Sidearm_reload[2]);
                 runAddRange(1.175, 0.034, 11.6, 12)
                 break
-
             case 'SniperRifle':
-                runAddReload(0.0000832713333333333, -0.0273923666666667, 4.104);
+                runAddReload(SniperRifle_reload[0],SniperRifle_reload[1],SniperRifle_reload[2]);
                 break
-
             case 'SubmachineGun':
-                runAddReload(0.000075141, -0.0227633333333333, 2.84781333333333);
+                runAddReload(SubmachineGun_reload[0],SubmachineGun_reload[1],SubmachineGun_reload[2]);
                 runAddRange(1.275, 0.126, 4.8, 13);
                 break
-
             case 'Sword':
                 //
                 break //swords don't have reload
-
             case 'TraceRifle':
                 //
                 break //traces don't have data
         };
-
     },1);
 };

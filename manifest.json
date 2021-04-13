@@ -5,7 +5,7 @@
     "content_scripts": [
         {
             "matches": ["https://app.destinyitemmanager.com/*"],
-            "js": ["content.js", "weaponFilter.js", "jquery-3.6.0.min.js"],
+            "js": ["content.js", "weaponFilter.js", "jquery-3.6.0.min.js", "weaponPerks.js"],
             "css": ["style.css"]
         }
     ],
