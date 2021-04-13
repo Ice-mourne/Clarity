@@ -38,6 +38,7 @@ function filterGodRols(){
                         break
                     default:
                         runAddReload(AutoRifle_reload[0],AutoRifle_reload[1],AutoRifle_reload[2]);
+                        sessionStorage.setItem('abc', JSON.stringify(AutoRifle_reload))
                         runAddRange(1.575, 0.107, 10.05, 16)
                         break
                 }

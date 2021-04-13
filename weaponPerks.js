@@ -1,20 +1,13 @@
-
-
-function runAddReload (a, b, c){
-    var r = [a, b, c]
-    return r
-}
-var rersdfsdf = runAddReload
-
 function changeWepPerks(){
     if(document.querySelector('._3ppxp > h2') == null){}
     else{
         var wepPerk = document.querySelector("._3ppxp > h2").innerHTML;
         var wepPerkDescription = document.querySelector("._3ppxp > div > span");
+        var abc = JSON.parse(sessionStorage.getItem('abc'));
         var realoadValue = document.querySelectorAll("._3utrN")[5].textContent;
         var wepType = document.querySelector('.Xyg7s').innerHTML.replace(/ /g, '');
         var wepFrame = document.querySelector('._3sBrL').innerHTML.replace(/ /g, '');
-        console.log(rersdfsdf);
+
         switch (wepPerk){
             case "Archer's Tempo":
                 wepPerkDescription.innerHTML = "On Precision Hit: Sets drawtime to 440ms for 3 seconds."
@@ -31,16 +24,10 @@ function changeWepPerks(){
                     }
                 break
             case 'Feeding Frenzy':
-                
-                let cauculation = (a * realoadValue * realoadValue + b * realoadValue + c)
-
-
-
-
-
-
-
-                wepPerkDescription.innerHTML = "Kills increase reload speed"
+                function cauculation(realoadValue){
+                    return (abc[0] * realoadValue * realoadValue + abc[1] * realoadValue + abc[2]);
+                }
+                wepPerkDescription.innerHTML = "Kills increase reload speed for 3.5 seconds. Refreshes on kill.\rStack  | Time   | Stat   | Multiplier\r1x       |  " + Math.min(cauculation(realoadValue * 1 + 10), 100).toFixed(2) + 's  | 10     | -\r2x       |  ' + Math.min((cauculation(realoadValue * 1 + 45) * 0.9), 100).toFixed(2) + 's  | 45     | 0.9\r3x       |  ' + Math.min((cauculation(realoadValue * 1 + 55) * 0.88), 100).toFixed(2) + 's  | 55     | 0.88\r4x       |  ' + Math.min((cauculation(realoadValue * 1 + 70) * 0.85), 100).toFixed(2) + 's  | 70     | 0.85\r5x       |  ' + Math.min((cauculation(realoadValue * 1 + 100) * 0.8), 100).toFixed(2) + 's  | 100   | 0.8'
                 break
             case 'Unrelenting':
                 wepPerkDescription.innerHTML = "Test shotguns"
