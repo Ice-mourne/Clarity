@@ -4,8 +4,6 @@ function filterGodRols(){
         else;
         var wepType = document.querySelector('.Xyg7s').innerHTML.replace(/ /g, '');
         var wepFrame = document.querySelector('._3sBrL').innerHTML.replace(/ /g, '');
-        console.log(wepType);
-        console.log(wepFrame);
 
         switch(wepType){
 
