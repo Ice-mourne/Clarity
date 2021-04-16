@@ -121,6 +121,9 @@ function changeWepPerks(){
             case 'Full Auto Trigger System': // maybe add shotgun part only to shotguns?
                 wepPerkDescription.innerText = "Makes weapon Full Auto.\n10% Faster Fire Rate on Shotguns."
                 break
+            case 'Full Court'://------------------------------------------------------------------------
+                //wepPerkDescription.innerText = ""
+                break
             case 'Genesis':
                 wepPerkDescription.innerText = "On elemental or Barrier Champion's Shield break: Reloads magazine\nEnergy weapons generate 1 ammo per hit against matching elemental shields"
                 break
@@ -135,6 +138,9 @@ function changeWepPerks(){
                 break
             case 'Hip-fire Grip':
                 wepPerkDescription.innerText = "If hipfiring:\n1.2x Aim Assist Falloff\n15 Aim Assist\n+1.7 degrees precision angle threshold\n30% more accuracy and 30 Stability\nVerify stability"
+                break
+            case 'Impact Casing'://--------------------------------------------------------------
+                //wepPerkDescription.innerText = ""
                 break
             case 'Impulse Amplifier': // verify Velocity
                 wepPerkDescription.innerText = "Reduce Reload time to " + Math.min((cauculation(realoadValue * 1 + 10) * 0.8), 100).toFixed(2) + "s\n(10 Reload with 0.8x Multiplier)\n13% Faster Projectile Velocity\nVerify Velocity"
@@ -275,7 +281,7 @@ function changeWepPerks(){
             case 'Unrelenting': // add data
                 //wepPerkDescription.innerText = ""
                 break
-            case 'Vorpal Weapon':
+            case 'Vorpal Weapon'://---------------------------------------------------
                 //wepPerkDescription.innerText = ""
                 break
             case 'Wellspring':

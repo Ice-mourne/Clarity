@@ -26,11 +26,13 @@ function filterGodRols(){
                 switch(wepFrame){
                     case 'VolatileLight': // Hard Light
                         runAddReload(AutoRifle_reload[0],AutoRifle_reload[1],AutoRifle_reload[2]);
+                        sessionStorage.setItem('abc', JSON.stringify(AutoRifle_reload))
                         // funky range
                         break
                     case 'Four-HeadedDog': // Cerberus+1
                         // funky range
                         runAddReload(AutoRifle_reload[0],AutoRifle_reload[1],AutoRifle_reload[2]);
+                        sessionStorage.setItem('abc', JSON.stringify(AutoRifle_reload))
                         break
                     case 'Payday': // Sweet Business
                         // reload funky
@@ -50,10 +52,12 @@ function filterGodRols(){
                 switch(wepFrame){
                     case 'UnplannedReprieve': // Telesto
                         runAddReload(FusionRifle_reload[0],FusionRifle_reload[1],FusionRifle_reload[2]);
+                        sessionStorage.setItem('abc', JSON.stringify(FusionRifle_reload))
                         // funky range
                         break
                     default:
                         runAddReload(FusionRifle_reload[0],FusionRifle_reload[1],FusionRifle_reload[2]);
+                        sessionStorage.setItem('abc', JSON.stringify(FusionRifle_reload))
                         break
                 }
                 break
@@ -65,12 +69,14 @@ function filterGodRols(){
                     case "Primeval'sTorment":
                     case 'DelayedGratification':
                         runAddReload(SpecialGL_reload[0],SpecialGL_reload[1],SpecialGL_reload[2]);
+                        sessionStorage.setItem('abc', JSON.stringify(SpecialGL_reload))
                         break
                     // Heavy GL's
                     case 'Rapid-FireFrame':
                     case 'AdaptiveFrame':
                     case 'Cryocannon':
                         runAddReload(HeavyGL_reload[0],HeavyGL_reload[1],HeavyGL_reload[2]);
+                        sessionStorage.setItem('abc', JSON.stringify(HeavyGL_reload))
                         break
                 }
                 break
@@ -78,25 +84,30 @@ function filterGodRols(){
                 switch(wepFrame){
                     case 'AggressiveFrame': // different range
                         runAddReload(HandCannon_reload[0],HandCannon_reload[1],HandCannon_reload[2]);
+                        sessionStorage.setItem('abc', JSON.stringify(HandCannon_reload))
                         runAddRange(1.375, 0.115, 20.8, 14)
                         break
                     default:
                         runAddReload(HandCannon_reload[0],HandCannon_reload[1],HandCannon_reload[2]);
+                        sessionStorage.setItem('abc', JSON.stringify(HandCannon_reload))
                         runAddRange(1.375, 0.096, 16, 14)
                         break
                 }
                 break
             case 'LinearFusionRifle':
                 runAddReload(LinearFusion_reload[0],LinearFusion_reload[1],LinearFusion_reload[2]);
+                sessionStorage.setItem('abc', JSON.stringify(LinearFusion_reload))
                 break
             case 'MachineGun':
                 switch (wepFrame){
                     case 'PyrotoxinRounds': // Xenophage
                         runAddReload(MachineGun_reload[0],MachineGun_reload[1],MachineGun_reload[2]);
+                        sessionStorage.setItem('abc', JSON.stringify(MachineGun_reload))
                         // funky range
                         break
                     default:
                         runAddReload(MachineGun_reload[0],MachineGun_reload[1],MachineGun_reload[2]);
+                        sessionStorage.setItem('abc', JSON.stringify(MachineGun_reload))
                 }
                 break
             case 'PulseRifle':
@@ -106,12 +117,14 @@ function filterGodRols(){
                         break
                     default:
                         runAddReload(PulseRifle_reload[0],PulseRifle_reload[1],PulseRifle_reload[2]);
+                        sessionStorage.setItem('abc', JSON.stringify(PulseRifle_reload))
                         runAddRange(1.675, 0.08, 15.4, 17)
                     break
                 }
                 break
             case 'RocketLauncher':
                 runAddReload(RocketLauncher_reload[0],RocketLauncher_reload[1],RocketLauncher_reload[2]);
+                sessionStorage.setItem('abc', JSON.stringify(RocketLauncher_reload))
                 break
             case 'ScoutRifle':
                 switch(wepFrame){
@@ -120,10 +133,12 @@ function filterGodRols(){
                         break
                     case 'SlugRifle': // Skyburner's Oath
                     runAddReload(ScoutRifle_reload[0],ScoutRifle_reload[1],ScoutRifle_reload[2]);
+                    sessionStorage.setItem('abc', JSON.stringify(ScoutRifle_reload))
                         // funky range
                         break
                 default:
                     runAddReload(ScoutRifle_reload[0],ScoutRifle_reload[1],ScoutRifle_reload[2]);
+                    sessionStorage.setItem('abc', JSON.stringify(ScoutRifle_reload))
                     runAddRange(1.975, 0.169, 29.2, 20)
                 }
                 break
@@ -138,18 +153,22 @@ function filterGodRols(){
                         break
                     default: // still need to fix formula
                         runAddReload(Shotgun_reload[0],Shotgun_reload[1],Shotgun_reload[2]);
+                        sessionStorage.setItem('abc', JSON.stringify(Shotgun_reload))
                         break
                 }
                 break
             case 'Sidearm':
                 runAddReload(Sidearm_reload[0],Sidearm_reload[1],Sidearm_reload[2]);
+                sessionStorage.setItem('abc', JSON.stringify(Sidearm_reload))
                 runAddRange(1.175, 0.034, 11.6, 12)
                 break
             case 'SniperRifle':
                 runAddReload(SniperRifle_reload[0],SniperRifle_reload[1],SniperRifle_reload[2]);
+                sessionStorage.setItem('abc', JSON.stringify(SniperRifle_reload))
                 break
             case 'SubmachineGun':
                 runAddReload(SubmachineGun_reload[0],SubmachineGun_reload[1],SubmachineGun_reload[2]);
+                sessionStorage.setItem('abc', JSON.stringify(SubmachineGun_reload))
                 runAddRange(1.275, 0.126, 4.8, 13);
                 break
             case 'Sword':
