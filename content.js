@@ -1,7 +1,7 @@
 // Don't judge me its first time I did anything with java script and I have close to no coding experience or knowledge :D
-// Looks then website is loaded stuff like "$('document').ready() , $(window).on('load') " and "addEventListener" fires way to early this will activate then user press on your crapy weapon first time
+// Looks then website is loaded stuff like "$('document').ready() , $(window).on('load') " and "addEventListener" fires way to early this will activate then items are loaded
 let DIMs_stalker = new MutationObserver(function (observe ,rageQuit) {
-    let DIM_Detailed_Item_Explanations = document.querySelector('._3ywbI');
+    let DIM_Detailed_Item_Explanations = document.querySelector('._2--vS');
     if (DIM_Detailed_Item_Explanations){
         startGrinding(); // Tryger to run script looking for selections
         rageQuit.disconnect();
@@ -15,42 +15,55 @@ DIMs_stalker.observe(document, {
 //------------------------------------------------------------------------------------------------------------------------//
 // Looks then you press on your trash rools
 function startGrinding (){
-    document.querySelectorAll('._2--vS').forEach(item => {
-        item.addEventListener('click', event => {
-            filterGodRols()
-            hoverOver()
-        });
-    });  
-};
+    document.querySelector('#app').addEventListener('click', event => {
+        let target = event.target.parentElement.parentElement;
+        let target2 = event.target.parentElement.parentElement.parentElement;
 
+        let kineticWep = target.classList.contains('item-type-Kinetic');
+        let energyWep = target.classList.contains('item-type-Energy');
+        let powerWep = target.classList.contains('item-type-Power');
+
+        let kineticWep2 = target2.classList.contains('item-type-Kinetic');
+        let energyWep2 = target2.classList.contains('item-type-Energy');
+        let powerWep2 = target2.classList.contains('item-type-Power');
+
+        if(kineticWep || energyWep || powerWep || kineticWep2 || energyWep2 || powerWep2) {
+            if(document.querySelector('._3mQRO') == null){} // checks if item stat window is open 
+            else{
+                filterGodRols();
+                hoverOver();
+            };
+        };
+    });
+};
 
 //------------------------------------------------------------------------------------------------------------------------//
 // Reload
 // Finaly i can start adding stats to weapons
 function runAddReload(a, b ,c){
 
-// gets info
+ // gets info
     let realoadValue = document.querySelectorAll("._3utrN")[5].textContent; // get reload stat value
     let statsWindow = document.querySelector('._3ywbI'); // stats window location
 
-// text part of stat window ui
+ // text part of stat window ui
     let divText = document.createElement('div'); // create div
     statsWindow.appendChild(divText); // add div to stats window
     divText.className = '_1XPu7'; // add name to new div
     divText.textContent = 'Reload Time'; // add text to new div
     divText.title = 'Time it takes to reload weapon in seconds\nFormulas are made by Van Holden';
 
-// nubers part of ui
+ // nubers part of ui
     let divNumber = document.createElement('div'); // create div
     statsWindow.appendChild(divNumber); // add div to stats window
     divNumber.className = '_3utrN'; // add name to new div
     let cauculation = (a * realoadValue * realoadValue + b * realoadValue + c).toFixed(2); // formula for reload
     divNumber.textContent = cauculation; // add value
 
-// bars part of ui
-let divBar = document.createElement('div'); // create div
-statsWindow.appendChild(divBar); // add div to stats window
-divBar.textContent = 's'; // add text to new div
+ // bars part of ui
+    let divBar = document.createElement('div'); // create div
+    statsWindow.appendChild(divBar); // add div to stats window
+    divBar.textContent = 's'; // add text to new div
 };
 
 //------------------------------------------------------------------------------------------------------------------------//
@@ -67,7 +80,7 @@ function runAddRange(zrm, hf_VPP, br_hf, b_zoom){
     let divText = document.createElement('div'); // create div
     statsWindow.appendChild(divText); // add div to stats window
     divText.className = '_1XPu7'; // add name to new div
-    divText.textContent = 'ADS Range'; // add text to new div
+    divText.textContent = 'DMG Fall-off ADS'; // add text to new div
     divText.title = 'Distance at which damage fall-off begin\nFormulas are made by Mmonx';
 
 // nubers part of ui
@@ -84,7 +97,6 @@ function runAddRange(zrm, hf_VPP, br_hf, b_zoom){
     divBar.textContent = 'm'; // add text to new div
 }
 
-
 function hoverOver(){
     setTimeout(function(){
         document.querySelectorAll('[class^="socket-container"]').forEach(item => {
@@ -92,7 +104,7 @@ function hoverOver(){
                 let perk_stalker = new MutationObserver(function (observe ,Quit) {
                     let perk_Explanations = document.querySelector('._1kew0');
                     if (perk_Explanations){
-                        changeWepPerks()
+                        change_On_Hover_Over()
                         Quit.disconnect();
                     };
                 });
@@ -102,7 +114,7 @@ function hoverOver(){
                 });
             });
         });  
-    },1)
+    },10)
 };
 
 
