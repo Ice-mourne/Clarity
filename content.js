@@ -18,7 +18,7 @@ function startGrinding (){
     
     infoButton();
     document.querySelector('#app').addEventListener('click', event => {
-        //----------------- Info button part
+        //----------------- Info button open / close
         var ul = document.querySelector('#infoButton > ul');
         if(event.target == document.querySelector('#infoButton') && ul.attributeStyleMap.size == 1){
             ul.style.cssText = 'position: absolute;margin: auto;display: flex;flex-direction: column;background: black;padding: 7px;border-radius: 5px;margin-inline-start: -8px;margin-block-start: 105px;box-shadow: 0 -1px 24px 4px #161626;cursor: default;';
@@ -130,63 +130,37 @@ function hoverOver(){
 
 function infoButton(){
     let div = document.createElement('div'); // create div
-    let seet_img_div1 = document.createElement('div'); // create div for img
-    let seet_img_div2 = document.createElement('div'); // create div for img
     let ul = document.createElement('ul'); // create ul
     let li = document.createElement('li'); // create li
-    let shett_img_element1 = document.createElement('img')
-    let shett_img_element2 = document.createElement('img')
-    let a1 = document.createElement('a');
-    let a2 = document.createElement('a');
-    let a3 = document.createElement('a');
-    let a4 = document.createElement('a');
-
     let headerLocation = document.querySelector('.header-links');
     let beforeThis = document.querySelector("#header > div.header-links > a:nth-child(1)"); // location of last thing in header
-    
     headerLocation.insertBefore(div, beforeThis); // add div to hold new button
     div.className = 'link menuItem'; // add class name
     div.textContent = 'Place holder'; // name new button
-    div.id = 'infoButton'
+    div.id = 'infoButton';
+    div.appendChild(ul).style.cssText = 'display: none;' // add ul to div and set css to hide by default
+    ul.appendChild(li).style.cssText = 'display: grid;grid-template-columns: repeat(1, min-content) 1fr;'; // add li to ul and set some css
 
-    ul.style.cssText = 'display: none;';
+    add_new_link('https://i.imgur.com/5NFXV9I.png', 'https://docs.google.com/spreadsheets/d/1WaxvbLx7UoSZaBqdFr1u32F2uWVLo-CJunJB4nlGUE4/', "Pip1n's Spreadsheet")
+    add_new_link('https://i.imgur.com/5NFXV9I.png', 'https://docs.google.com/spreadsheets/d/1i1KUwgVkd8qhwYj481gkV9sZNJQCE-C3Q-dpQutPCi4/', "Court's Spreadsheet")
+    //add_new_link('img_link', 'link', "name")
+    //add_new_link('img_link', 'link', "name")
+    //add_new_link('img_link', 'link', "name")
+    //add_new_link('img_link', 'link', "name")
+    //add_new_link('img_link', 'link', "name")
+    //add_new_link('img_link', 'link', "name")
 
-    div.appendChild(ul); // add ul 
-    ul.appendChild(li); // add li
-    li.style.cssText = 'display: grid;grid-template-columns: repeat(1, min-content) 1fr;' // add scc to li
-
-    li.appendChild(seet_img_div1)
-    seet_img_div1.appendChild(shett_img_element1)
-    shett_img_element1.style.cssText = 'width: 20px;cursor: default;'
-    shett_img_element1.src = 'https://i.imgur.com/5NFXV9I.png'
-    li.appendChild(a1);
-    a1.href = 'https://docs.google.com/spreadsheets/d/1WaxvbLx7UoSZaBqdFr1u32F2uWVLo-CJunJB4nlGUE4/edit#gid=1158705568';
-    a1.textContent = "Pip1n's Spreadsheet";
-    a1.target = '_blank'
-    a1.className = 'link menuItem'
-
-    li.appendChild(seet_img_div2)
-    seet_img_div2.appendChild(shett_img_element2)
-    shett_img_element2.style.cssText = 'width: 20px;cursor: default;'
-    shett_img_element2.src = 'https://i.imgur.com/5NFXV9I.png'
-    li.appendChild(a2);
-    a2.href = 'https://docs.google.com/spreadsheets/d/1i1KUwgVkd8qhwYj481gkV9sZNJQCE-C3Q-dpQutPCi4/edit#gid=242217075';
-    a2.textContent = "Court's Spreadsheet";
-    a2.target = '_blank'
-    a2.className = 'link menuItem'
-/*
-    li.appendChild(a3);
-    a3.href = 'https://docs.google.com/spreadsheets/d/1WaxvbLx7UoSZaBqdFr1u32F2uWVLo-CJunJB4nlGUE4/edit#gid=1158705568';
-    a3.textContent = "Pip1n's Spreadsheet";
-    a3.target = '_blank'
-    a3.className = 'link menuItem'
-
-    li.appendChild(a4);
-    a4.href = 'https://docs.google.com/spreadsheets/d/1i1KUwgVkd8qhwYj481gkV9sZNJQCE-C3Q-dpQutPCi4/edit#gid=242217075';
-    a4.textContent = "Court's Spreadsheet";
-    a4.target = '_blank'
-    a4.className = 'link menuItem'
-    */
+    function add_new_link(img_link, link, name){
+    let seet_img_div = document.createElement('div')
+    let shett_img_element = document.createElement('img')
+    let a = document.createElement('a');
+    li.appendChild(seet_img_div).appendChild(shett_img_element).style.cssText = 'width: 20px;cursor: default;';
+    shett_img_element.src = img_link;
+    li.appendChild(a).className = 'link menuItem';
+    a.href = link;
+    a.textContent = name;
+    a.target = '_blank';
+    };
 };
 
 
