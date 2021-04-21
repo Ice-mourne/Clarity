@@ -18,7 +18,7 @@ function startGrinding (){
         // >> ----------------- Info button open / close
         var ul = document.querySelector('#infoButton > ul');
         if(event.target == document.getElementById('infoButton') && ul.attributeStyleMap.size == 1){
-            ul.style.cssText = 'position: absolute;margin: auto;display: flex;flex-direction: column;background: black;padding: 7px;border-radius: 5px;margin-inline-start: -8px;margin-block-start: 105px;box-shadow: 0 -1px 24px 4px #161626;cursor: default;';
+            ul.style.cssText = 'position: absolute;margin: auto;display: flex;flex-direction: column;background: black;padding: 7px;border-radius: 5px;margin-inline-start: -8px; top: 45px;box-shadow: 0 -1px 24px 4px #161626;cursor: default;';
         } else{
             ul.style.cssText = 'display: none;';
         }
@@ -179,37 +179,57 @@ function hoverOver(){
 // >> ----------------- new menu with sorces used
 function infoButton(){
     let div = document.createElement('div');
+    let div2 = document.createElement('div');
+    let div3 = document.createElement('div');
     let ul = document.createElement('ul');
     let li = document.createElement('li');
+    let li2 = document.createElement('li');
     let headerLocation = document.querySelector('.header-links');
     let beforeThis = document.querySelector("#header > div.header-links > a:nth-child(1)"); // location of last thing in header
     headerLocation.insertBefore(div, beforeThis); // add div as first div because its bakvards visualy
     div.className = 'link menuItem';
-    div.textContent = 'Place holder';
+    div.textContent = 'Sources & More';
     div.id = 'infoButton';
     div.appendChild(ul).style.cssText = 'display: none;' // add ul to div and set css to hide by default
+    ul.appendChild(div2).textContent = 'Links to Sources used creating this extension'
+    div2.style.cssText = 'padding: 5px; align-self: center;'
     ul.appendChild(li).style.cssText = 'display: grid;grid-template-columns: repeat(1, min-content) 1fr;'; // add li to ul and set some css
+    ul.appendChild(div3).textContent = 'Other useful links'
+    div3.style.cssText = 'padding: 5px; align-self: center;'
+    ul.appendChild(li2).style.cssText = 'display: grid;grid-template-columns: repeat(1, min-content) 1fr;';
+    
 
-    add_new_link('https://i.imgur.com/5NFXV9I.png', 'https://docs.google.com/spreadsheets/d/1WaxvbLx7UoSZaBqdFr1u32F2uWVLo-CJunJB4nlGUE4/', "Pip1n's Spreadsheet")
-    add_new_link('https://i.imgur.com/5NFXV9I.png', 'https://docs.google.com/spreadsheets/d/1i1KUwgVkd8qhwYj481gkV9sZNJQCE-C3Q-dpQutPCi4/', "Court's Spreadsheet")
-    //add_new_link('img_link', 'link', "name")
-    //add_new_link('img_link', 'link', "name")
-    //add_new_link('img_link', 'link', "name")
-    //add_new_link('img_link', 'link', "name")
-    //add_new_link('img_link', 'link', "name")
-    //add_new_link('img_link', 'link', "name")
+    sources_used('https://i.imgur.com/5NFXV9I.png', 'https://docs.google.com/spreadsheets/d/1WaxvbLx7UoSZaBqdFr1u32F2uWVLo-CJunJB4nlGUE4/', "Mods, Abilities, and More by Pip1n")
+    sources_used('https://i.imgur.com/5NFXV9I.png', 'https://docs.google.com/spreadsheets/d/1i1KUwgVkd8qhwYj481gkV9sZNJQCE-C3Q-dpQutPCi4/', "Damage Buffs, Debuffs, and Modifiers by Court")
+    sources_used('https://i.imgur.com/5NFXV9I.png', 'https://docs.google.com/spreadsheets/d/13heG_rKRB9UU5DpvRbl1q11WGFs8QPPzpFA60uIOT8w/', "Reload Speed started by Van Holden updated by Sereni")
+    sources_used('https://i.imgur.com/GQclAc8.png', 'https://destinyindepth.com/range_calculator/', "Weapon Range Calculator by Mmonx")
+    other_usefull_links('https://d2gunsmith.com/logo512.png', 'https://d2gunsmith.com/', "D2 Gunsmith by dre")
+    other_usefull_links('https://i.imgur.com/5NFXV9I.png', 'https://docs.google.com/spreadsheets/d/1_6zsM7kzvg0aUT8YtM_-Wg_5K1gKDOlrwfVzutEjq-s/', "Weapon Stats & TTK by Mercules904 ")
+    other_usefull_links('https://i.imgur.com/5NFXV9I.png', 'https://docs.google.com/spreadsheets/d/12vF7ckMzN4hex-Tse4HPiVs_d9huFOKlvUoq5V41nxU/', "Weapon DPS by SkyWarrior")
+    //other_usefull_links('img_link', 'link', "name")
 
-    function add_new_link(img_link, link, name){
-    let seet_img_div = document.createElement('div')
-    let shett_img_element = document.createElement('img')
-    let a = document.createElement('a');
-    li.appendChild(seet_img_div).appendChild(shett_img_element).style.cssText = 'width: 20px;cursor: default;';
-    shett_img_element.src = img_link;
-    li.appendChild(a).className = 'link menuItem';
-    a.href = link;
-    a.textContent = name;
-    a.target = '_blank';
+    function sources_used(img_link, link, name){
+        let seet_img_div = document.createElement('div')
+        let shett_img_element = document.createElement('img')
+        let a = document.createElement('a');
+        li.appendChild(seet_img_div).appendChild(shett_img_element).style.cssText = 'height: 20px; cursor: default;';
+        shett_img_element.src = img_link;
+        li.appendChild(a).className = 'link menuItem';
+        a.href = link;
+        a.textContent = name;
+        a.target = '_blank';
     };
+    function other_usefull_links(img_link, link, name){
+        let seet_img_div = document.createElement('div')
+        let shett_img_element = document.createElement('img')
+        let a = document.createElement('a');
+        li2.appendChild(seet_img_div).appendChild(shett_img_element).style.cssText = 'height: 20px; cursor: default;';
+        shett_img_element.src = img_link;
+        li2.appendChild(a).className = 'link menuItem';
+        a.href = link;
+        a.textContent = name;
+        a.target = '_blank';
+        };
 };
 // << ----------------- new menu with sorces used
 
