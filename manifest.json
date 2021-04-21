@@ -1,15 +1,17 @@
 {
     "manifest_version": 2,
     "name": "DIM better name pending",
-    "version": "1.2.2",
+    "version": "1.3.1",
     "content_scripts": [
         {
-            "matches": ["https://app.destinyitemmanager.com/*"],
+            "matches": ["https://app.destinyitemmanager.com/*", "https://beta.destinyitemmanager.com/*"],
             "js": ["content.js", "weaponFilter.js", "jquery-3.6.0.min.js", "weaponPerks.js"],
             "css": ["style.css"]
         }
     ],
     "permissions": [
-        "https://app.destinyitemmanager.com/*"
+        "https://app.destinyitemmanager.com/*",
+        "https://beta.destinyitemmanager.com/*"
+        
     ]
 }

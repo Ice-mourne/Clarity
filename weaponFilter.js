@@ -1,7 +1,7 @@
 function filterGodRols(){
-    //setTimeout(function(){
-        var wepType = document.querySelector('.Xyg7s').innerText;
-        var wepFrame = document.querySelector('._3sBrL').innerText;
+    let version = document.querySelector('.link.menuItem.logoLink > img').className == 'logo release';
+    let wepType = (version) ? document.querySelector('.Xyg7s').innerText : document.querySelector('[class^="ItemPopupHeader-m_itemType"]').innerText;
+    let wepFrame = (version) ? document.querySelector('._3sBrL').innerText : document.querySelector('[class^="ArchetypeSocket-m_name"]').innerText;
 
         // Numbers for reload formula
         var AutoRifle_reload = [0.000105640666666667, -0.0290040666666667, 3.08620666666667];
@@ -178,5 +178,4 @@ function filterGodRols(){
                 //
                 break; //traces don't have data
         };
-    //},1);
 };
