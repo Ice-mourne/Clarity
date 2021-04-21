@@ -41,6 +41,9 @@ function startGrinding (){
                                 let perk_description = document.querySelector('[class^="ItemPerksList-m_perkInfo-"]');
                                 if (perk_description){
                                     let perks_name = document.querySelector(`#${perkID} > [class^="ItemPerksList-m_perkInfo-"] > h2`).textContent;
+                                    if(document.querySelector(`#${perkID} > [class^="ItemPerksList-m_perkInfo-"] > p`) != null){
+                                        document.querySelector(`#${perkID} > [class^="ItemPerksList-m_perkInfo-"] > p`).style.cssText = 'display: none;'
+                                    }
                                     perk_pressed(perks_name);
                                     quit.disconnect();
                                 };
@@ -58,7 +61,7 @@ function startGrinding (){
                 perk.setAttribute('listener', 'true'); // adding attribute to avoid adding 10000 listereners
             });
         };
-        // << ----------------- check if user pressed on weapon perk
+        // << ----------------- check if user pressed on weapon perk BETA only
         // >> ----------------- Look if user pressed on weapon
         // >> ----------------- fix for stupid error in beta DIM then you press on weapon perk name or description
         let check1 = event.target.parentElement == null;
@@ -77,8 +80,23 @@ function startGrinding (){
                 filterGodRols();
                 hoverOver();
             };
-        }
-        //<< ----------------- Look if user pressed on weapon
+        };
+        // << ----------------- Look if user pressed on weapon
+        // >> ----------------- check if user pressed on armor
+        if((document.getElementsByClassName("item-details-body")[0] != null) && (check3 == false)){
+            let target = event.target.parentElement.parentElement;
+            let target2 = event.target.parentElement.parentElement.parentElement;
+
+            let helmet = target.classList.contains('item-type-Helmet') || target2.classList.contains('item-type-Helmet');
+            let gauntlets = target.classList.contains('item-type-Gauntlets') || target2.classList.contains('item-type-Gauntlets');
+            let chest = target.classList.contains('item-type-Chest') || target2.classList.contains('item-type-Chest');
+            let legs = target.classList.contains('item-type-Leg') || target2.classList.contains('item-type-Leg');
+
+            if(helmet || gauntlets || chest || legs) {
+                armor_pressed()
+            };
+        };
+        // << ----------------- check if user pressed on armor
     });
 };
 // << ----------------- Looks where user clicked

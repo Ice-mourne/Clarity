@@ -101,9 +101,9 @@ function run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLegth,
             break;
         case 'Demolitionist':
             if(imgLinkLegth === 275){
-                perk_description.innerText = "Kills grant 10% Grenade Ability Energy.\nUsing your grenade ability refreshes magazine. 3 second cooldown.\n20% for special weapons.";
+                perk_description.innerText = "Kills restore 10% Grenade Energy.\nUsing grenade ability reloads weapon.\n3 second cooldown.\n20% for special weapons.";
             } else{
-                    perk_description.innerText = "Kills grant 20% Grenade Ability Energy.\nUsing your grenade ability refreshes magazine. 3 second cooldown.\n10% for kinetic weapons.";
+                    perk_description.innerText = "Kills restore 20% Grenade Energy.\nUsing grenade ability reloads weapon.\n3 second cooldown.\n10% for kinetic weapons.";
                 };
             break;
         case 'Desperado': // dmg perk
@@ -230,7 +230,7 @@ function run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLegth,
             //perk_description.innerText = "Using your grenade ability changes the weapon damage type to match selected Light subclass until stowed.";
             break;
         case 'Outlaw':
-            perk_description.innerText = "On Precision Kill:\nReload time" + (cauculation(realoadValue * 1 + 63) * 0.9).toFixed(2) + 's\n"(63 Reload with 0.9x Multiplier)\nfor 6 seconds';
+            perk_description.innerText = "On Precision Kill:\nReload time " + (cauculation(realoadValue * 1 + 63) * 0.9).toFixed(2) + 's\n(63 Reload with 0.9x Multiplier)\nfor 6 seconds';
             break;
         case 'Overflow':
             perk_description.innerText = "Refills magazine to double capacity on Special/Power Ammo pickup.";
@@ -242,7 +242,6 @@ function run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLegth,
             //perk_description.innerText = "";
             break;
         case 'Rampage':
-            console.log('text');
             perk_description.innerText = "Kills increare DMG for 3.5s\n1x 10%\n2x 21%\n3x 33%\nWith Rampage spec mod 4.5s";
             break;
         case 'Rangefinder': // add calculation
