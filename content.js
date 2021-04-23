@@ -22,7 +22,7 @@ DIMs_stalker.observe(document, {
     childList: true,
     subtree: true
 });
-// >> ----------------- Looks where user clicked
+//  🡳 🡳  - - - - - - - - - (^._.^) Looks where user clicked
 function startGrinding (){
     document.getElementById('app').addEventListener('click', event => {
         header_button(event)
@@ -102,7 +102,7 @@ function startGrinding (){
         // << ----------------- check if user pressed on armor
     });
 };
-// << ----------------- Looks where user clicked
+//  🡱 🡱  - - - - - - - - - (^._.^) Looks where user clicked
 // >> ----------------- Adds reload to weapon stat window
 function runAddReload(a, b ,c){
     // gets info
@@ -260,7 +260,7 @@ if(localStorage.getItem('dark_mode') == 'on'){
 
 //  (っ◔◡◔)っ  new menu with sources used
 function header_button(event){  
-    //  🡳 🡳  - - - - - - - - -Info button open / close
+    //  🡳 🡳  - - - - - - - - - Info button open / close
     let new_window = document.querySelector('#infoButton > ul'); 
     let button_pressed = event.target == document.getElementById('infoButton');
     let winow_open = new_window.style.display == 'none';

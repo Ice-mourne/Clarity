@@ -66,7 +66,7 @@ function change_On_Hover_Over(){
 };
 
 function run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLegth, realoadValue){
-    function cauculation(realoadValue){
+    function calculator(realoadValue){
         value = Math.min(Math.max(realoadValue, 10),100);
         return (abc[0] * value * value + abc[1] * value + abc[2]);
     };
@@ -162,7 +162,7 @@ function run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLegth,
         case 'Dynamic Sway Reduction':  // long text
             perk_description.innerText = "Greatly reduces inaccuracy after firing for 1 second.\nAdds +9 Stability over time.\nIn Air Accuracy is still inaccurate unless used alongside Icarus Grip, but DSR improves it.";
             break;
-        case 'Elemental Capacitor':  // add calculation // needs more work because its alredy shows stats
+        case 'Elemental Capacitor':  // add calculation // needs more work because it already shows stats
             //perk_description.innerText = "Grants stat bonuses depending on selected Light Subclass.\nSolar: 45 Reload | Arc: 45 Handling | Void: 18 Stability";
             break;
         case 'Explosive Payload':
@@ -175,10 +175,10 @@ function run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLegth,
             //perk_description.innerText = "";
             break;
         case 'Feeding Frenzy':
-            perk_description.innerText = "Kills increase reload speed for 3.5 seconds. Refreshes on kill.\rStack  | Time   | Stat   | Multiplier\r1x       |  " + cauculation(realoadValue * 1 + 10).toFixed(2) + 's  | 10     | -\r2x       |  ' + (cauculation(realoadValue * 1 + 45) * 0.9).toFixed(2) + 's  | 45     | 0.9\r3x       |  ' + (cauculation(realoadValue * 1 + 55) * 0.88).toFixed(2) + 's  | 55     | 0.88\r4x       |  ' + (cauculation(realoadValue * 1 + 70) * 0.85).toFixed(2) + 's  | 70     | 0.85\r5x       |  ' + (cauculation(realoadValue * 1 + 100) * 0.8).toFixed(2) + 's  | 100   | 0.8';
+            perk_description.innerText = "Kills increase reload speed for 3.5 seconds. Refreshes on kill.\rStack  | Time   | Stat   | Multiplier\r1x       |  " + calculator(realoadValue * 1 + 10).toFixed(2) + 's  | 10     | -\r2x       |  ' + (calculator(realoadValue * 1 + 45) * 0.9).toFixed(2) + 's  | 45     | 0.9\r3x       |  ' + (calculator(realoadValue * 1 + 55) * 0.88).toFixed(2) + 's  | 55     | 0.88\r4x       |  ' + (calculator(realoadValue * 1 + 70) * 0.85).toFixed(2) + 's  | 70     | 0.85\r5x       |  ' + (calculator(realoadValue * 1 + 100) * 0.8).toFixed(2) + 's  | 100   | 0.8';
             break ;              
         case 'Field Prep':// verify data
-            perk_description.innerText = "If crouched:\nReload time " + (cauculation(realoadValue * 1 + 45) * 0.8).toFixed(2) + 's\n45 Reload with 0.8x Multiplier\n20 Handling to Ready/Stow Speed.';
+            perk_description.innerText = "If crouched:\nReload time " + (calculator(realoadValue * 1 + 45) * 0.8).toFixed(2) + 's\n45 Reload with 0.8x Multiplier\n20 Handling to Ready/Stow Speed.';
             break;
         case 'Firing Line':
             perk_description.innerText = "Then near 2 or more guardians or friendly AI increase precision DMG\n25% Linear fusions & Snipers\n20% Machineguns";
@@ -190,7 +190,7 @@ function run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLegth,
             perk_description.innerText = "Landing 4 Precision Hits up to 2.5s between shots generate 2 bullets to the magazine.";
             break;
         case 'Frenzy': // verify data
-            perk_description.innerText = "12s After taking / dealing DMG:\nReload time " + cauculation(realoadValue * 1 + 50).toFixed(2) + "s\n15% DMG, 50 handling, 50 reload\nEnds if no DMG taken / dealt for 5s\nActives on stoved weapon to";
+            perk_description.innerText = "12s After taking / dealing DMG:\nReload time " + calculator(realoadValue * 1 + 50).toFixed(2) + "s\n15% DMG, 50 handling, 50 reload\nEnds if no DMG taken / dealt for 5s\nActives on stoved weapon to";
             break;
         case 'Full Auto Trigger System': // maybe add shotgun part only to shotguns?
             perk_description.innerText = "Makes weapon Full Auto.\n10% Faster Fire Rate on Shotguns.";
@@ -217,13 +217,13 @@ function run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLegth,
             perk_description.innerText = "10% Increase to impact DMG";
             break;
         case 'Impulse Amplifier': // verify Velocity
-            perk_description.innerText = "Reduce Reload time to " + (cauculation(realoadValue * 1 + 10) * 0.8).toFixed(2) + "s\n(10 Reload with 0.8x Multiplier)\n13% Faster Projectile Velocity\nVerify Velocity";
+            perk_description.innerText = "Reduce Reload time to " + (calculator(realoadValue * 1 + 10) * 0.8).toFixed(2) + "s\n(10 Reload with 0.8x Multiplier)\n13% Faster Projectile Velocity\nVerify Velocity";
             break;
         case 'Iron Gaze': // add calculation
             //perk_description.innerText = "20 Aim Assist and -36 Range.";
             break;
         case 'Iron Grip':
-            perk_description.innerText = "Reload time " + cauculation(realoadValue * 1 + -36).toFixed(2);
+            perk_description.innerText = "Reload time " + calculator(realoadValue * 1 + -36).toFixed(2);
             break;
         case 'Iron Reach': // add calculation
             //perk_description.innerText = "18 Range and -36 Stability";
@@ -271,7 +271,7 @@ function run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLegth,
             //perk_description.innerText = "Using your grenade ability changes the weapon damage type to match selected Light subclass until stowed.";
             break;
         case 'Outlaw':
-            perk_description.innerText = "On Precision Kill:\nReload time " + (cauculation(realoadValue * 1 + 63) * 0.9).toFixed(2) + 's\n(63 Reload with 0.9x Multiplier)\nfor 6 seconds';
+            perk_description.innerText = "On Precision Kill:\nReload time " + (calculator(realoadValue * 1 + 63) * 0.9).toFixed(2) + 's\n(63 Reload with 0.9x Multiplier)\nfor 6 seconds';
             break;
         case 'Overflow':
             perk_description.innerText = "Refills magazine to double capacity on Special/Power Ammo pickup.";
@@ -289,7 +289,7 @@ function run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLegth,
             perk_description.innerText = "10% Increased Zoom when ADS.\n5% Faster Projectile Speed when ADS.";
             break;
         case 'Rapid Hit': // add data  // add calculation
-            perk_description.innerText = "Precision hits build Rapid Hit stacks (2s duration), granting \rStack  | Reload time / Stat | Stability\r1x       |  " + cauculation(realoadValue * 1 + 5).toFixed(2) + 's             / 5     | 5\r2x       |  ' + cauculation(realoadValue * 1 + 27).toFixed(2) + 's             / 27   | 10\r3x       |  ' + cauculation(realoadValue * 1 + 32).toFixed(2) + 's             / 32   | 15\r4x       |  ' + cauculation(realoadValue * 1 + 40).toFixed(2) + 's             / 40   | 20\r5x       |  ' + cauculation(realoadValue * 1 + 54).toFixed(2) + 's             / 54   | 23';
+            perk_description.innerText = "Precision hits build Rapid Hit stacks (2s duration), granting \rStack  | Reload time / Stat | Stability\r1x       |  " + calculator(realoadValue * 1 + 5).toFixed(2) + 's             / 5     | 5\r2x       |  ' + calculator(realoadValue * 1 + 27).toFixed(2) + 's             / 27   | 10\r3x       |  ' + calculator(realoadValue * 1 + 32).toFixed(2) + 's             / 32   | 15\r4x       |  ' + calculator(realoadValue * 1 + 40).toFixed(2) + 's             / 40   | 20\r5x       |  ' + calculator(realoadValue * 1 + 54).toFixed(2) + 's             / 54   | 23';
             break;
         case 'Reconstruction':
             perk_description.innerText = "After not shooting for 4 seconds:\nReloads 10% of base magazine. Maxes out at double magazine size.";
@@ -331,7 +331,7 @@ function run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLegth,
             //perk_description.innerText = "";
             break;
         case 'Threat Detector':
-            perk_description.innerText = "When enemies are in 15m\n1x Reload time " + cauculation(realoadValue * 1 + 15).toFixed(2) + "s | Stat 15\n1x 15 Stability, 20 Handling\n2x Reload time " + cauculation(realoadValue * 1 + 55).toFixed(2) + "s | Stat 55\n2x 40 Stability, 40 Handling";
+            perk_description.innerText = "When enemies are in 15m\n1x Reload time " + calculator(realoadValue * 1 + 15).toFixed(2) + "s | Stat 15\n1x 15 Stability, 20 Handling\n2x Reload time " + calculator(realoadValue * 1 + 55).toFixed(2) + "s | Stat 55\n2x 40 Stability, 40 Handling";
             break;
         case 'Thresh':
             switch(imgLinkLegth){
