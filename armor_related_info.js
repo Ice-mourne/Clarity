@@ -1,6 +1,6 @@
 function armor_pressed(){
     if((document.querySelector('[class^="ArchetypeSocket-m_name-"]') != null) || document.querySelector('._3sBrL') != null){
-        let version = document.querySelector('.link.menuItem.logoLink > img').className == 'logo release';
+        let version = document.querySelector('.link.menuItem.logoLink > img') !== null;
         let exotic_perk_name = (version) ? document.querySelector('._3sBrL').textContent : document.querySelector('[class^="ArchetypeSocket-m_name-"]').textContent;
         let perk_description = (version) ? document.querySelector('.dd6Tm') : document.querySelector('[class^="ItemSocketsGeneral-m_exoticDescription-"]');
         switch(exotic_perk_name){

@@ -1,5 +1,11 @@
+/*
+        _/﹋\_                                                 ,___,
+        (҂`_´)                                                 [O.o]
+        <,︻╦╤─ ҉ - - - - -                                    /)__)
+        _/﹋\_                                                 -"--"-
+*/
 function filterGodRols(){
-    let version = document.querySelector('.link.menuItem.logoLink > img').className == 'logo release';
+    let version = document.querySelector('.link.menuItem.logoLink > img') !== null;
     let wepType = (version) ? document.querySelector('.Xyg7s').innerText : document.querySelector('[class^="ItemPopupHeader-m_itemType"]').innerText;
     let wepFrame = (version) ? document.querySelector('._3sBrL').innerText : document.querySelector('[class^="ArchetypeSocket-m_name"]').innerText;
 

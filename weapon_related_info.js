@@ -1,3 +1,44 @@
+/*                   // \\
+                    // ¤ \\
+                    \\ ¤ //
+                     \\ //
+                     (___)
+                     (___)
+                     (___)
+        ____________ (___)____________
+        \_____/\__/----\__/\_____/   /
+            \ _°_[------------]_ _° /
+                \_°_¤ ---- ¤_°_/
+                    \ __°__ /
+                     |\_°_/|
+                     [|\_/|]
+                     [|[¤]|]
+                     [|;¤;|]
+                     [;;¤;;]
+                    ;;;;¤]|]\
+                   ;;;;;¤]|]-\
+                  ;;;;;[¤]|]--\
+                 ;;;;;|[¤]|]---\
+                ;;;;;[|[¤]|]|---|
+               ;;;;;[|[¤]|]|---/
+                ;;;;[|[¤]|/---/
+                 ;;;[|[¤]/---/
+                  ;;[|[¤/---/
+                   ;[|[/---/
+                    [|/---/
+                     /---/
+                    /---/|]
+                   /---/]|];
+                  /---/¤]|];;
+                 |---|[¤]|];;;
+                 |---|[¤]|];;;
+                  \--|[¤]|];;
+                   \-|[¤]|];
+                     \|[¤]|]
+                      \\¤//
+                       \|/
+                        V
+*/
 function perk_pressed(perks_name){
     let perk = perks_name;
     let perk_description = document.querySelector('[class^="ItemPerksList-m_perkInfo-"] > div > span');
@@ -10,7 +51,7 @@ function perk_pressed(perks_name){
 }
 
 function change_On_Hover_Over(){
-    let version = document.querySelector('.link.menuItem.logoLink > img').className == 'logo release';
+    let version = document.querySelector('.link.menuItem.logoLink > img') !== null;
     let realoadValue = (version) ? document.querySelectorAll("._3utrN")[5].textContent : "";
     let perk = (version) ? document.querySelector("._3ppxp > h2").textContent : "";
     let mod = (version) ? document.querySelector("._3ppxp > h2").textContent : document.querySelector('[class^="PressTip-m_content-"] > h2').textContent;
