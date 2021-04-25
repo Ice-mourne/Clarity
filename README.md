@@ -1,17 +1,34 @@
-# DIM_Better_name_pending
-This is a browser extension aimed to add stats like in-game range in meters, reload time in seconds, and more
+# DIM Better name pending
+- This is a browser extension aimed to add stats like in-game range in meters, reload time in seconds, and more
+
 # Common question: does this work on mobile:
-Short answer: Yes
-Long answer: Yes it would work if you find a way to install the extension to browsers like firefox I looked into installing and it was too much work for me to care about at the moment but then I will upload it to the Firefox store it will be simple installation
-# Will I upload this to extension stores:
-Yes at some point I will it's too much hassle to do that and I am way too lazy to deal with that and chrome store is asking me to pay 5$ fuck that ...
-# Instalation
-First of all grab one of releases on the right side 
-Then extract contents of the folder and depending on browser fallow installation instructions
+- Short answer: Yes
+- Long answer: Yes it works but you have to use [Firefox nightly app](https://play.google.com/store/apps/details?id=org.mozilla.fenix) as far as I can tell this works only for Android phones sorry iPhone users if you know of another browser with addon support hit me up I will upload to their store to
+- Extension installation on [FireFox nightly app](https://play.google.com/store/apps/details?id=org.mozilla.fenix):
+1. Tap on the main menu (three dots) and select Settings.
+2. Scroll all the way down and select "About Firefox Nightly".
+3. Tap on the Firefox Logo at the top (next to Firefox Browser) five times until the "Debug menu enabled" notification is displayed.
+4. Go back to the main Settings page.
+5. Scroll down to the Advanced section and activate "Custom Add-on Collection".
+6. You are asked to type the User ID of the collection owner and the name of the Collection.
+7. Type 16825313 and DIM
+- Or create your own hare: [Custom Add-on Collection](https://addons.mozilla.org/en-US/firefox/collections/)
+
+# Will I upload this to browser extension stores:
+- Yes FireFox is avalable now [DIM Better name pending extension](https://addons.mozilla.org/en-US/firefox/addon/dim-better-name-pending/)
+- Chrome, MS Edge, Opera are in validation process at the time of writing this
+- Big thx to AE×GS from Massive Breakdown discord for paying 5$ fee needed for a Chrome developer account
+
+# Manual Installation
+- First of all grab source because I rarely do release Code > Download zip
+- Then extract contents of the folder and depending on browser fallow installation instructions
+
 # Chrome: 
-Paste this "chrome://extensions/" in the address bar without quotes than on top right press "Developer mode" and on to left "load unpaced" select folder extracted earlier and you done
+- Paste this `chrome://extensions/` in the address bar without quotes than on the top right press "Developer mode" and on to left "load unpaced" select folder extracted earlier and you done
+
 # FireFox:
-First of all, I don't recommend using Firefox because you will need to add an extension every time you open Firefox (basically if you close Firefox you will need to add an extension again)
-Installation Paste this "about:debugging#/runtime/this-firefox" in the address bar without quotes then press "Load temporary extension" and select file called "manifest" in extracted folder
+- First of all, I don't recommend using Firefox because you will need to add an extension every time you open Firefox (basically if you close Firefox you will need to add an extension again)
+- Installation Paste this `about:debugging#/runtime/this-firefox` in the address bar without quotes then press "Load temporary extension" and select file called "manifest" in the extracted folder
+
 # Other browsers:
-Browsers like Opera, Chromium, Microsoft Edge, and other Chromium based browser will be very similar to chrome
+- Browsers like Opera, Chromium, Microsoft Edge, and other Chromium-based browsers will be very similar to chrome navigate to extension and enable developer mode
