@@ -12,9 +12,5 @@
             "js": ["content.js", "weaponFilter.js", "weapon_related_info.js", "armor_related_info.js"],
             "css": ["style.css"]
         }
-    ],
-    "permissions": [
-        "https://app.destinyitemmanager.com/*",
-        "https://beta.destinyitemmanager.com/*"
     ]
 }
