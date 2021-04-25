@@ -140,7 +140,7 @@ function run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLegth,
             perk_description.innerText = "Blocking an attack immediately after Guarding increases Damage by 50% for 2s.";
             break;
         case 'Death at First Glance':
-            perk_description.innerText = "First shot while ADS deals 33% increased Damage.\nBonus is Preserved on Precision/Elemental Shields Hits.\n If lost, buff is regained after 3 seconds of not firing.";
+            perk_description.innerText = "First shot while ADS deals 33% increased Damage.\nBonus is Preserved on Precision/Elemental Shields Hits.\nIf lost, buff is regained after 3 seconds of not firing.";
             break;
         case 'Demolitionist':
             if(imgLinkLegth === 275){
@@ -274,7 +274,7 @@ function run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLegth,
             perk_description.innerText = "Using your Grenade Ability changes the weapon damage type to match selected Light subclass until stow.";
             break;
         case 'Outlaw':
-            perk_description.innerText = "On Precision Kill, for 6 seconds:\n Reduces Reload Time to " + (calculator(realoadValue * 1 + 63) * 0.9).toFixed(2) + 's\n(63 Reload with 0.9x Multiplier)';
+            perk_description.innerText = "On Precision Kill, for 6 seconds:\nReduces Reload Time to " + (calculator(realoadValue * 1 + 63) * 0.9).toFixed(2) + 's\n(63 Reload with 0.9x Multiplier)';
             break;
         case 'Overflow':
             perk_description.innerText = "Refills magazine to double capacity on Special/Power Ammo pickup.";
@@ -331,7 +331,7 @@ function run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLegth,
             perk_description.innerText = "Reloading up to 6s after a Kill also reloads stowed weapons.";
             break;
         case 'Tap The Trigger':
-            perk_description.innerText = "Grants 25 Stability and 10% higher Accuracy for 0.6s.\n Refreshes immediately after not firing. \n Hair Trigger on Controller " 
+            perk_description.innerText = "Grants 25 Stability and 10% higher Accuracy for 0.6s.\nRefreshes immediately after not firing. \nHair Trigger on Controller " 
             break;
         case 'Threat Detector':
             perk_description.innerText = "When enemies are within 15m\n1x Reload Time reduced to " + calculator(realoadValue * 1 + 15).toFixed(2) + "s | Stat 15\n1x 15 Stability, 20 Handling\n2x Reload time " + calculator(realoadValue * 1 + 55).toFixed(2) + "s | Stat 55\n2x 40 Stability, 40 Handling";
@@ -359,10 +359,10 @@ function run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLegth,
             perk_description.innerText = "As magazine goes below 50% until empty. 25% to 50% increased Accuracy and up to 20 stability.";
             break;
         case 'Underdog':
-            perk_description.innerText = "Once below 150(?) HP:\n Increased reload speed. Effect increases linearly as health decreases, up to 100 Reload with 0.9x Duration Multiplier";
+            perk_description.innerText = "Once below 150(?) HP:\nIncreased reload speed. Effect increases linearly as health decreases, up to 100 Reload with 0.9x Duration Multiplier";
             break;
         case 'Unrelenting':
-            perk_description.innerText = "Starts Health Regeneration and heals for ~30 HP after obtaining 3 points. \n Rank-And-File give ONE point. Elites/Guardians give TWO points. Minibosses/Bosses give THREE points.\n Kills must be within 8(?) seconds of each.";
+            perk_description.innerText = "Starts Health Regeneration and heals for ~30 HP after obtaining 3 points. \nRank-And-File give ONE point. Elites/Guardians give TWO points. Minibosses/Bosses give THREE points.\nKills must be within 8(?) seconds of each.";
             break;
         case 'Vorpal Weapon':
             perk_description.innerText = "15% Weapon DMG to Minibosses and Bosses.\n40-50% increased Primary Damage and 10%-20% increased Special Damage against Supers";
