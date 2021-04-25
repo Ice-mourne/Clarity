@@ -1,11 +1,16 @@
 1.3.9
 - manifest.json
-removed unnecessary permissions
-web_accessible_resources for images folder
-updated version number
+Removed unnecessary permissions
+Web_accessible_resources for images folder
 - contents.js
-changed image links to internal image files
-- new folder images
-added spreadsheet, range calculator, gunsmith images
+Changed image links to internal image files
+- new folder > images
+Added spreadsheet, range calculator, gunsmith images
 - README.md
-updated with relevant information
+Updated with relevant information
+1.3.10
+- manifest.json
+changed extensions name from DIM Beter name pending to Clarity, A DIM Companion
+Updated description
+- README.md
+Updated with more relevant information

@@ -1,5 +1,6 @@
 # DIM Better name pending
-- This is a browser extension aimed to add stats like in-game range in meters, reload time in seconds, and more
+- Bringing the truth to light in their gear management. 
+- Extension aimed to improve Destiny item manager.
 
 # Common question: does this work on mobile:
 - Short answer: Yes
