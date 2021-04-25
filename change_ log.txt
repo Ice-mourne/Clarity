@@ -1,0 +1,11 @@
+1.3.9
+- manifest.json
+removed unnecessary permissions
+web_accessible_resources for images folder
+updated version number
+- contents.js
+changed image links to internal image files
+- new folder images
+added spreadsheet, range calculator, gunsmith images
+- README.md
+updated with relevant information
