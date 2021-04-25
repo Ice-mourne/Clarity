@@ -12,5 +12,6 @@
             "js": ["content.js", "weaponFilter.js", "weapon_related_info.js", "armor_related_info.js"],
             "css": ["style.css"]
         }
-    ]
+    ],
+    "web_accessible_resources": ["/images/*"]
 }

@@ -219,14 +219,18 @@ function infoButton(){
 
     let sources_links = document.getElementById('source_links')
     let useful_links = document.getElementById('useful_links')
-    create_new_link('https://i.imgur.com/5NFXV9I.png', 'https://docs.google.com/spreadsheets/d/1WaxvbLx7UoSZaBqdFr1u32F2uWVLo-CJunJB4nlGUE4/', "Mods, Abilities, and More by Pip1n", sources_links);
-    create_new_link('https://i.imgur.com/5NFXV9I.png', 'https://docs.google.com/spreadsheets/d/1i1KUwgVkd8qhwYj481gkV9sZNJQCE-C3Q-dpQutPCi4/', "Damage Buffs, Debuffs, and Modifiers by Court", sources_links);
-    create_new_link('https://i.imgur.com/5NFXV9I.png', 'https://docs.google.com/spreadsheets/d/13heG_rKRB9UU5DpvRbl1q11WGFs8QPPzpFA60uIOT8w/', "Reload Speed started by Van Holden updated by Sereni", sources_links);
-    create_new_link('https://i.imgur.com/GQclAc8.png', 'https://destinyindepth.com/range_calculator/', "Weapon Range Calculator by Mmonx", sources_links);
+    let spreadsheet_img = chrome.runtime.getURL("images/spreadsheet.png")
+    let range_calc_img = chrome.runtime.getURL("images/range_calc.png")
+    let gunsmith_img = chrome.runtime.getURL("images/gunsmith.png")
+    
+    create_new_link(spreadsheet_img, 'https://docs.google.com/spreadsheets/d/1WaxvbLx7UoSZaBqdFr1u32F2uWVLo-CJunJB4nlGUE4/', "Mods, Abilities, and More by Pip1n", sources_links);
+    create_new_link(spreadsheet_img, 'https://docs.google.com/spreadsheets/d/1i1KUwgVkd8qhwYj481gkV9sZNJQCE-C3Q-dpQutPCi4/', "Damage Buffs, Debuffs, and Modifiers by Court", sources_links);
+    create_new_link(spreadsheet_img, 'https://docs.google.com/spreadsheets/d/13heG_rKRB9UU5DpvRbl1q11WGFs8QPPzpFA60uIOT8w/', "Reload Speed started by Van Holden updated by Sereni", sources_links);
+    create_new_link(range_calc_img, 'https://destinyindepth.com/range_calculator/', "Weapon Range Calculator by Mmonx", sources_links);
 
-    create_new_link('https://d2gunsmith.com/logo512.png', 'https://d2gunsmith.com/', "D2 Gunsmith by dre", useful_links);
-    create_new_link('https://i.imgur.com/5NFXV9I.png', 'https://docs.google.com/spreadsheets/d/1_6zsM7kzvg0aUT8YtM_-Wg_5K1gKDOlrwfVzutEjq-s/', "Weapon Stats & TTK by Mercules904 ", useful_links);
-    create_new_link('https://i.imgur.com/5NFXV9I.png', 'https://docs.google.com/spreadsheets/d/12vF7ckMzN4hex-Tse4HPiVs_d9huFOKlvUoq5V41nxU/', "Weapon DPS by SkyWarrior", useful_links);
+    create_new_link(gunsmith_img, 'https://d2gunsmith.com/', "D2 Gunsmith by dre", useful_links);
+    create_new_link(spreadsheet_img, 'https://docs.google.com/spreadsheets/d/1_6zsM7kzvg0aUT8YtM_-Wg_5K1gKDOlrwfVzutEjq-s/', "Weapon Stats & TTK by Mercules904 ", useful_links);
+    create_new_link(spreadsheet_img, 'https://docs.google.com/spreadsheets/d/12vF7ckMzN4hex-Tse4HPiVs_d9huFOKlvUoq5V41nxU/', "Weapon DPS by SkyWarrior", useful_links);
     //create_new_link('img_link', 'link', "name", useful_links);
 
     function create_new_link(img_link, link, name, li){
