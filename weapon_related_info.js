@@ -52,7 +52,7 @@ function perk_pressed(perks_name){
 };
 
 function change_On_Hover_Over(){
-    let version = document.querySelector('.link.menuItem.logoLink > img') !== null;
+    let version = document.querySelector('._1xEii') !== null;
     let realoadValue = (version) ? document.querySelectorAll("._3utrN")[5].textContent : "";
     let mag_size = (version) ? document.querySelectorAll("._3utrN")[9].textContent : "";
     let perk = (version) ? document.querySelector("._3ppxp > h2").textContent : "";

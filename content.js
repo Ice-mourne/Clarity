@@ -27,7 +27,7 @@ function startGrinding (){
     document.getElementById('app').addEventListener('click', event => {
         header_button(event)
         // >> ----------------- check if user pressed on weapon perk BETA only
-        if(document.querySelector('.link.menuItem.logoLink > img') == null){
+        if(document.querySelector('._1xEii') == null){
             let perk = document.querySelectorAll('[class^="ItemPerksList-m_plug-"]');
             var p = 1;
             for(var i=0; i< perk.length; i++){
@@ -106,7 +106,7 @@ function startGrinding (){
 // >> ----------------- Adds reload to weapon stat window
 function runAddReload(a, b ,c){
     // gets info
-    let version = document.querySelector('.link.menuItem.logoLink > img') !== null;
+    let version = document.querySelector('._1xEii') !== null;
     let realoadValue = (version) ? document.getElementsByClassName("_3utrN")[5].textContent : document.querySelectorAll('[class^="ItemStat-m_value"]')[5].textContent;
     let name_class = (version) ? document.getElementsByClassName('_1XPu7')[0].className : document.querySelector('[class^="ItemStat-m_statName"]').className;
     let value_class = (version) ? document.getElementsByClassName('_3utrN')[0].className : document.querySelector('[class^="ItemStat-m_value"]').className;
@@ -133,7 +133,7 @@ function runAddReload(a, b ,c){
 // zrm = Zoom range multiplayer // hf_VPP = Hip-Fire VPP // br_hf = Base Range Hip-Fire // b_zoom = Base Zoom
 function runAddRange(zrm, hf_VPP, br_hf, b_zoom){
     // gets info
-    let version = document.querySelector('.link.menuItem.logoLink > img') !== null;
+    let version = document.querySelector('._1xEii') !== null;
     let rangeValue = (version) ? document.getElementsByClassName("_3utrN")[2].textContent : document.querySelectorAll('[class^="ItemStat-m_value"]')[2].textContent;
     let zoomValue = (version) ? document.getElementsByClassName("_3utrN")[7].textContent : document.querySelectorAll('[class^="ItemStat-m_value"]')[7].textContent;
     let name_class = (version) ? document.getElementsByClassName('_1XPu7')[0].className : document.querySelector('[class^="ItemStat-m_statName"]').className;
@@ -164,7 +164,7 @@ function hoverOver(){
         document.querySelectorAll('[class^="socket-container"]').forEach(item => {
             item.addEventListener('mouseover', event => {
                 let perk_stalker = new MutationObserver(function (observe ,quit) {
-                    let version = document.querySelector('.link.menuItem.logoLink > img') !== null;
+                    let version = document.querySelector('._1xEii') !== null;
                     let perk_Explanations = (version) ? document.querySelector('._1kew0') : document.querySelector('[class^="PressTip-m_tooltip-"]');
                     if (perk_Explanations){
                         change_On_Hover_Over();
@@ -185,11 +185,10 @@ function infoButton(){
     let css_window = 'position:absolute; margin:auto; display:none; flex-direction:column; background:black; padding:7px; border-radius:5px; margin-inline-start:-8px; top:45px; box-shadow:0 -1px 24px 4px #161626; cursor:default;'
     let css_text = 'padding: 5px; align-self: center; color: #e8a534;'
     let css_grid = 'display: grid;grid-template-columns: repeat(1, min-content) 1fr;';
-    let version = document.querySelector('.link.menuItem.logoLink > img') !== null;
-    let header_location = (version) ? document.querySelector('.header-links') : document.querySelector('[class^="Header-m_headerLinks-"]')
+    let version = document.querySelector('._1xEii') !== null;
+    let header_location = (version) ? document.querySelector("._2hYs2") : document.querySelector('[class^="Header-m_headerLinks-"]')
     let dark_mode_button = (localStorage.getItem('dark_mode') == 'on') ? 'Disable Dark Mode' : 'Enable Dark Mode'
-    let beta_class = (version == false) ? document.querySelector('[class^="Header-m_headerLinks-"] > a:nth-child(2)').className : ''
-    let class_name = (version) ? 'link menuItem' : beta_class
+    let class_name = (version == false) ? document.querySelector('[class^="Header-m_headerLinks-"] > a:nth-child(2)').className : document.querySelector("._2hYs2 > a:nth-child(2)").className
     untangle_mess('div', [['class', class_name], ['id','infoButton']], 'Sources & More', header_location, false) // create button 'Sources & More'
     untangle_mess('ul', [['id', 'infoLinks'], ['style', css_window]], undefined, document.getElementById('infoButton'), true) // create window for stuff
     let new_window = document.getElementById('infoLinks')
@@ -212,7 +211,8 @@ function infoButton(){
         if(extra){
             ele_location.appendChild(element)
         }else{
-            let beforeThis = (version) ? document.querySelector("#header > .header-links > a:nth-child(1)") : document.querySelector('[class^="Header-m_headerLinks-"] > a:nth-child(1)') // location of last thing in header
+            let beforeThis = (version) ? document.querySelector("._2hYs2 > a:nth-child(1)") : document.querySelector('[class^="Header-m_headerLinks-"] > a:nth-child(1)') // location of last thing in header
+            console.log(beforeThis);
             ele_location.insertBefore(element, beforeThis); // add div as first div because its bakvards visualy
         };
     };
@@ -250,7 +250,7 @@ let dark_mode = document.createElement('style');
 document.body.parentElement.appendChild(dark_mode).id = 'dark_mode';
 function enable_dark_mode(){
         let css1 = '.app::before {background: radial-gradient(circle at 50% 70px, #202031 0%, #07070d 100%);background-position: center top;background-repeat: no-repeat;}';
-        let css2 = '#header, .Header-m_header-1eaLe, .HeaderShadowDiv-m_cover-1R3rf, .store-header, ._1R3rf {background: radial-gradient(circle at 50% 70px, #202031 0%, #07070d 100%);background-position: center top;background-repeat: no-repeat;background-size: 100vw 100vh;}';
+        let css2 = '#header, .Header-m_header-1eaLe, .HeaderShadowDiv-m_cover-1R3rf, .store-header, ._1R3rf, ._1eaLe {background: radial-gradient(circle at 50% 70px, #202031 0%, #07070d 100%);background-position: center top;background-repeat: no-repeat;background-size: 100vw 100vh;}';
         let css3 = '.ItemTable-m_table-ANdPB>div, .ANdPB>div {background-color: #242437;}';
         let css4 = 'div[class^="BadgeInfo-m_badge"], .hcIF4 {background-color: #0000;color: #dddddd;}';
         let css5 = '.item-img {border: 1px solid #202031;}';
@@ -271,6 +271,7 @@ function header_button(event){
     let black_list = event.target.id !== 'darker_mode_togle';
     if(button_pressed && winow_open){
         new_window.style.display = 'flex';
+        tratata();
     } else if(black_list){
         new_window.style.display = 'none';
     };
@@ -299,4 +300,40 @@ function header_button(event){
 };
 
 
+/*
 
+
+let super_duper_secret_code = 'e95057f2035b410aa6163fd31511f2b1'
+let inv_item_url = 'https://www.bungie.net/common/destiny2_content/json/en/DestinyInventoryItemDefinition-a1065791-e29c-4e23-9dc7-d88310a12936.json';
+let inv_item_json;
+fetch(inv_item_url)
+.then(u =>{
+    return u.json();
+}).then(json =>{
+    inv_item_json = json;
+});
+
+function tratata(){ 
+    console.log(inv_item_json);
+};
+
+*/
+/*
+    fetch('https://www.bungie.net/common/destiny2_content/json/en/DestinyInventoryItemDefinition-a1065791-e29c-4e23-9dc7-d88310a12936.json')
+    .then(function(resp){
+        return resp.json();
+    })
+    .then(function(data){
+        get_json(data)
+    });
+
+
+function geta_json(data){
+    return data
+};
+
+let new_json = geta_json()
+
+function tratata(){
+    console.log(new_json);
+}*/

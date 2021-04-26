@@ -5,7 +5,7 @@
         _/﹋\_                                                 -"--"-
 */
 function filterGodRols(){
-    let version = document.querySelector('.link.menuItem.logoLink > img') !== null;
+    let version = document.querySelector('._1xEii') !== null;
     let wepType = (version) ? document.querySelector('.Xyg7s').innerText : document.querySelector('[class^="ItemPopupHeader-m_itemType"]').innerText;
     let wepFrame = (version) ? document.querySelector('._3sBrL').innerText : document.querySelector('[class^="ArchetypeSocket-m_name"]').innerText;
 
