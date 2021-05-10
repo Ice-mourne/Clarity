@@ -19,6 +19,16 @@ Updated with more relevant information
  - weapon_related_info.js
  - armor_related_info.js
  - conten.js
- changed place where it looks what version of DIM user is on
+changed place where it looks what version of DIM user is on
+1.3.12
+ - README.md
+just added some info moved around some
+new version
+ - data_handler.js
+new file
+
+
+notes:
+added better way to chech DIM version still needs to be implamented > its in local storage DIM_version ....
 
 

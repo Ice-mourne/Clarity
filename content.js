@@ -9,11 +9,17 @@
          ┃┈┈┈┈╭━┳━━━━╯
          ┣━━━━━━┫
 */
+version();
+function version(){
+    let url = document.querySelector("body").baseURI
+    let version = url.slice(8, url.search('.destiny')) == 'beta';
+    localStorage.setItem('beta_dim', version);
+};
 // Looks then website is ready for manipulation
-let DIMs_stalker = new MutationObserver((observe ,rageQuit) =>{
+let DIMs_stalker = new MutationObserver((observe, rageQuit) =>{
     let DIM_Detailed_Item_Explanations = document.getElementsByClassName('item')[0];
     if (DIM_Detailed_Item_Explanations){
-        infoButton()
+        infoButton();
         startGrinding(); // Tryger to run script looking for selections
         rageQuit.disconnect();
     };
@@ -23,83 +29,76 @@ DIMs_stalker.observe(document, {
     subtree: true
 });
 //  🡳 🡳  - - - - - - - - - (^._.^) Looks where user clicked
-function startGrinding (){
+function startGrinding(){
     document.getElementById('app').addEventListener('click', event => {
-        header_button(event)
-        // >> ----------------- check if user pressed on weapon perk BETA only
-        if(document.querySelector('._1xEii') == null){
-            let perk = document.querySelectorAll('[class^="ItemPerksList-m_plug-"]');
-            var p = 1;
-            for(var i=0; i< perk.length; i++){
-            perk[i].id = 'perk'+p;
-            p++;
-            };
-            document.querySelectorAll('[class^="ItemPerksList-m_plug-"]').forEach(perk => {
-                if(perk.getAttribute('listener') !== 'true'){
-                    perk.addEventListener('click', event => {
-                        if(event.currentTarget.querySelector('[class^="ItemPerksList-m_perkInfo-"] > div') == null ){
-                            let perkID = event.currentTarget.id;
-                            //---------------------
-                            let perk_stalker = new MutationObserver(function (observe ,quit) {
-                                let perk_description = document.querySelector('[class^="ItemPerksList-m_perkInfo-"]');
-                                if (perk_description){
-                                    let perks_name = document.querySelector(`#${perkID} > [class^="ItemPerksList-m_perkInfo-"] > h2`).textContent;
-                                    if(document.querySelector(`#${perkID} > [class^="ItemPerksList-m_perkInfo-"] > p`) != null){
-                                        document.querySelector(`#${perkID} > [class^="ItemPerksList-m_perkInfo-"] > p`).style.cssText = 'display: none;';
-                                    }
-                                    perk_pressed(perks_name);
-                                    quit.disconnect();
-                                };
-                            });
-                            perk_stalker.observe(document, {
-                                childList: true,
-                                subtree: true
-                            });
-                            perk.removeAttribute('listener'); // removing because it would not work second time othervise
-                        }else{
-                            perk.removeAttribute('listener');
-                        };
-                    },{once: true});
-                };
-                perk.setAttribute('listener', 'true'); // adding attribute to avoid adding 10000 listereners
-            });
+    //     |\_/|
+    //    / @ @ \
+    //   ( > º < )
+    //    `>>x<<´
+    //    /  O  \  - - - - 🡳 🡳 - - - - Click filter
+    try{
+        let t1 = event.target.title // mods
+        let t2 = event.target.parentElement.title; // weapon, armor
+        let t3 = event.target.parentElement.parentElement.title; // weapon, armor
+        switch (true) {
+            case t2.match(/(Helmet|Gauntlets|Chest Armor|Leg Armor)$/) != null || t3.match(/(Helmet|Gauntlets|Chest Armor|Leg Armor)$/) != null:
+                armor_pressed();
+                compare_button_event();
+                break;
+            case t2.match(/(Shotgun|Sidearm|Combat Bow|Hand Cannon|Sword| Rifle| Launcher| Gun)$/) != null || t3.match(/(Shotgun|Sidearm|Combat Bow|Hand Cannon|Sword| Rifle| Launcher| Gun)$/) != null:
+                //weapon_pressed();
+                //compare_button_event();
+                weapon_perks_event();
+                filterGodRols(); // rework pending
+                hoverOver(); // rework pending
+                break;
+            case t1.match(/( Armor Mod|Class Item Mod| Light Mod| Cell Mod| Well Mod| Raid Mod|Nightmare Mod|Weapon Mod)$/) != null: // Probably only for records page
+                //mod_pressed();
+                break;
         };
-        // << ----------------- check if user pressed on weapon perk BETA only
+    } catch{};
+    function compare_button_event(){
+        let compare_button = document.getElementById('content').nextSibling.getElementsByClassName('fa-balance-scale-left')[0].parentElement;
+        compare_button.addEventListener('click', e => {
+            //compare_pressed();
+        });
+    };
+    function weapon_perks_event(){
+        let perk_list = document.getElementById('content').nextSibling.querySelectorAll('.ItemPerksList-m_plug-O8be3');
+        for(let i = 0; i < perk_list.length; i++){
+            const element = perk_list[i];
+            element.id = 'perk_'+[i];
+        };
+        perk_list.forEach(element => {
+            element.addEventListener('click', event => {
+                let target_id = event.currentTarget.id;
+                let perk_observer = new MutationObserver((observe, quit) => {
+                if(document.getElementById(target_id).querySelector('.ItemPerksList-m_perkInfo-2opoU > div') != null){
+                    let perk_name = document.getElementById(target_id).querySelector('.ItemPerksList-m_perkInfo-2opoU > h2').textContent;
+                    perk_pressed(perk_name);
+                };
+                quit.disconnect();
+                });
+                perk_observer.observe(document.getElementById('content').nextSibling.getElementsByClassName('ItemPerksList-m_sockets-1BlL6')[0], {
+                    childList: true,
+                    subtree: true
+                });
+            });
+        });
+    };
+    //     (\_/)   - - - - 🡱 🡱 - - - - Click filter
+    //    (='.'=)
+    //    (")_(")
+
+        /*
+        run_armor(event.target);//===============================================================================  remove
+        header_button(event);
         // >> ----------------- Look if user pressed on weapon
-        // >> ----------------- fix for stupid error in beta DIM then you press on weapon perk name or description
-        let check1 = event.target.parentElement == null;
-        let check2 = (check1) ? true : event.target.parentElement.parentElement == null;
-        let check3 = (check2) ? true : event.target.parentElement.parentElement.parentElement == null;
-        // << ----------------- fix for stupid error in beta DIM then you press on weapon perk name or description
-        if(check3 == false){
-            let target = event.target.parentElement.parentElement;
-            let target2 = event.target.parentElement.parentElement.parentElement;
-
-            let kineticWep = target.classList.contains('item-type-Kinetic') || target2.classList.contains('item-type-Kinetic');
-            let energyWep = target.classList.contains('item-type-Energy') || target2.classList.contains('item-type-Energy');
-            let powerWep = target.classList.contains('item-type-Power') || target2.classList.contains('item-type-Power');
-
-            if(kineticWep || energyWep || powerWep) {
                 filterGodRols();
                 hoverOver();
-            };
-        };
         // << ----------------- Look if user pressed on weapon
         // >> ----------------- check if user pressed on armor
-        if((document.getElementsByClassName("item-details-body")[0] != null) && (check3 == false)){
-            let target = event.target.parentElement.parentElement;
-            let target2 = event.target.parentElement.parentElement.parentElement;
-
-            let helmet = target.classList.contains('item-type-Helmet') || target2.classList.contains('item-type-Helmet');
-            let gauntlets = target.classList.contains('item-type-Gauntlets') || target2.classList.contains('item-type-Gauntlets');
-            let chest = target.classList.contains('item-type-Chest') || target2.classList.contains('item-type-Chest');
-            let legs = target.classList.contains('item-type-Leg') || target2.classList.contains('item-type-Leg');
-
-            if(helmet || gauntlets || chest || legs) {
-                armor_pressed();
-            };
-        };
-        // << ----------------- check if user pressed on armor
+                armor_pressed();*/
     });
 };
 //  🡱 🡱  - - - - - - - - - (^._.^) Looks where user clicked
@@ -182,24 +181,24 @@ function hoverOver(){
 // >> ----------------- new menu with sorces used
 //document.body.onload = function(){infoButton()};
 function infoButton(){
-    let css_window = 'position:absolute; margin:auto; display:none; flex-direction:column; background:black; padding:7px; border-radius:5px; margin-inline-start:-8px; top:45px; box-shadow:0 -1px 24px 4px #161626; cursor:default;'
-    let css_text = 'padding: 5px; align-self: center; color: #e8a534;'
+    let css_window = 'position:absolute; margin:auto; display:none; flex-direction:column; background:black; padding:7px; border-radius:5px; margin-inline-start:-8px; top:45px; box-shadow:0 -1px 24px 4px #161626; cursor:default;';
+    let css_text = 'padding: 5px; align-self: center; color: #e8a534;';
     let css_grid = 'display: grid;grid-template-columns: repeat(1, min-content) 1fr;';
     let version = document.querySelector('._1xEii') !== null;
-    let header_location = (version) ? document.querySelector("._2hYs2") : document.querySelector('[class^="Header-m_headerLinks-"]')
-    let dark_mode_button = (localStorage.getItem('dark_mode') == 'on') ? 'Disable Dark Mode' : 'Enable Dark Mode'
-    let class_name = (version == false) ? document.querySelector('[class^="Header-m_headerLinks-"] > a:nth-child(2)').className : document.querySelector("._2hYs2 > a:nth-child(2)").className
-    untangle_mess('div', [['class', class_name], ['id','infoButton']], 'Sources & More', header_location, false) // create button 'Sources & More'
-    untangle_mess('ul', [['id', 'infoLinks'], ['style', css_window]], undefined, document.getElementById('infoButton'), true) // create window for stuff
-    let new_window = document.getElementById('infoLinks')
-    untangle_mess('div', [['style', css_text]], 'Links to Sources used creating this extension', new_window, true) // top text
-    untangle_mess('li', [['id', 'source_links'], ['style', css_grid]], undefined, new_window, true) // links to source matirial
-    untangle_mess('div', [['style', css_text]], 'Other useful links', new_window, true) // mid text
-    untangle_mess('li', [['id', 'useful_links'], ['style', css_grid]], undefined, new_window, true) // links to useful stuff
-    untangle_mess('div', [['style', css_text]], 'Settings', new_window, true) // settings text
-    untangle_mess('div', [['id', 'settings_location'], ['style', css_grid]], undefined, new_window, true) // place to store settings
-    untangle_mess('div', [['class', class_name], ['id','darker_mode_togle'], ['style','padding: 5px; cursor: pointer;'], ['dark_mode',localStorage.getItem('dark_mode')]], dark_mode_button, document.getElementById('settings_location'), true) // dark mode button
-    //untangle_mess('', [['', ']], undefined, document.getElementById(''),true)
+    let header_location = (version) ? document.querySelector("._2hYs2") : document.querySelector('[class^="Header-m_headerLinks-"]');
+    let dark_mode_button = (localStorage.getItem('dark_mode') == 'on') ? 'Disable Dark Mode' : 'Enable Dark Mode';
+    let class_name = (version == false) ? document.querySelector('[class^="Header-m_headerLinks-"] > a:nth-child(2)').className : document.querySelector("._2hYs2 > a:nth-child(2)").className;
+    untangle_mess('div', [['class', class_name], ['id','infoButton']], 'Sources & More', header_location, false); // create button 'Sources & More'
+    untangle_mess('ul', [['id', 'infoLinks'], ['style', css_window]], undefined, document.getElementById('infoButton'), true); // create window for stuff
+    let new_window = document.getElementById('infoLinks');
+    untangle_mess('div', [['style', css_text]], 'Links to Sources used creating this extension', new_window, true); // top text
+    untangle_mess('li', [['id', 'source_links'], ['style', css_grid]], undefined, new_window, true); // links to source matirial
+    untangle_mess('div', [['style', css_text]], 'Other useful links', new_window, true); // mid text
+    untangle_mess('li', [['id', 'useful_links'], ['style', css_grid]], undefined, new_window, true); // links to useful stuff
+    untangle_mess('div', [['style', css_text]], 'Settings', new_window, true); // settings text
+    untangle_mess('div', [['id', 'settings_location'], ['style', css_grid]], undefined, new_window, true); // place to store settings
+    untangle_mess('div', [['class', class_name], ['id','darker_mode_togle'], ['style','padding: 5px; cursor: pointer;'], ['dark_mode',localStorage.getItem('dark_mode')]], dark_mode_button, document.getElementById('settings_location'), true); // dark mode button
+    //untangle_mess('', [['', ']], undefined, document.getElementById(''),true);
 
     function untangle_mess(element_type, att_to_set, text_conten, ele_location, extra){
         let element = document.createElement(element_type);
@@ -209,19 +208,18 @@ function infoButton(){
         if(att_to_set[3] !== undefined) element.setAttribute(att_to_set[3][0], att_to_set[3][1]);
         if(text_conten !== undefined) element.textContent = text_conten;
         if(extra){
-            ele_location.appendChild(element)
+            ele_location.appendChild(element);
         }else{
-            let beforeThis = (version) ? document.querySelector("._2hYs2 > a:nth-child(1)") : document.querySelector('[class^="Header-m_headerLinks-"] > a:nth-child(1)') // location of last thing in header
-            console.log(beforeThis);
+            let beforeThis = (version) ? document.querySelector("._2hYs2 > a:nth-child(1)") : document.querySelector('[class^="Header-m_headerLinks-"] > a:nth-child(1)'); // location of last thing in header
             ele_location.insertBefore(element, beforeThis); // add div as first div because its bakvards visualy
         };
     };
 
-    let sources_links = document.getElementById('source_links')
-    let useful_links = document.getElementById('useful_links')
-    let spreadsheet_img = chrome.runtime.getURL("images/spreadsheet.png")
-    let range_calc_img = chrome.runtime.getURL("images/range_calc.png")
-    let gunsmith_img = chrome.runtime.getURL("images/gunsmith.png")
+    let sources_links = document.getElementById('source_links');
+    let useful_links = document.getElementById('useful_links');
+    let spreadsheet_img = chrome.runtime.getURL("images/spreadsheet.png");
+    let range_calc_img = chrome.runtime.getURL("images/range_calc.png");
+    let gunsmith_img = chrome.runtime.getURL("images/gunsmith.png");
     
     create_new_link(spreadsheet_img, 'https://docs.google.com/spreadsheets/d/1WaxvbLx7UoSZaBqdFr1u32F2uWVLo-CJunJB4nlGUE4/', "Mods, Abilities, and More by Pip1n", sources_links);
     create_new_link(spreadsheet_img, 'https://docs.google.com/spreadsheets/d/1i1KUwgVkd8qhwYj481gkV9sZNJQCE-C3Q-dpQutPCi4/', "Damage Buffs, Debuffs, and Modifiers by Court", sources_links);
@@ -271,7 +269,6 @@ function header_button(event){
     let black_list = event.target.id !== 'darker_mode_togle';
     if(button_pressed && winow_open){
         new_window.style.display = 'flex';
-        tratata();
     } else if(black_list){
         new_window.style.display = 'none';
     };
@@ -300,40 +297,3 @@ function header_button(event){
 };
 
 
-/*
-
-
-let super_duper_secret_code = 'e95057f2035b410aa6163fd31511f2b1'
-let inv_item_url = 'https://www.bungie.net/common/destiny2_content/json/en/DestinyInventoryItemDefinition-a1065791-e29c-4e23-9dc7-d88310a12936.json';
-let inv_item_json;
-fetch(inv_item_url)
-.then(u =>{
-    return u.json();
-}).then(json =>{
-    inv_item_json = json;
-});
-
-function tratata(){ 
-    console.log(inv_item_json);
-};
-
-*/
-/*
-    fetch('https://www.bungie.net/common/destiny2_content/json/en/DestinyInventoryItemDefinition-a1065791-e29c-4e23-9dc7-d88310a12936.json')
-    .then(function(resp){
-        return resp.json();
-    })
-    .then(function(data){
-        get_json(data)
-    });
-
-
-function geta_json(data){
-    return data
-};
-
-let new_json = geta_json()
-
-function tratata(){
-    console.log(new_json);
-}*/
