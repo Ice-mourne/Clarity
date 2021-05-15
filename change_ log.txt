@@ -26,9 +26,13 @@ just added some info moved around some
 new version
  - data_handler.js
 new file
-
-
-notes:
-added better way to chech DIM version still needs to be implamented > its in local storage DIM_version ....
+used for getting json data from my server, filter existing data in indexDB
+then puting all that data back to indexDDB
+ - armor_related_info.js
+ rapaced by armor_descriptions.js
+ now all data comes from indexDB
+ - content.js
+reworked how cick lokation is found
+ 
 
 

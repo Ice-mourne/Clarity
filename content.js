@@ -9,18 +9,13 @@
          ┃┈┈┈┈╭━┳━━━━╯
          ┣━━━━━━┫
 */
-version();
-function version(){
-    let url = document.querySelector("body").baseURI
-    let version = url.slice(8, url.search('.destiny')) == 'beta';
-    localStorage.setItem('beta_dim', version);
-};
-// Looks then website is ready for manipulation
+//  🡳 🡳  - - - - - - - - - Looks then website is ready for manipulation
 let DIMs_stalker = new MutationObserver((observe, rageQuit) =>{
     let DIM_Detailed_Item_Explanations = document.getElementsByClassName('item')[0];
     if (DIM_Detailed_Item_Explanations){
-        infoButton();
-        startGrinding(); // Tryger to run script looking for selections
+        run_data_handler();
+        infoButton(); // new menu for extra info
+        start_looking_for_clicks();
         rageQuit.disconnect();
     };
 });
@@ -28,136 +23,113 @@ DIMs_stalker.observe(document, {
     childList: true,
     subtree: true
 });
+//  🡱 🡱  - - - - - - - - - Looks then website is ready for manipulation  .style.cssText = 'position: absolute; transform: translate(0, -50%)';
+
 //  🡳 🡳  - - - - - - - - - (^._.^) Looks where user clicked
-function startGrinding(){
+function start_looking_for_clicks(){
+    let cick = 0;
     document.getElementById('app').addEventListener('click', event => {
-    //     |\_/|
-    //    / @ @ \
-    //   ( > º < )
-    //    `>>x<<´
-    //    /  O  \  - - - - 🡳 🡳 - - - - Click filter
-    try{
-        let t1 = event.target.title // mods
-        let t2 = event.target.parentElement.title; // weapon, armor
-        let t3 = event.target.parentElement.parentElement.title; // weapon, armor
-        switch (true) {
-            case t2.match(/(Helmet|Gauntlets|Chest Armor|Leg Armor)$/) != null || t3.match(/(Helmet|Gauntlets|Chest Armor|Leg Armor)$/) != null:
-                armor_pressed();
-                compare_button_event();
-                break;
-            case t2.match(/(Shotgun|Sidearm|Combat Bow|Hand Cannon|Sword| Rifle| Launcher| Gun)$/) != null || t3.match(/(Shotgun|Sidearm|Combat Bow|Hand Cannon|Sword| Rifle| Launcher| Gun)$/) != null:
-                //weapon_pressed();
-                //compare_button_event();
-                weapon_perks_event();
-                filterGodRols(); // rework pending
-                hoverOver(); // rework pending
-                break;
-            case t1.match(/( Armor Mod|Class Item Mod| Light Mod| Cell Mod| Well Mod| Raid Mod|Nightmare Mod|Weapon Mod)$/) != null: // Probably only for records page
-                //mod_pressed();
-                break;
-        };
-    } catch{};
-    function compare_button_event(){
-        let compare_button = document.getElementById('content').nextSibling.getElementsByClassName('fa-balance-scale-left')[0].parentElement;
-        compare_button.addEventListener('click', e => {
-            //compare_pressed();
-        });
-    };
-    function weapon_perks_event(){
-        let perk_list = document.getElementById('content').nextSibling.querySelectorAll('.ItemPerksList-m_plug-O8be3');
-        for(let i = 0; i < perk_list.length; i++){
-            const element = perk_list[i];
-            element.id = 'perk_'+[i];
-        };
-        perk_list.forEach(element => {
-            element.addEventListener('click', event => {
-                let target_id = event.currentTarget.id;
-                let perk_observer = new MutationObserver((observe, quit) => {
-                if(document.getElementById(target_id).querySelector('.ItemPerksList-m_perkInfo-2opoU > div') != null){
-                    let perk_name = document.getElementById(target_id).querySelector('.ItemPerksList-m_perkInfo-2opoU > h2').textContent;
-                    perk_pressed(perk_name);
+        //  🡳 🡳  - - - - - - - - - Fix for jumpy item menu and proper positioning
+        let location = document.getElementById('content').nextSibling;
+        var rect = document.body.getBoundingClientRect().right;
+        var rect1 = event.target.getBoundingClientRect().right;
+        let left_rigt = (rect - 460) > rect1;
+        function ciker(){
+            let bot_offset = window.innerHeight - (location.firstChild.clientHeight + 80) / 2 - event.target.getBoundingClientRect().top;
+            let set_bot = 0;
+            if (bot_offset < 0) {
+                set_bot = bot_offset;
+            };
+            if (cick == 0){
+                location.firstChild.style.cssText = 'display: none;';
+                setTimeout(() => {
+                    if (left_rigt) {
+                        location.firstChild.style.cssText = `position: absolute; inset: ${set_bot}px auto auto 0px; transform: translate(0px, -50%);`;
+                    }else {
+                        location.firstChild.style.cssText = `position: absolute; inset: ${set_bot}px 0px auto auto; transform: translate(0px, -50%);`;
+                    };
+                },20);
+                location.getElementsByClassName('ItemPopupContainer-m_desktopActions-gtrWN')[0].style.cssText = 'transform: translate(0px, 15%);';
+            };
+            if (cick > 0){
+                if (left_rigt) {
+                    location.firstChild.style.cssText = `position: absolute; inset: ${set_bot}px auto auto 0px; transform: translate(0px, -50%);`;
+                }else {
+                    location.firstChild.style.cssText = `position: absolute; inset: ${set_bot}px 0px auto auto; transform: translate(0px, -50%);`;
                 };
-                quit.disconnect();
-                });
-                perk_observer.observe(document.getElementById('content').nextSibling.getElementsByClassName('ItemPerksList-m_sockets-1BlL6')[0], {
-                    childList: true,
-                    subtree: true
+                location.getElementsByClassName('ItemPopupContainer-m_desktopActions-gtrWN')[0].style.cssText = 'transform: translate(0px, 15%);';
+                cick += 1;
+            };
+            cick += 1;
+        };
+        if (!location.classList.contains('item-popup')){
+            cick = 0;
+        };
+        //     |\_/|   - - - - 🡱 🡱 - - - - Fix for jumpy item menu and proper positioning
+        //   ( > º < )
+        //    `>>x<<´
+        //    /  O  \  - - - - 🡳 🡳 - - - - Click filter
+        try{
+            let t1 = event.target.title; // mods
+            let t2 = event.target.parentElement.title; // weapon, armor
+            let t3 = event.target.parentElement.parentElement.title; // weapon, 
+            switch (true) {
+                case t2.match(/(Helmet|Gauntlets|Chest Armor|Leg Armor)$/) != null || t3.match(/(Helmet|Gauntlets|Chest Armor|Leg Armor)$/) != null:
+                    armor_pressed(); // sends armor name
+                    ciker();
+                    //compare_button_event();
+                    break;
+                case t2.match(/(Shotgun|Sidearm|Combat Bow|Hand Cannon|Sword| Rifle| Launcher| Gun)$/) != null || t3.match(/(Shotgun|Sidearm|Combat Bow|Hand Cannon|Sword| Rifle| Launcher| Gun)$/) != null:
+                    weapon_pressed(event.target);
+                    ciker();
+                    //compare_button_event();
+                    weapon_perks_event();
+                    filterGodRols(); // rework pending
+                    hoverOver(); // rework pending
+                    break;
+                case t1.match(/( Armor Mod|Class Item Mod| Light Mod| Cell Mod| Well Mod| Raid Mod|Nightmare Mod|Weapon Mod)$/) != null: // Probably only for records page
+                    //mod_pressed();
+                    break;
+            };
+        } catch{};
+        function compare_button_event(){
+            let compare_button = document.getElementById('content').nextSibling.getElementsByClassName('fa-balance-scale-left')[0].parentElement;
+            compare_button.addEventListener('click', e => {
+                //compare_pressed();
+            });
+        };
+        function weapon_perks_event(){
+            let perk_list = document.getElementById('content').nextSibling.querySelectorAll('.ItemPerksList-m_plug-O8be3');
+            for(let i = 0; i < perk_list.length; i++){
+                const element = perk_list[i];
+                element.id = 'perk_'+[i];
+            };
+            perk_list.forEach(element => {
+                element.addEventListener('click', event => {
+                    let target_id = event.currentTarget.id;
+                    let perk_observer = new MutationObserver((observe, quit) => {
+                    if(document.getElementById(target_id).querySelector('.ItemPerksList-m_perkInfo-2opoU > div') != null){
+                        let perk_name = document.getElementById(target_id).querySelector('.ItemPerksList-m_perkInfo-2opoU > h2').textContent;
+                        perk_pressed(perk_name); // old can be deleted -----------------------------------------------------------------------------------------------------------------------------------------------------
+                        weapon_perk_pressed(perk_name);
+                    };
+                    quit.disconnect();
+                    });
+                    perk_observer.observe(document.getElementById('content').nextSibling.getElementsByClassName('ItemPerksList-m_sockets-1BlL6')[0], {
+                        childList: true,
+                        subtree: true
+                    });
                 });
             });
-        });
-    };
-    //     (\_/)   - - - - 🡱 🡱 - - - - Click filter
-    //    (='.'=)
-    //    (")_(")
-
-        /*
-        run_armor(event.target);//===============================================================================  remove
-        header_button(event);
-        // >> ----------------- Look if user pressed on weapon
-                filterGodRols();
-                hoverOver();
-        // << ----------------- Look if user pressed on weapon
-        // >> ----------------- check if user pressed on armor
-                armor_pressed();*/
+        };
+        header_button(event); // new menu stuff
+        //setTimeout(() => {document.getElementById('content').nextSibling.firstChild.style.cssText = ''},5000)
+        //     (\_/)   - - - - 🡱 🡱 - - - - Click filter
+        //    (='.'=)
+        //    (")_(")
     });
 };
 //  🡱 🡱  - - - - - - - - - (^._.^) Looks where user clicked
-// >> ----------------- Adds reload to weapon stat window
-function runAddReload(a, b ,c){
-    // gets info
-    let version = document.querySelector('._1xEii') !== null;
-    let realoadValue = (version) ? document.getElementsByClassName("_3utrN")[5].textContent : document.querySelectorAll('[class^="ItemStat-m_value"]')[5].textContent;
-    let name_class = (version) ? document.getElementsByClassName('_1XPu7')[0].className : document.querySelector('[class^="ItemStat-m_statName"]').className;
-    let value_class = (version) ? document.getElementsByClassName('_3utrN')[0].className : document.querySelector('[class^="ItemStat-m_value"]').className;
-    let statsWindow = (version) ? document.getElementsByClassName('_3ywbI')[0] : document.querySelector('[class^="ItemStats-m_stats"]');
-
-    // text part of stat window ui
-    let divText = document.createElement('div');
-    statsWindow.appendChild(divText).className = name_class; // add div with proper class name
-    divText.textContent = 'Reload Time'; // add text to new div
-    divText.title = 'Time it takes to reload weapon in seconds\nFormulas are made by Van Holden';
-    // nubers part of ui
-    let divNumber = document.createElement('div');
-    statsWindow.appendChild(divNumber).className = value_class; // add div with proper class name
-    let cauculation = (a * realoadValue * realoadValue + b * realoadValue + c).toFixed(2); // formula for reload
-    divNumber.textContent = cauculation; // add value
-
-    // bars part of ui
-    let divBar = document.createElement('div');
-    statsWindow.appendChild(divBar);
-    divBar.textContent = 's';
-};
-// << ----------------- Adds reload to weapon stat window
-// >> ----------------- Adds range to weapon stat window
-// zrm = Zoom range multiplayer // hf_VPP = Hip-Fire VPP // br_hf = Base Range Hip-Fire // b_zoom = Base Zoom
-function runAddRange(zrm, hf_VPP, br_hf, b_zoom){
-    // gets info
-    let version = document.querySelector('._1xEii') !== null;
-    let rangeValue = (version) ? document.getElementsByClassName("_3utrN")[2].textContent : document.querySelectorAll('[class^="ItemStat-m_value"]')[2].textContent;
-    let zoomValue = (version) ? document.getElementsByClassName("_3utrN")[7].textContent : document.querySelectorAll('[class^="ItemStat-m_value"]')[7].textContent;
-    let name_class = (version) ? document.getElementsByClassName('_1XPu7')[0].className : document.querySelector('[class^="ItemStat-m_statName"]').className;
-    let value_class = (version) ? document.getElementsByClassName('_3utrN')[0].className : document.querySelector('[class^="ItemStat-m_value"]').className;
-    let statsWindow = (version) ? document.getElementsByClassName('_3ywbI')[0] : document.querySelector('[class^="ItemStats-m_stats"]');
-
-// text part of stat window ui
-    let divText = document.createElement('div');
-    statsWindow.appendChild(divText).className = name_class; // add div with proper class name
-    divText.textContent = 'DMG Fall-off ADS';
-    divText.title = 'Distance at which damage fall-off begin\nFormulas are made by Mmonx';
-
-// nubers part of ui
-    let divNumber = document.createElement('div');
-    statsWindow.appendChild(divNumber).className = value_class; // add div with proper class name
-    let newZomm = (zoomValue - b_zoom) / 10 + zrm;
-    let cauculation = ( (rangeValue * hf_VPP + br_hf) * newZomm ).toFixed(2); // formula for range
-    divNumber.textContent = cauculation; // add value
-
-// bars part of ui
-    let divBar = document.createElement('div');
-    statsWindow.appendChild(divBar);
-    divBar.textContent = 'm';
-}
-// << ----------------- Adds range to weapon stat window
 function hoverOver(){
     setTimeout(function(){
         document.querySelectorAll('[class^="socket-container"]').forEach(item => {
@@ -247,14 +219,14 @@ function infoButton(){
 let dark_mode = document.createElement('style');
 document.body.parentElement.appendChild(dark_mode).id = 'dark_mode';
 function enable_dark_mode(){
-        let css1 = '.app::before {background: radial-gradient(circle at 50% 70px, #202031 0%, #07070d 100%);background-position: center top;background-repeat: no-repeat;}';
-        let css2 = '#header, .Header-m_header-1eaLe, .HeaderShadowDiv-m_cover-1R3rf, .store-header, ._1R3rf, ._1eaLe {background: radial-gradient(circle at 50% 70px, #202031 0%, #07070d 100%);background-position: center top;background-repeat: no-repeat;background-size: 100vw 100vh;}';
-        let css3 = '.ItemTable-m_table-ANdPB>div, .ANdPB>div {background-color: #242437;}';
-        let css4 = 'div[class^="BadgeInfo-m_badge"], .hcIF4 {background-color: #0000;color: #dddddd;}';
-        let css5 = '.item-img {border: 1px solid #202031;}';
-        let css6 = '.ItemIcon-m_borderless-1AaJE, ._1AaJE {border-color: transparent;}';
-        let css7 = '.rating-icon.godroll {color: #1379b4;}';
-        dark_mode.textContent = css1 + css2 + css3 + css4 + css5 + css6 + css7;
+    let css1 = '.app::before {background: radial-gradient(circle at 50% 70px, #202031 0%, #07070d 100%);background-position: center top;background-repeat: no-repeat;}';
+    let css2 = '#header, .Header-m_header-1eaLe, .HeaderShadowDiv-m_cover-1R3rf, .store-header, ._1R3rf, ._1eaLe {background: radial-gradient(circle at 50% 70px, #202031 0%, #07070d 100%);background-position: center top;background-repeat: no-repeat;background-size: 100vw 100vh;}';
+    let css3 = '.ItemTable-m_table-ANdPB>div, .ANdPB>div {background-color: #242437;}';
+    let css4 = 'div[class^="BadgeInfo-m_badge"], .hcIF4 {background-color: #0000;color: #dddddd;}';
+    let css5 = '.item-img {border: 1px solid #202031;}';
+    let css6 = '.ItemIcon-m_borderless-1AaJE, ._1AaJE {border-color: transparent;}';
+    let css7 = '.rating-icon.godroll {color: #1379b4;}';
+    dark_mode.textContent = css1 + css2 + css3 + css4 + css5 + css6 + css7;
 };
 if(localStorage.getItem('dark_mode') == 'on'){
     enable_dark_mode();
