@@ -80,6 +80,7 @@ function start_looking_for_clicks(){
                     //compare_button_event();
                     break;
                 case t2.match(/(Shotgun|Sidearm|Combat Bow|Hand Cannon|Sword| Rifle| Launcher| Gun)$/) != null || t3.match(/(Shotgun|Sidearm|Combat Bow|Hand Cannon|Sword| Rifle| Launcher| Gun)$/) != null:
+                    gunsmit_button()
                     weapon_pressed(event.target);
                     ciker();
                     //compare_button_event();
@@ -110,8 +111,9 @@ function start_looking_for_clicks(){
                     let perk_observer = new MutationObserver((observe, quit) => {
                     if(document.getElementById(target_id).querySelector('.ItemPerksList-m_perkInfo-2opoU > div') != null){
                         let perk_name = document.getElementById(target_id).querySelector('.ItemPerksList-m_perkInfo-2opoU > h2').textContent;
-                        perk_pressed(perk_name); // old can be deleted -----------------------------------------------------------------------------------------------------------------------------------------------------
-                        weapon_perk_pressed(perk_name);
+                        let loc_for_new_div = document.getElementById(target_id).parentElement
+                        //perk_pressed(perk_name); // old can be deleted -----------------------------------------------------------------------------------------------------------------------------------------------------
+                        weapon_perk_pressed(perk_name, loc_for_new_div);
                     };
                     quit.disconnect();
                     });
@@ -267,5 +269,3 @@ function header_button(event){
 
     //  🡱 🡱  - - - - - - - - - 
 };
-
-

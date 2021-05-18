@@ -39,6 +39,7 @@
                        \|/
                         V
 */
+/*
 function perk_pressed(perks_name){
     let perk = perks_name;
     let perk_description = document.querySelector('[class^="ItemPerksList-m_perkInfo-"] > div > span');
@@ -376,21 +377,21 @@ function run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLegth,
         case 'Zen Moment':
             perk_description.innerText = "On hits:\nRemoves Reticle Bounce and Reduces Weapon Shake. Visual only.";
             break;
-        /*case '':
-            //perk_description.innerText = "";
-            break;
-        case '':
-            perk_description.innerText = "";
-            break;
-        case '':
-            perk_description.innerText = "";
-            break;
-        case '':
-            perk_description.innerText = "";
-            break; */
+        // case '':
+        //     perk_description.innerText = "";
+        //     break;
+        // case '':
+        //     perk_description.innerText = "";
+        //     break;
+        // case '':
+        //     perk_description.innerText = "";
+        //     break;
+        // case '':
+        //     perk_description.innerText = "";
+        //     break; 
     };
 };
-
+*/
 function run_mods(mod, mod_descriptions){
     switch(mod){
         case 'Adept Big Ones Spec':

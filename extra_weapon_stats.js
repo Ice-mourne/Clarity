@@ -37,16 +37,21 @@ function weapon_pressed(){
     } else{weapon_type = weapons[wep_link[0]].type};
     let w_f_numbers = formulas[weapon_type][perks[weapons[wep_link[0]].frame].name]; // number for weapon formulas
     if (w_f_numbers != undefined){
+        sessionStorage.setItem('w_f_numbers', JSON.stringify(w_f_numbers));
         if (w_f_numbers.a != undefined){
             let reload_stat = 10 + Math.min(Math.max(reload_inv, 10),100) * 0.9; 
             let reload_time = (w_f_numbers.a * reload_stat * reload_stat + w_f_numbers.b * reload_stat + w_f_numbers.c).toFixed(2);
             add_new_stat(reload_time, 'Reload Time', 'Time it takes to reload weapon in seconds\nFormulas are made by Van Holden', 's');
+            sessionStorage.setItem('reload_stat', reload_stat);
+            sessionStorage.setItem('reload_time', reload_time);
         };
         if (w_f_numbers.vpp != undefined){
             let range_stat = 10 + Math.min(Math.max(range_inv, 10),100) * 0.9;
-            let newZomm = (zoom - w_f_numbers.zoom_tier) / 10 + w_f_numbers.zrm;
-            let weapon_range = ((range_stat * w_f_numbers.vpp + w_f_numbers.base_range) * newZomm * zoom_mult).toFixed(2); // formula for range
+            let new_zomm = (zoom - w_f_numbers.zoom_tier) / 10 + w_f_numbers.zrm;
+            let weapon_range = ((range_stat * w_f_numbers.vpp + w_f_numbers.base_range) * new_zomm * zoom_mult).toFixed(2); // formula for range
             add_new_stat(weapon_range, 'DMG Fall-off ADS', 'Distance at which damage fall-off begin\nFormulas are made by Mmonx', 'm');
+            sessionStorage.setItem('range_stat', range_stat);
+            sessionStorage.setItem('weapon_range', weapon_range);
         };
     };
     //  🡱 🡱  - - - - - - - - - Finds weapons witch need adding stats to
@@ -62,9 +67,11 @@ function weapon_pressed(){
         bar_div.textContent = last_letter;
         let stat_window = document.getElementById(json_divs.stat_window).nextSibling.getElementsByClassName(json_divs.wep_stats)[0];
         stat_window.appendChild(name_div).className = json_divs.wep_stat_name_class;
-        stat_window.appendChild(value_div).className = json_divs.wep_stat_value_class
+        stat_window.appendChild(value_div).className = json_divs.wep_stat_value_class;
         stat_window.appendChild(bar_div);
     };
     //  🡱 🡱  - - - - - - - - - Adds new stats
+    //let new_link = `https://d2gunsmith.com/w/${wep_link[0]}?s=${wep_link[2]},${wep_link[3]},${wep_link[4]},${wep_link[5]},`; // move to d2_gunsmith
+    //document.getElementById(json_divs.stat_window).nextSibling.querySelector(json_divs.wep_link).href = new_link;
 };
 

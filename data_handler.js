@@ -171,7 +171,7 @@ function run_data_handler(){
                 .then(data => { localStorage.setItem('clarity_weapon_formulas', JSON.stringify(data)) });
 
                 fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/weapon_perks/?${Math.random()}`)
-                .then(resp => { return resp })
+                .then(resp => { return resp.json() })
                 .then(data => { localStorage.setItem('clarity_weapon_perks', JSON.stringify(data)) });
 
                 let dim_v = (localStorage.getItem('clarity_dim_version') == 'beta') ? 'beta_dim_locations' : 'app_dim_locations';
@@ -181,7 +181,7 @@ function run_data_handler(){
 
                 //  🡱 🡱  - - - - - - - - - Get and store custom json
                 localStorage.setItem('clarity_json_version', json_version.version);
-                alert('Clarity, A DIM Companion\nDatabase was updated please refresh the page for updates to take effect\nSorry for inconvenience');
+                //alert('Clarity, A DIM Companion\nDatabase was updated please refresh the page for updates to take effect\nSorry for inconvenience');
             };
         };
     });

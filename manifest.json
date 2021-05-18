@@ -9,7 +9,7 @@
     "content_scripts": [
         {
             "matches": ["https://app.destinyitemmanager.com/*", "https://beta.destinyitemmanager.com/*"],
-            "js": ["content.js", "weapon_perks.js", "weapon_related_info.js", "armor_descriptions.js", "data_handler.js", "purify.min.js", "extra_weapon_stats.js"],
+            "js": ["content.js", "weapon_perks.js", "weapon_related_info.js", "armor_descriptions.js", "data_handler.js", "purify.min.js", "extra_weapon_stats.js", "d2_gunsmith.js", "element_creator.js"],
             "css": ["style.css"]
         }
     ],
