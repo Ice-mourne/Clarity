@@ -9,7 +9,18 @@
     "content_scripts": [
         {
             "matches": ["https://app.destinyitemmanager.com/*", "https://beta.destinyitemmanager.com/*"],
-            "js": ["content.js", "weapon_perks.js", "weapon_related_info.js", "armor_descriptions.js", "data_handler.js", "purify.min.js", "extra_weapon_stats.js", "d2_gunsmith.js", "element_creator.js"],
+            "js": [
+                "content.js",
+                "weapon_related_info.js",
+                "data_handler.js",
+                "purify.min.js",
+                "d2_gunsmith.js",
+                "element_creator.js",
+                "sources_&_more_menu.js",
+                "weaps_armor_mods_perks/weapon_perks.js",
+                "weaps_armor_mods_perks/extra_weapon_stats.js",
+                "weaps_armor_mods_perks/armor_descriptions.js"
+            ],
             "css": ["style.css"]
         }
     ],

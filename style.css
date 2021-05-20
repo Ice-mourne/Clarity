@@ -10,6 +10,66 @@
 .ItemPerksList-m_perkInfo-2opoU > div, .ItemPerksList-m_perkInfo-2opoU > p{
     display: none;
 }
+/* Sources & More menu */
+#new_menu {
+    position:absolute;
+    margin:auto;
+    background:black; 
+    padding:7px; 
+    border-radius:5px;
+    margin-inline-start:-8px; 
+    top:45px;
+    box-shadow:0 -1px 24px 4px #161626; 
+    cursor:default;
+
+    grid-template-columns: 0.2fr 1.8fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 5px 5px;
+    grid-template-areas:
+        "menu_top_text_1 menu_top_text_1"
+        ". ."
+        ". ."
+        ". ."
+        ". ."
+        "menu_top_text_2 menu_top_text_2"
+        ". ."
+        ". ."
+        ". ."
+        "menu_top_text_3 menu_top_text_3"
+        "dark_mode_button dark_mode_button";
+}
+.menu_top_text_1 {
+    grid-area: menu_top_text_1;
+    text-align: center;
+    color: #e8a534;
+}
+.menu_top_text_2 {
+    grid-area: menu_top_text_2;
+    text-align: center;
+    color: #e8a534;
+}
+.menu_top_text_3 {
+    grid-area: menu_top_text_3;
+    text-align: center;
+    color: #e8a534;
+}
+.dark_mode_button {
+    grid-area: dark_mode_button;
+    padding-left: 10px;
+    color: white;
+}
+.menu_img {
+    height: 20px;
+    cursor: default;
+    place-self: center;
+}
+.menu_link {
+    text-decoration: none;
+}
+.menu_link:hover, .dark_mode_button:hover {
+    color: #e8a534;
+    transition: color 0.2s linear;
+}
 /* D2 gunsmith */
 #gunsmith {
     position: absolute;

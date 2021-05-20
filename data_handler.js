@@ -3,6 +3,7 @@
     let url = document.querySelector("body").baseURI;
     let version = url.slice(8, url.search('.destiny'));
     localStorage.setItem('clarity_dim_version', version);
+    run_data_handler();
 })();
 //  🡱 🡱  - - - - - - - - - saves DIM version
 function run_data_handler(){
@@ -182,7 +183,12 @@ function run_data_handler(){
                 //  🡱 🡱  - - - - - - - - - Get and store custom json
                 localStorage.setItem('clarity_json_version', json_version.version);
                 //alert('Clarity, A DIM Companion\nDatabase was updated please refresh the page for updates to take effect\nSorry for inconvenience');
+                run_dark_mode();
+                info_button_observer();
             };
+        } else {
+            run_dark_mode();
+            info_button_observer();
         };
     });
 };
