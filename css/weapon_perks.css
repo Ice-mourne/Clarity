@@ -1,0 +1,63 @@
+/* weapon perks */
+.perk_column_container {
+    border-top: 1px solid;
+    margin: 12px -10px -12px -10px;
+    /*
+    margin: -12px -10px -12px;
+    */
+}
+.perk_container {
+    display: flex;
+    border-top: 1px solid #333;
+    padding: 6px 10px;
+    flex-wrap: wrap;
+}
+.perk_class:last-child {
+    margin-right: 0;
+}
+.perk_description {
+    width: 100%;
+    order: 99;
+    cursor: pointer;
+}
+/* ----------- */
+.perk_class {
+    display: flex;
+    margin-right: 1em;
+    cursor: pointer;
+    position: relative;
+}
+.perk_class.active_perk {
+    flex: 1;
+}
+/* -- */
+.perk_class .perk_img {
+    width: 26px;
+    height: 26px;
+    border: 1px solid white;
+    border-radius: 50%;
+    padding: 1px;
+}
+.perk_class.active_perk .perk_img {
+    background-color: #4887ba;
+}
+/* -- */
+.perk_class .perk_thumbs_up {
+    position: absolute;
+    top: -5px;
+    right: -7px;
+}
+.perk_class.active_perk .perk_thumbs_up {
+    left: 23px;
+    right: auto;
+}
+/* -- */
+.perk_class .perk_name {
+    padding-left: 6px;
+    align-self: center;
+    display: none;
+}
+.perk_class.active_perk .perk_name {
+    flex: 1;
+    display: block;
+}

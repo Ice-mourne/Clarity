@@ -1,0 +1,56 @@
+/* D2 gunsmith */
+#gunsmith {
+    position: absolute;
+    z-index: 90;
+    background-color: #00000000;
+    text-align: center;
+  }
+#gunsmith_header {
+    padding: 5px;
+    z-index: 100;
+    background-color: #000000;
+    color: #fff;
+    font-size: 14px;
+    display: grid;
+    grid-template-columns: 90% 5%;
+    grid-template-rows: 1fr;
+    gap: 0px 5%;
+}
+#gunsmith_iframe {
+    border: none;
+    height: 800px;
+    width: 385px;
+}
+#gunsmith_button img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    width: 24px;
+    font-size: 16px;
+    text-align: center;
+}
+#gunsmith_button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 6px 8px;
+}
+#gunsmith_button span{
+    margin-left: 8px;
+}
+#gunsmith_close {
+    width: 15px;
+    height: 15px;
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
+}
+#gunsmith_header_text {
+    text-align: center;
+    cursor: move;
+}
+#mini_gunsmith_div {
+    text-align: right;
+}
