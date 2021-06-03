@@ -1,5 +1,5 @@
 ;(()=>{ // - - saves DIM version
-    let url = document.querySelector("body").baseURI
+    let url = document.querySelector('body').baseURI
     let version = url.slice(8, url.search('.destiny'))
     localStorage.setItem('clarity_dim_version', version)
     run_data_handler()

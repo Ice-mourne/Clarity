@@ -1,10 +1,22 @@
 /* weapon perks */
+.ItemPerksList-m_perkInfo-2opoU div, .ItemPerksList-m_perkInfo-2opoU .plug-stats, .ItemPerksList-m_perkInfo-2opoU p {
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 .perk_column_container {
     border-top: 1px solid;
     margin: 12px -10px -12px -10px;
-    /*
-    margin: -12px -10px -12px;
-    */
 }
 .perk_container {
     display: flex;

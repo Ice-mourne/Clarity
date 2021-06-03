@@ -14,10 +14,12 @@ function info_button_observer(){
     })
 }
 function info_button(jd){
-    create_element({'ele_type':'div', 'text':'Sources & More', 'id':'infoButton', 'class':jd.button_class, 'loc_before':`.${jd.header_button} > a:nth-child(1)`}) // create button 'Sources & More'
-    create_element({'ele_type':'div', 'location':'#infoButton','id':'new_menu', 'css':'display: none;'})
+    create_element({'ele_type':'div', 'text':'Sources & More',  'id':'infoButton', 'class':jd.button_class, 'loc_before':`.${jd.header_button} > a:nth-child(1)`}) // create button 'Sources & More'
+    create_element({'ele_type':'div', 'location':'#infoButton', 'id':'new_menu',   'css':'display: none;'})
 
-    create_element({'ele_type':'div', 'location':'#new_menu', 'class':'menu_top_text_1', 'text':'Links to Sources used creating this extension'})
+    create_element({'ele_type':'div', 'location':'#new_menu',        'class':'menu_top_text_1'})
+    create_element({'ele_type':'p',   'location':'.menu_top_text_1', 'class':'important_information', 'text':`Extension is created and maintained by Icemourne\nTo report bugs and ask for new features\nDM on discord Icemourne#8622 or join Massive Breakdown`})
+    create_element({'ele_type':'div', 'location':'#new_menu', 'class':'menu_top_text_2', 'text':'Links to Sources used creating this extension'})
 
     create_element({'ele_type':'img', 'location':'#new_menu', 'class':'menu_img',        'img': 'images/spreadsheet.png'})
     create_element({'ele_type':'a',   'location':'#new_menu', 'class':'menu_link',       'text':'Mods, Abilities, and More by Pip1n',                   'target':'_blank', 'href':'https://docs.google.com/spreadsheets/d/1WaxvbLx7UoSZaBqdFr1u32F2uWVLo-CJunJB4nlGUE4/'})
@@ -28,7 +30,7 @@ function info_button(jd){
     create_element({'ele_type':'img', 'location':'#new_menu', 'class':'menu_img',        'img': 'images/range_calc.png'})
     create_element({'ele_type':'a',   'location':'#new_menu', 'class':'menu_link',       'text':'Weapon Range Calculator by Mmonx',                     'target':'_blank', 'href':'https://destinyindepth.com/range_calculator/'})
 
-    create_element({'ele_type':'div', 'location':'#new_menu', 'class':'menu_top_text_2', 'text': 'Other useful links'})
+    create_element({'ele_type':'div', 'location':'#new_menu', 'class':'menu_top_text_3', 'text': 'Other useful links'})
 
     create_element({'ele_type':'img', 'location':'#new_menu', 'class':'menu_img',  'img': 'images/gunsmith.png'})
     create_element({'ele_type':'a',   'location':'#new_menu', 'class':'menu_link', 'text':'D2 Gunsmith by dre',                'target':'_blank', 'href':'https://d2gunsmith.com/'})
@@ -37,14 +39,14 @@ function info_button(jd){
     create_element({'ele_type':'img', 'location':'#new_menu', 'class':'menu_img',  'img': 'images/spreadsheet.png'})
     create_element({'ele_type':'a',   'location':'#new_menu', 'class':'menu_link', 'text':'Weapon DPS by SkyWarrior',          'target':'_blank', 'href':'https://docs.google.com/spreadsheets/d/12vF7ckMzN4hex-Tse4HPiVs_d9huFOKlvUoq5V41nxU/'})
 
-    create_element({'ele_type':'div', 'location':'#new_menu', 'class':'menu_top_text_3', 'text':'Settings'})
+    create_element({'ele_type':'div', 'location':'#new_menu', 'class':'menu_top_text_4', 'text':'Settings'})
 
     let dark_mode = (localStorage.getItem('dark_mode') == 'on') ? 'Disable' : 'Enable'
     create_element({'ele_type':'div', 'location':'#new_menu', 'class':'dark_mode_button', 'id':'darker_mode_togle', 'text':`${dark_mode} Dark Mode`})
 }
 create_element({'ele_type':'style', 'location':'html', 'id':'dark_mode'})
 function enable_dark_mode(){
-    console.log('dark mode');
+    console.log('dark mode')
     let jd = JSON.parse(localStorage.getItem('clarity_dim_div_locations')).sources_and_more_menu
     document.getElementById('dark_mode').textContent = `
         ${jd.dark_mode_line_1} {background: radial-gradient(circle at 50% 70px, #202031 0%, #07070d 100%);}

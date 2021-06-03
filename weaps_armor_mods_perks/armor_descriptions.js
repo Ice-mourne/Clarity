@@ -2,7 +2,6 @@ function armor_pressed(){
     try {
         let jd = local_get('clarity_dim_div_locations').exotic_armor
         let perk_descriptions = local_get('clarity_exotic_armor_description')
-        //let stat_window = document.getElementById(jd.stat_window).nextSibling
         let perk_name = get_in_content(jd.perk_name).textContent
         if(perk_descriptions[perk_name] != undefined){
             let loc_for_new_div = get_in_content(jd.loc_for_new_div)

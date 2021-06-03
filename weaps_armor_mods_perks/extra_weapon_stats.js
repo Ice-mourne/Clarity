@@ -21,7 +21,7 @@ function weapon_pressed(){
         }
     }
     //  🡱 🡱  - - - - - - - - - Gets stat values
-
+    
     //  🡳 🡳  - - - - - - - - - Finds weapons witch need adding stats to
     let weapon_type
     if (weapon.type == 'Grenade Launcher'){
@@ -50,24 +50,10 @@ function weapon_pressed(){
 
     //  🡳 🡳  - - - - - - - - - Adds new stats
     function add_new_stat(stat_value, stat_name, stat_title, last_letter){
-        create_element({'ele_type': 'div', 'stat_window': jd.wep_stats, 'class': jd.wep_stat_name_class, 'text': stat_name,  'title': stat_title})
-        create_element({'ele_type': 'div', 'stat_window': jd.wep_stats, 'class': jd.wep_stat_name_class, 'text': stat_value                     })
-        create_element({'ele_type': 'div', 'stat_window': jd.wep_stats,                                  'text': last_letter                    })
-
-
-        // let name_div = document.createElement('div')==
-        // let value_div = document.createElement('div')==
-        // let bar_div = document.createElement('div')==
-
-        // name_div.textContent = stat_name
-        
-        // name_div.title = stat_title
-        // value_div.textContent = stat_value
-        // bar_div.textContent = last_letter
-        // let stat_window = document.getElementById(jd.stat_window).nextSibling.getElementsByClassName(jd.wep_stats)[0]
-        // stat_window.appendChild(name_div).className = jd.wep_stat_name_class
-        // stat_window.appendChild(value_div).className = jd.wep_stat_value_class
-        // stat_window.appendChild(bar_div)
+        debugger
+        create_element({'ele_type': 'div', 'stat_window': jd.wep_stats, 'class': jd.wep_stat_name_class,  'text': stat_name,  'title': stat_title})
+        create_element({'ele_type': 'div', 'stat_window': jd.wep_stats, 'class': jd.wep_stat_value_class, 'text': stat_value                     })
+        create_element({'ele_type': 'div', 'stat_window': jd.wep_stats,                                   'text': last_letter                    })
     }
     //  🡱 🡱  - - - - - - - - - Adds new stats
     //let new_link = `https://d2gunsmith.com/w/${wep_link[0]}?s=${wep_link[2]},${wep_link[3]},${wep_link[4]},${wep_link[5]},` // move to d2_gunsmith

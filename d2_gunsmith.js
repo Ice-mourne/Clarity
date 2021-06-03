@@ -46,7 +46,7 @@ function gunsmit_button(){
         create_element({'ele_type': 'img', 'location': '#gunsmith_button',                                     'img': 'images/gunsmith.png'})
         create_element({'ele_type': 'span','location': '#gunsmith_button',       'id': 'gunsmith_button_text', 'text': 'D2 Gunsmith'       })
     }
-    if (!get_in_content(json_divs.buton_text_hide)){
+    if (get_in_content(json_divs.buton_text_hide)){
         document.getElementById('gunsmith_button_text').style.cssText = 'display: none;'
     }
     stat_window.getElementsByClassName(json_divs.click_event)[0].addEventListener('click', _e => {

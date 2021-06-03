@@ -80,6 +80,7 @@ function start_looking_for_clicks(){
                 case t2.match(/(Shotgun|Sidearm|Combat Bow|Hand Cannon|Sword| Rifle| Launcher| Gun)$/) != null || t3.match(/(Shotgun|Sidearm|Combat Bow|Hand Cannon|Sword| Rifle| Launcher| Gun)$/) != null:
                     gunsmit_button()
                     fix_wish_list()
+                    weapon_pressed()
                     rework_weapon_perks()
                     ciker()
                     //compare_button_event()

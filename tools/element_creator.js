@@ -31,7 +31,7 @@ function create_element(p) {
             location.appendChild(e)
             break
         case p['stat_window'] != undefined:
-            let stat_window = document.getElementById('content').nextSibling.querySelector(p['stat_window'])
+            let stat_window = get_in_content(p['stat_window'])
             stat_window.appendChild(e)
             break
         // ------------------------- used only one time
