@@ -39,18 +39,18 @@ function weapon_pressed(){
         }
         if (w_f_numbers.vpp){
             let range_stat = 10 + Math.min(Math.max(range_inv, 10),100) * 0.9
-            let new_zomm = (zoom - w_f_numbers.zoom_tier) / 10 + w_f_numbers.zrm
-            let weapon_range = ((range_stat * w_f_numbers.vpp + w_f_numbers.base_range) * new_zomm * zoom_mult).toFixed(2) // formula for range
+            let new_zoom = (zoom - w_f_numbers.zoom_tier) / 10 + w_f_numbers.zrm
+            let weapon_range = ((range_stat * w_f_numbers.vpp + w_f_numbers.base_range) * new_zoom * zoom_mult).toFixed(2) // formula for range
             add_new_stat(weapon_range, 'DMG Fall-off ADS', 'Distance at which damage fall-off begin\nFormulas are made by Mmonx', 'm')
             sessionStorage.setItem('range_stat', range_stat)
             sessionStorage.setItem('weapon_range', weapon_range)
-        }
+            sessionStorage.setItem('zoom', new_zoom)
+        } else {sessionStorage.setItem('weapon_range', '')}
     }
     //  🡱 🡱  - - - - - - - - - Finds weapons witch need adding stats to
 
     //  🡳 🡳  - - - - - - - - - Adds new stats
     function add_new_stat(stat_value, stat_name, stat_title, last_letter){
-        debugger
         create_element({'ele_type': 'div', 'stat_window': jd.wep_stats, 'class': jd.wep_stat_name_class,  'text': stat_name,  'title': stat_title})
         create_element({'ele_type': 'div', 'stat_window': jd.wep_stats, 'class': jd.wep_stat_value_class, 'text': stat_value                     })
         create_element({'ele_type': 'div', 'stat_window': jd.wep_stats,                                   'text': last_letter                    })

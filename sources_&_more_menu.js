@@ -46,7 +46,6 @@ function info_button(jd){
 }
 create_element({'ele_type':'style', 'location':'html', 'id':'dark_mode'})
 function enable_dark_mode(){
-    console.log('dark mode')
     let jd = JSON.parse(localStorage.getItem('clarity_dim_div_locations')).sources_and_more_menu
     document.getElementById('dark_mode').textContent = `
         ${jd.dark_mode_line_1} {background: radial-gradient(circle at 50% 70px, #202031 0%, #07070d 100%);}

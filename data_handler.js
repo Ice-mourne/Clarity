@@ -177,7 +177,6 @@ function run_stat_name_filter(data) {
     localStorage.setItem('clarity_stat_names', JSON.stringify(stat_names))
 }
 function run_custom_json(){
-    console.log('custom js');
     fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/exotic_armor_perks/?${Math.random()}`)
     .then(resp => { return resp.json() })
     .then(data => { localStorage.setItem('clarity_exotic_armor_description', JSON.stringify(data)) })
