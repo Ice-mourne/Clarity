@@ -21,9 +21,7 @@ function rework_weapon_perks() {
             if (pause_event) {
                 let x = target.querySelector('.ItemPerksList-m_perkInfo-2opoU > div')
                 if (!x) target.click()
-
                 let new_description = document.createElement('div')
-                
                 // handle description
                 let p = target.querySelector('.ItemPerksList-m_perkInfo-2opoU > h2')
                 let perk_name = (p) ? p.textContent : ''
@@ -37,16 +35,19 @@ function rework_weapon_perks() {
                     let stats = target.getElementsByClassName('plug-stats')[0].cloneNode(true)
                     let range_stat
                     let reload_stat
+                    let check = 0
                     for (let i = 0; i < stats.childNodes.length; i++) {
                         const element = stats.childNodes[i].textContent
-                        if (element == 'Range') {
-                            let range = stats.childNodes[i - 1].textContent.replace('+', '') * 1 // perk value
-                            range_stat = document.createElement('div')
-                            stat_value = document.createElement('div')
-                            stat_name = document.createElement('div')
-                            range_stat.appendChild(stat_value).textContent = range_plug(range)
-                            range_stat.appendChild(stat_name).textContent = 'Fall_off distance'
-                            console.log(range_stat);
+                        if ((element == 'Range' || element == 'Zoom') && check == 0) {
+                            let final_range = range_plug(stats)
+                            if (final_range != 'NaNm') { // checks if final_range is vaid value
+                                range_stat = document.createElement('div')
+                                stat_value = document.createElement('div')
+                                stat_name = document.createElement('div')
+                                range_stat.appendChild(stat_value).textContent = final_range
+                                range_stat.appendChild(stat_name).textContent = 'Fall_off distance'
+                            }
+                            check += 1
                         }
                         if (element == 'Reload Speed') {
                             let reload = stats.childNodes[i - 1].textContent.replace('+', '') * 1
@@ -114,12 +115,16 @@ function rework_weapon_perks() {
         }
         return updated
     }
-    function range_plug(perk_range) {
-        let stat = sessionStorage.getItem('range_stat') * 1 - perk_range
-        let metters =  sessionStorage.getItem('weapon_range') * 1
+    function range_plug(stats) {
+        let range = sessionStorage.getItem('range_stat') * 1
         let zoom = sessionStorage.getItem('zoom') * 1
-
-        let new_range = (stat * w_f_numbers.vpp + w_f_numbers.base_range) * zoom
+        for (let i = 0; i < stats.childNodes.length; i++) {
+            const element = stats.childNodes[i].textContent
+            if (element == 'Range') range -= stats.childNodes[i - 1].textContent.replace('+', '') * 1 // range value
+            if (element == 'Zoom')  zoom  -= stats.childNodes[i - 1].textContent.replace('+', '') / 10 // converted zoom value
+        }
+        let metters =  sessionStorage.getItem('weapon_range') * 1
+        let new_range = (range * w_f_numbers.vpp + w_f_numbers.base_range) * zoom
         return (metters - new_range) > 0 ? `+${(metters - new_range).toFixed(2)}m` : `${(metters - new_range).toFixed(2)}m`
     }
     function reload_plug(perk_reload) {
@@ -129,9 +134,4 @@ function rework_weapon_perks() {
         let reload_time = (w_f_numbers.a * stat * stat + w_f_numbers.b * stat + w_f_numbers.c)
         return (time - reload_time) > 0 ? `+${(time - reload_time).toFixed(2)}s` : `${(time - reload_time).toFixed(2)}s`
     }
-
-
-    
 }
-
-

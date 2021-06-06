@@ -14,9 +14,12 @@ function weapon_pressed(){
     for (let i = 0; i < wep_link.length; i++){
         const id = wep_link[i]
         if (perks[id]){
-            if (perks[id].investmentStats[4188031367]) reload_inv += perks[id].investmentStats[4188031367]
-            if (perks[id].investmentStats[1240592695]) range_inv  += perks[id].investmentStats[1240592695]
-            if (perks[id].investmentStats[3555269338]) zoom       += perks[id].investmentStats[3555269338]
+            for (let i = 0; i < perks[id].investmentStats.length; i++) {
+                const element = perks[id].investmentStats[i];
+                if (element[0] == 4188031367) reload_inv += element[1]
+                if (element[0] == 1240592695) range_inv  += element[1]
+                if (element[0] == 3555269338) zoom       += element[1]
+            }
             if (perks[id] == 2846385770 || perks[id] == 1140096971) zoom_mult = 1.1 // rangefinder and similar perks
         }
     }
