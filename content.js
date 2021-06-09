@@ -31,7 +31,7 @@ function start_looking_for_clicks(){
         let location = document.getElementById('content').nextSibling
         var rect = document.body.getBoundingClientRect().right
         var rect1 = event.target.getBoundingClientRect().right
-        let left_rigt = (rect - 460) > rect1
+        let left_right = (rect - 460) > rect1
         function ciker(){
             let bot_offset = window.innerHeight - (location.firstChild.clientHeight + 80) / 2 - event.target.getBoundingClientRect().top
             let set_bot = 0
@@ -41,7 +41,7 @@ function start_looking_for_clicks(){
             if (cick == 0){
                 location.firstChild.style.cssText = 'display: none;'
                 setTimeout(() => {
-                    if (left_rigt) {
+                    if (left_right) {
                         location.firstChild.style.cssText = `position: absolute; inset: ${set_bot}px auto auto 0px; transform: translate(0px, -50%);`
                     }else {
                         location.firstChild.style.cssText = `position: absolute; inset: ${set_bot}px 0px auto auto; transform: translate(-65px, -50%);`
@@ -50,7 +50,7 @@ function start_looking_for_clicks(){
                 location.getElementsByClassName('ItemPopupContainer-m_desktopActions-gtrWN')[0].style.cssText = 'transform: translate(0px, 15%);'
             }
             if (cick > 0){
-                if (left_rigt) {
+                if (left_right) {
                     location.firstChild.style.cssText = `position: absolute; inset: ${set_bot}px auto auto 0px; transform: translate(0px, -50%);`
                 }else {
                     location.firstChild.style.cssText = `position: absolute; inset: ${set_bot}px 0px auto auto; transform: translate(-65px, -50%);`
@@ -78,13 +78,13 @@ function start_looking_for_clicks(){
                     //compare_button_event()
                     break
                 case t2.match(/(Shotgun|Sidearm|Combat Bow|Hand Cannon|Sword| Rifle| Launcher| Gun)$/) != null || t3.match(/(Shotgun|Sidearm|Combat Bow|Hand Cannon|Sword| Rifle| Launcher| Gun)$/) != null:
-                    gunsmit_button()
+                    gunsmith_button()
                     fix_wish_list()
                     weapon_pressed()
                     rework_weapon_perks()
                     ciker()
                     //compare_button_event()
-                    filterGodRols() // rework pending
+                    filterGodRolls() // rework pending
                     hoverOver() // rework pending
                     break
                 case t1.match(/( Armor Mod|Class Item Mod| Light Mod| Cell Mod| Well Mod| Raid Mod|Nightmare Mod|Weapon Mod)$/) != null: // Probably only for records page

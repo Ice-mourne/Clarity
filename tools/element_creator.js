@@ -8,9 +8,9 @@
  ** 'class': ''         > class name
  ** 'css': ''           > style.cssText adds css text
  ** 'href': ''          > link to what ever
- ** 'src': ''           > sorce img link or what ever you need
- ** 'img': ''           > adds localy stored img
- ** 'type': ''          > type of attribue to add
+ ** 'src': ''           > source img link or what ever you need
+ ** 'img': ''           > adds locally stored img
+ ** 'type': ''          > type of attribute to add
  ** 'target': ''        > used with href '_blank' to open link in new page
  */
 function create_element(p) {

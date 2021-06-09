@@ -46,15 +46,15 @@ function perk_pressed(perks_name){
     let abc = JSON.parse(sessionStorage.getItem('abc'));
     let wepType = document.querySelector('[class^="ItemPopupHeader-m_itemType-"]').innerText;
     let wepFrame = document.querySelector('[class^="ArchetypeSocket-m_name-"]').innerText;
-    let imgLinkLegth = document.querySelector('[class^="ItemPopupHeader-m_ammoIcon-"]').currentSrc.length;
-    let realoadValue = document.querySelectorAll('[class^="ItemStat-m_value-"]')[5].innerText;
+    let imgLinkLength = document.querySelector('[class^="ItemPopupHeader-m_ammoIcon-"]').currentSrc.length;
+    let reloadValue = document.querySelectorAll('[class^="ItemStat-m_value-"]')[5].innerText;
     let mag_size = document.querySelectorAll('[class^="ItemStat-m_value-"]')[9].innerText;
-    run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLegth, realoadValue, mag_size);
+    run_Perks(perk, perk_description, abc, wepType, wepFrame, imgLinkLength, reloadValue, mag_size);
 };
 
 function change_On_Hover_Over(){
     let version = document.querySelector('._1xEii') !== null;
-    let realoadValue = (version) ? document.querySelectorAll("._3utrN")[5].textContent : "";
+    let reloadValue = (version) ? document.querySelectorAll("._3utrN")[5].textContent : "";
     let mag_size = (version) ? document.querySelectorAll("._3utrN")[9].textContent : "";
     let perk = (version) ? document.querySelector("._3ppxp > h2").textContent : "";
     let mod = (version) ? document.querySelector("._3ppxp > h2").textContent : document.querySelector('[class^="PressTip-m_content-"] > h2').textContent;

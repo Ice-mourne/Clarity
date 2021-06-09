@@ -42,7 +42,7 @@ function info_button(jd){
     create_element({'ele_type':'div', 'location':'#new_menu', 'class':'menu_top_text_4', 'text':'Settings'})
 
     let dark_mode = (localStorage.getItem('dark_mode') == 'on') ? 'Disable' : 'Enable'
-    create_element({'ele_type':'div', 'location':'#new_menu', 'class':'dark_mode_button', 'id':'darker_mode_togle', 'text':`${dark_mode} Dark Mode`})
+    create_element({'ele_type':'div', 'location':'#new_menu', 'class':'dark_mode_button', 'id':'darker_mode_toggle', 'text':`${dark_mode} Dark Mode`})
 }
 create_element({'ele_type':'style', 'location':'html', 'id':'dark_mode'})
 function enable_dark_mode(){
@@ -66,9 +66,9 @@ function header_button(event){
     //  🡳 🡳  - - - - - - - - - Info button open / close
     let new_menu = document.getElementById('new_menu')
     let button_pressed = event.target == document.getElementById('infoButton')
-    let winow_open = new_menu.style.display == 'none'
-    let black_list = event.target.id != 'darker_mode_togle' && event.target.id != 'new_menu' && event.target.className != 'menu_img'
-    if(button_pressed && winow_open){
+    let window_open = new_menu.style.display == 'none'
+    let black_list = event.target.id != 'darker_mode_toggle' && event.target.id != 'new_menu' && event.target.className != 'menu_img'
+    if(button_pressed && window_open){
         new_menu.style.display = 'grid'
     } else if(black_list){
         new_menu.style.display = 'none'
@@ -76,15 +76,15 @@ function header_button(event){
     //  🡱 🡱  - - - - - - - - - Info button open / close
 
     //  🡳 🡳  - - - - - - - - - Dark mode on / off
-    if(event.target.id == 'darker_mode_togle'){
-        let darker_mode_togle = document.getElementById('darker_mode_togle') // dark mode button
+    if(event.target.id == 'darker_mode_toggle'){
+        let darker_mode_toggle = document.getElementById('darker_mode_toggle') // dark mode button
         if(event.target.textContent == 'Enable Dark Mode'){
             enable_dark_mode()
-            darker_mode_togle.textContent = 'Disable Dark Mode'
+            darker_mode_toggle.textContent = 'Disable Dark Mode'
             localStorage.setItem('dark_mode', 'on')
         }else{
             document.getElementById('dark_mode').textContent = 'empty'
-            darker_mode_togle.textContent = 'Enable Dark Mode'
+            darker_mode_toggle.textContent = 'Enable Dark Mode'
             localStorage.setItem('dark_mode', 'off')
         }
     }

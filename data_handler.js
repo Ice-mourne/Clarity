@@ -44,11 +44,11 @@ function run_inventory_item_filter(data){
             case element[1].itemType == 3:
                 filter_weapons(element)
                 break
-            case element[1].itemType == 2 && element[1].inventory.tierTypeName == 'Exotic': // item tipe armor & tier exotic
+            case element[1].itemType == 2 && element[1].inventory.tierTypeName == 'Exotic': // item type armor & tier exotic
                 filter_armor(element)
                 break
             case element[1].itemType == '19' && element[1].displayProperties.name != '': // item type mod & dose it have name
-                filter_mods_and_sruff(element)
+                filter_mods_and_sluff(element)
                 filter_perk_by_icon(element)
                 break
         }
@@ -59,7 +59,7 @@ function run_inventory_item_filter(data){
         for (let i = 0; i < element[1].sockets.socketEntries.length; i++){
             const p = element[1].sockets.socketEntries[i]
             new_perks[i] = {
-                'ranom_perk_list': p.randomizedPlugSetHash,
+                'random_perk_list': p.randomizedPlugSetHash,
                 'static_perk_list': p.reusablePlugSetHash,
                 'curated_perk_list': p.reusablePlugItems
             }
@@ -102,7 +102,7 @@ function run_inventory_item_filter(data){
         }
         armor_info[element[0]] = f_armor
     }
-    function filter_mods_and_sruff(e) {
+    function filter_mods_and_sluff(e) {
         const element = e
         let z = ['Emote', 'Armor Ornament', 'Weapon Ornament', 'Titan Universal Ornament'];
         if (!(z.indexOf(element[1].itemTypeDisplayName) > -1)) {
@@ -131,7 +131,8 @@ function run_inventory_item_filter(data){
     localStorage.setItem('clarity_weapon_info', JSON.stringify(weapon_info))
     localStorage.setItem('clarity_armor_info', JSON.stringify(armor_info))
     localStorage.setItem('clarity_perk_mod_info', JSON.stringify(perk_mod_info))
-    localStorage.setItem('clarity_perk_mod_icon', JSON.stringify(perk_mod_icon)) // used to find perks using img link
+    localStorage.setItem('clarity_perk_mod_icon', JSON.stringify(perk_mod_icon))
+ // used to find perks using img link
     
 }
 function run_stat_group_filter(data){
