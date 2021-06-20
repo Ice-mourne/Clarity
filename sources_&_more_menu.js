@@ -19,7 +19,7 @@ function info_button(jd){
 
     create_element({'ele_type':'div', 'location':'#new_menu',        'class':'menu_top_text_1'})
     create_element({'ele_type':'p',   'location':'.menu_top_text_1', 'class':'important_information', 'text':`Extension is created and maintained by Icemourne\nTo report bugs and ask for new features\nDM on discord Icemourne#8622 or join Massive Breakdown`})
-    create_element({'ele_type':'div', 'location':'#new_menu', 'class':'menu_top_text_2', 'text':'Links to Sources used creating this extension'})
+    create_element({'ele_type':'div', 'location':'#new_menu',        'class':'menu_top_text_2',       'text':'Links to Sources used creating this extension'})
 
     create_element({'ele_type':'img', 'location':'#new_menu', 'class':'menu_img',        'img': 'images/spreadsheet.png'})
     create_element({'ele_type':'a',   'location':'#new_menu', 'class':'menu_link',       'text':'Mods, Abilities, and More by Pip1n',                   'target':'_blank', 'href':'https://docs.google.com/spreadsheets/d/1WaxvbLx7UoSZaBqdFr1u32F2uWVLo-CJunJB4nlGUE4/'})

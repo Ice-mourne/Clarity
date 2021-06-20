@@ -17,3 +17,11 @@ function get_in_content(className) {
 function local_get(key) {
     return JSON.parse(localStorage.getItem(key))
 }
+/**
+ * Set json object to session storage
+ * @param {string} key 
+ * @param {JSON} value 
+ */
+function session_set_json(key, value) {
+    sessionStorage.setItem(key, JSON.stringify(value))
+}

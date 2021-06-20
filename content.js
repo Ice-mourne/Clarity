@@ -78,6 +78,7 @@ function start_looking_for_clicks(){
                     //compare_button_event()
                     break
                 case t2.match(/(Shotgun|Sidearm|Combat Bow|Hand Cannon|Sword| Rifle| Launcher| Gun)$/) != null || t3.match(/(Shotgun|Sidearm|Combat Bow|Hand Cannon|Sword| Rifle| Launcher| Gun)$/) != null:
+                    log_item(event.target)
                     gunsmith_button()
                     fix_wish_list()
                     weapon_pressed()
@@ -139,5 +140,5 @@ function fix_wish_list (){
                 }
             })
         }
-    }, )
+    },)
 }

@@ -14,9 +14,12 @@
                 "tools/purify.min.js",
                 "tools/random_tools.js",
 
-                "weaps_armor_mods_perks/weapon_perks.js",
-                "weaps_armor_mods_perks/extra_weapon_stats.js",
-                "weaps_armor_mods_perks/armor_descriptions.js",
+                "weps_armor_mods_perks/weapon_perks.js",
+                "weps_armor_mods_perks/extra_weapon_stats.js",
+                "weps_armor_mods_perks/armor_descriptions.js",
+
+                "all_wep_perks.js",
+                "new_data_handler.js",
 
                 "content.js",
                 "d2_gunsmith.js",

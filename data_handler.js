@@ -1,3 +1,4 @@
+/*
 ;(()=>{ // - - saves DIM version
     let url = document.querySelector('body').baseURI
     let version = url.slice(8, url.search('.destiny'))
@@ -197,4 +198,4 @@ function run_custom_json(){
 
     run_dark_mode()
     info_button_observer()
-}
+}*/

@@ -68,11 +68,11 @@ function open_gunsmith(){
     let json_divs = local_get('clarity_dim_div_locations').d2_gunsmith
     let wep_ids = get_in_content(json_divs.link).href.replace('https://destinytracker.com/destiny-2/db/items/', '').replace('?perks=', ',').replace('4248210736', '0').split(',')
     let wep_link = `https://d2gunsmith.com/w/${wep_ids[0]}?s=${wep_ids[2]},${wep_ids[3]},${wep_ids[4]},${wep_ids[5]},0,0`
-    create_element({'ele_type': 'div',    'id': 'gunsmith',             'location': '.store-cell'                                                                    }) // main window to store everything
-    create_element({'ele_type': 'div',    'id': 'gunsmith_header',      'location': '#gunsmith'                                                                      }) // header
-    create_element({'ele_type': 'div',    'id': 'gunsmith_header_text', 'location': '#gunsmith_header', 'text': 'D2 Gunsmith'                                        }) // text in header header
-    create_element({'ele_type': 'img',    'id': 'gunsmith_close',       'location': '#gunsmith_header', 'img': 'images/gunsmith_close.png'                           }) // image close button
-    create_element({'ele_type': 'iframe', 'id': 'gunsmith_iframe',      'location': '#gunsmith',        'src': wep_link ,                  'type': 'text/html'       }) // D2 Gunsmith page
+    create_element({'ele_type': 'div',    'id': 'gunsmith',             'location': '.store-cell'                                                              }) // main window to store everything
+    create_element({'ele_type': 'div',    'id': 'gunsmith_header',      'location': '#gunsmith'                                                                }) // header
+    create_element({'ele_type': 'div',    'id': 'gunsmith_header_text', 'location': '#gunsmith_header', 'text':'D2 Gunsmith'                                   }) // text in header header
+    create_element({'ele_type': 'img',    'id': 'gunsmith_close',       'location': '#gunsmith_header', 'img': 'images/gunsmith_close.png'                     }) // image close button
+    create_element({'ele_type': 'iframe', 'id': 'gunsmith_iframe',      'location': '#gunsmith',        'src':  wep_link ,                  'type': 'text/html'}) // D2 Gunsmith page
     document.getElementById('gunsmith_close').addEventListener('click', _e => {
         document.getElementById('gunsmith').remove()
     })
