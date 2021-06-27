@@ -67,6 +67,30 @@ function start_looking_for_clicks(){
         //   ( > º < )
         //    `>>x<<´
         //    /  O  \  - - - - 🡳 🡳 - - - - Click filter
+        let unique_id
+        function find_unique_id(target, x){
+            if(target.id > 999999999999999) return unique_id = target.id
+            if(x < 2) find_unique_id(target.parentElement, x + 1)
+        }
+        find_unique_id(event.target, 0)
+        let unique_item = session_get_json('instanced_items')[unique_id]
+        if (unique_item){
+            switch (unique_item.manifest.item_type) {
+                case 'weapon':
+                    weapon_pressed(unique_item)
+                    break
+                case 'armor':
+                    //weapon_pressed()
+                    break
+            }
+        }
+
+
+
+
+
+        
+        //----------------------------------------------------------------
         try{
             let t1 = event.target.title // mods
             let t2 = event.target.parentElement.title // weapon, armor
@@ -81,7 +105,7 @@ function start_looking_for_clicks(){
                     log_item(event.target)
                     gunsmith_button()
                     fix_wish_list()
-                    weapon_pressed()
+                    //weapon_pressed()
                     rework_weapon_perks()
                     ciker()
                     //compare_button_event()

@@ -18,8 +18,7 @@
                 "weps_armor_mods_perks/extra_weapon_stats.js",
                 "weps_armor_mods_perks/armor_descriptions.js",
 
-                "all_wep_perks.js",
-                "new_data_handler.js",
+                "weps_armor_mods_perks/new_extra_weapon_stats.js",
 
                 "content.js",
                 "d2_gunsmith.js",

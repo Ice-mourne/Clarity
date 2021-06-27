@@ -25,3 +25,11 @@ function local_get(key) {
 function session_set_json(key, value) {
     sessionStorage.setItem(key, JSON.stringify(value))
 }
+/**
+ * Set json object to session storage
+ * @param {string} key 
+ * @returns {JSON}
+ */
+ function session_get_json(key) {
+    return JSON.parse(sessionStorage.getItem(key))
+}

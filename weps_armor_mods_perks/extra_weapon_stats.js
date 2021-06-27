@@ -1,5 +1,5 @@
-function weapon_pressed(){
-    let jd =       local_get('clarity_dim_div_locations').extra_weapon_stats
+function disable_weapon_pressed(){
+    let jd =       local_get('clarity_locations').extra_weapon_stats
     let wep_link = get_in_content(jd.wep_link).href.replace('https://destinytracker.com/destiny-2/db/items/', '').replace('?perks=', ',').split(',')
     let perks =    local_get('clarity_perk_mod_info')
     let weapon =   local_get('clarity_weapon_info')[wep_link[0]]

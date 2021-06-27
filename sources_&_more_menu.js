@@ -1,6 +1,6 @@
 //  (っ◔◡◔)っ 
 function info_button_observer(){
-    let jd = JSON.parse(localStorage.getItem('clarity_dim_div_locations')).sources_and_more_menu
+    let jd = JSON.parse(localStorage.getItem('clarity_locations')).sources_and_more_menu
     let observer = new MutationObserver((_o, quit) => {
         let header = document.querySelector(`.${jd.header_button} > a:nth-child(1)`)
         if (header){
@@ -46,7 +46,7 @@ function info_button(jd){
 }
 create_element({'ele_type':'style', 'location':'html', 'id':'dark_mode'})
 function enable_dark_mode(){
-    let jd = JSON.parse(localStorage.getItem('clarity_dim_div_locations')).sources_and_more_menu
+    let jd = JSON.parse(localStorage.getItem('clarity_locations')).sources_and_more_menu
     document.getElementById('dark_mode').textContent = `
         ${jd.dark_mode_line_1} {background: radial-gradient(circle at 50% 70px, #202031 0%, #07070d 100%);}
         ${jd.dark_mode_line_2} {background: radial-gradient(circle at 50% 70px, #202031 0%, #07070d 100%); background-position: center top; background-repeat: no-repeat; background-size: 100vw 100vh;}
@@ -57,6 +57,7 @@ function enable_dark_mode(){
         ${jd.dark_mode_line_7} {background-color: #ffffff00;}
         `
 }
+if (local_get('clarity_locations')) run_dark_mode()
 function run_dark_mode(){
     if(localStorage.getItem('dark_mode') == 'on'){
         enable_dark_mode()

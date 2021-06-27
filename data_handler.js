@@ -1,201 +1,332 @@
-/*
-;(()=>{ // - - saves DIM version
-    let url = document.querySelector('body').baseURI
-    let version = url.slice(8, url.search('.destiny'))
+;(() => {    
+    let dim_url = document.querySelector('body').baseURI
+    let key = '2b16c291fcff48cbac86bd5f1d0bbc9d'
+    let url = `https://www.bungie.net/Platform/User/GetMembershipsForCurrentUser/`
+    let token = 'Bearer ' + local_get('authorization').accessToken.value
+    fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'X-API-Key': key,
+            'Authorization': token
+        }
+    })
+    .then(u => u.json())
+    .then(data => {
+        let user_info = {'platform': data.Response.destinyMemberships[0].LastSeenDisplayNameType, 'id': data.Response.destinyMemberships[0].membershipId}
+        localStorage.setItem('clarity_user', JSON.stringify(user_info))
+    })
+    let version = dim_url.slice(8, dim_url.search('.destiny'))
     localStorage.setItem('clarity_dim_version', version)
-    run_data_handler()
+
+    fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/dim_locations/?${Math.random()}`)
+    .then(resp => resp.json())
+    .then(data => localStorage.setItem('clarity_locations', JSON.stringify(data[version])))
+    .then( _ => {
+        run_dark_mode()
+        info_button_observer()
+    })
 })()
-function run_data_handler(){ // - - Check if database needs updating
+;(() => { // - - checks if data base needs updating
     fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/version/?${Math.random()}`)
     .then(resp => resp.json())
     .then(json_version => {
-        if(localStorage.getItem('d2-manifest-version') != localStorage.getItem('clarity-d2-version') || localStorage.getItem('clarity_json_version') != json_version.version){
-            work_on_data()
-            localStorage.setItem('clarity_json_version', json_version.version)
+        let manifest_version = localStorage.getItem('d2-manifest-version')
+        if (!local_get('clarity_info') || true) {
+            run_manifest()
+        } else if (!local_get('clarity_info').json_version || !local_get('clarity_info').manifest_version) {
+            run_manifest()
+        } else if(local_get('clarity_info').json_version != json_version.version || local_get('clarity_info').manifest_version != manifest_version) {
+            run_manifest()
         } else {
-            run_dark_mode()
-            info_button_observer()
+            console.log('-  -  Clarity DIM companion  -  - > Clarity inventory item already up to date')
+            add_data_to_instanced_items()
+            enable_refresh_button()
+        }
+        function run_manifest() {
+            let info = {
+                'json_version': json_version.version,
+                'manifest_version': manifest_version
+            }
+            localStorage.setItem('clarity_info', JSON.stringify(info))
+            get_manifest()
         }
     })
-}
-function work_on_data() { // - - Get data from indexedDB
+})()
+function get_manifest() {  // - - Get data from indexedDB
+    let start = window.performance.now()
     indexedDB.open('keyval-store').onsuccess = e => {
         let db = e.target.result
         let tx = db.transaction('keyval', 'readonly')
         let store = tx.objectStore('keyval')
         let data = store.get('d2-manifest')
         data.onsuccess = () => {
-            run_inventory_item_filter(Object.entries(data.result.DestinyInventoryItemDefinition))
-            run_stat_group_filter(Object.entries(data.result.DestinyStatGroupDefinition))
-            run_perk_list_filter(Object.entries(data.result.DestinyPlugSetDefinition))
-            run_stat_name_filter(Object.entries(data.result.DestinyStatDefinition))
-            run_custom_json()
+            let stat_group       = data.result.DestinyStatGroupDefinition
+            let inventory_bucket = data.result.DestinyInventoryBucketDefinition
+            let socket_category  = data.result.DestinySocketCategoryDefinition
+            let plug_set         = data.result.DestinyPlugSetDefinition
+            let damage_type_list = data.result.DestinyDamageTypeDefinition
+            let inventory_item   = data.result.DestinyInventoryItemDefinition
+            Promise.all([
+                fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/weapon_formulas/?${Math.random()}`)
+                .then(resp => resp.json()),
+                fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/exotic_armor_perks/?${Math.random()}`)
+                .then(resp => resp.json()),
+                fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/weapon_perks/?${Math.random()}`)
+                .then(resp => resp.json())
+            ])
+            .then(json_data => {
+                let formulas = json_data[0]
+                let armor_perks = json_data[1]
+                let weapon_perks = json_data[2]
+                filter_inventory_item(Object.entries(inventory_item), stat_group, inventory_bucket, socket_category, plug_set, damage_type_list, formulas, inventory_item, armor_perks, weapon_perks, start)
+            }) 
         }
     }
 }
-function run_inventory_item_filter(data){
-    let weapon_info = {}
-    let armor_info = {}
-    let perk_mod_info = {}
-    let perk_mod_icon = {}
-    
+function filter_inventory_item(data, stat_group, inventory_bucket, socket_category, plug_set, damage_type_list, formulas, inventory_item, armor_perks, weapon_perks, start) {
+    let new_inventory_item = {}
     for (let i = 0; i < data.length; i++){
         const element = data[i]
-        switch (true){
-            case element[1].itemType == 3:
+        switch (element[1].itemType){
+            case 3: // itemType:3 'Weapon'
                 filter_weapons(element)
                 break
-            case element[1].itemType == 2 && element[1].inventory.tierTypeName == 'Exotic': // item type armor & tier exotic
-                filter_armor(element)
+            case 2: // itemType:2 'armor'
+                if (element[1].inventory.tierTypeName == 'Exotic') filter_armor(element)
                 break
-            case element[1].itemType == '19' && element[1].displayProperties.name != '': // item type mod & dose it have name
-                filter_mods_and_sluff(element)
-                filter_perk_by_icon(element)
+            case 19: // itemType:19 'mod', itemSubType:0 'None'                  
+                if (element[1].itemSubType == 0) filter_perks_and_sluff(element)
                 break
         }
     }
-    function filter_weapons(e) {
-        const element = e
-        const new_perks = {} //  - - Weapon perks
-        for (let i = 0; i < element[1].sockets.socketEntries.length; i++){
-            const p = element[1].sockets.socketEntries[i]
-            new_perks[i] = {
-                'random_perk_list': p.randomizedPlugSetHash,
-                'static_perk_list': p.reusablePlugSetHash,
-                'curated_perk_list': p.reusablePlugItems
+    function filter_weapons(data_old) {
+        const id = data_old[0]
+        const data = data_old[1]
+        new_inventory_item[id] = {
+            'name': data.displayProperties.name,
+            'icon': data.displayProperties.icon, // icon link
+            'item_type': data.itemTypeDisplayName, // (sniper, ...)
+            'item_tier': data.inventory.tierTypeName, // (legendary, ...)
+            'stats': {
+                'stat_group': '', // (0-100, 10-100)
+                'base_stats': '',
+                'investment_stats': ''
+            },
+            'slot_type': '', // (kinetic, energy, heavy)
+            'ammo_type': '', // (primary, special, heavy)
+            
+            'sockets': '', // perks, frame
+            'damage_type': '', // damage type
+            'formulas': '',
+            'item_type': 'weapon'
+        }
+        new_inventory_item[id].stats.stat_group = new_stat_group(stat_group[data.stats.statGroupHash].scaledStats) // stat group (0-100, 10-100)
+        function new_stat_group(data) {
+            let stat_group = {}
+            for (let i = 0; i < data.length; i++) {
+                const element = data[i];
+                stat_group[element.statHash] = element.displayInterpolation
             }
+            return stat_group
         }
-        const new_base_stats = {} // - - Base weapon stats
-        for (let i = 0; i < Object.entries(element[1].stats.stats).length; i++){
-            const z = Object.entries(element[1].stats.stats)[i]
-            new_base_stats[z[0]] = z[1].value
-        }
-    
-        const investment_stats = {} // - - Investment weapon stats
-        for (let i = 0; i < element[1].investmentStats.length; i++){ 
-            const inv = element[1].investmentStats[i]
-            investment_stats[inv.statTypeHash] = inv.value
-        }
-        let f_weps = { //  - - Filter weapons
-            'name': element[1].displayProperties.name,
-            'icon': element[1].displayProperties.icon,
-            'type': element[1].itemTypeDisplayName, // smg, fusion, ect
-            'tier': element[1].inventory.tierTypeName, // legendary, ect
-            'stat_group_hash': element[1].stats.statGroupHash, // min max stat group
-            'frame': element[1].sockets.socketEntries[0].singleInitialItemHash,
-            'slot_hash': element[1].equippingBlock.equipmentSlotTypeHash, // kinetic, energy, power
-            'ammo': element[1].equippingBlock.ammoType, // primary, special 
-            'damage_type_hash': element[1].defaultDamageTypeHash, // void, solar
-            'perks': new_perks,
-            'base_stats': new_base_stats,
-            'investment_stats': investment_stats
-        }
-        
-        weapon_info[element[0]] = f_weps
-    }
-    function filter_armor(e) {
-        const element = e
-        let f_armor = {
-            'name': element[1].displayProperties.name,
-            'icon': element[1].displayProperties.icon,
-            'type': element[1].itemTypeDisplayName, // helm, chest
-            'perks': element[1].sockets.socketEntries[11].singleInitialItemHash // exotic perk
-        }
-        armor_info[element[0]] = f_armor
-    }
-    function filter_mods_and_sluff(e) {
-        const element = e
-        let z = ['Emote', 'Armor Ornament', 'Weapon Ornament', 'Titan Universal Ornament'];
-        if (!(z.indexOf(element[1].itemTypeDisplayName) > -1)) {
-            const new_stat = []
-            for (let i = 0; i < element[1].investmentStats.length; i++){
-                const stats = element[1].investmentStats[i]
-                new_stat.push([stats.statTypeHash, stats.value])
+        new_inventory_item[id].stats.base_stats = new_base_stats(data.stats.stats) // base stats
+        function new_base_stats(data) {
+            data = Object.entries(data)
+            let base_stats = {}
+            for (let i = 0; i < data.length; i++) {
+                const element = data[i];
+                base_stats[element[0]] = element[1].value
             }
-            let f_perks_mods = {
-                'name': element[1].displayProperties.name,
-                'icon': element[1].displayProperties.icon,
-                'investmentStats': new_stat
+            return base_stats
+        }
+        new_inventory_item[id].stats.investment_stats = new_investment_stats(data.investmentStats) // investment_stats
+        function new_investment_stats(data) {
+            let investment_stats = {}
+            for (let i = 0; i < data.length; i++) {
+                const element = data[i];
+                investment_stats[element.statTypeHash] = element.value
             }
-            perk_mod_info[element[0]] = f_perks_mods
+            return investment_stats
         }
-    }
-    function filter_perk_by_icon(e) {
-        const element = e
-        let z = ['Arrow', 'Barrel', 'Battery', 'Blade', 'Bowstring', 'Grip', 'Guard', 'Launcher Barrel', 'Magazine', 'Scope', 'Sight', 'Stock', 'Trait'];
-        if (z.indexOf(element[1].itemTypeDisplayName) > -1) {
-            let name = element[1].displayProperties.name
-            let icon = String(element[1].displayProperties.icon).replace('/common/destiny2_content/icons/', '')
-            perk_mod_icon[icon] = [name, element[0]]
+        new_inventory_item[id].slot_type = new_slot_type(data.equippingBlock.equipmentSlotTypeHash) // slot type
+        function new_slot_type(data) {
+            return inventory_bucket[data].displayProperties.name.replace(' Weapons', '')
+             
         }
-    }
-    localStorage.setItem('clarity_weapon_info', JSON.stringify(weapon_info))
-    localStorage.setItem('clarity_armor_info', JSON.stringify(armor_info))
-    localStorage.setItem('clarity_perk_mod_info', JSON.stringify(perk_mod_info))
-    localStorage.setItem('clarity_perk_mod_icon', JSON.stringify(perk_mod_icon))
- // used to find perks using img link
-    
-}
-function run_stat_group_filter(data){
-    let stat_group_info = {}
-    for (let i = 0; i < data.length; i++){
-        const element = data[i]
-        let n_group = {}
-        for (let i = 0; i < element[1].scaledStats.length; i++){
-            const group = element[1].scaledStats[i]
-            n_group[group.statHash] = group.displayInterpolation
+        new_inventory_item[id].ammo_type = new_ammo_type(data.equippingBlock.ammoType) // ammo type
+        function new_ammo_type(data) {
+            if (data == 1) return 'primary'
+            if (data == 2) return 'special'
+            if (data == 3) return 'heavy'
         }
-        stat_group_info[element[0]] = n_group
-    }
-    localStorage.setItem('clarity_stat_group_info', JSON.stringify(stat_group_info))
-}
-function run_perk_list_filter(data){ // lists of perks weapons can get
-    let perk_list_info = {}
-    for (let i = 0; i < data.length; i++){
-        const element = data[i]
-        if (!element[1].isFakePlugSet){
-            let n_list = []
-            for (let i = 0; i < element[1].reusablePlugItems.length; i++){
-                const list = element[1].reusablePlugItems[i]
-                if (list.currentlyCanRoll) {
-                    n_list.push(list.plugItemHash)
+        new_inventory_item[id].sockets = new_sockets(data.sockets.socketEntries, data.sockets.socketCategories) // sockets
+        function new_sockets(data, index) {
+            let perks = {}
+            for (let i = 0; i < index.length; i++) {
+                const element = index[i]
+                let socket_name = socket_category[element.socketCategoryHash].displayProperties.name.toLowerCase().replace(' ', '_')
+                if (socket_name != 'weapon_cosmetics' && socket_name != 'weapon_mods') {
+                    perks[socket_name] = thing = []
+                    for (let y = 0; y < element.socketIndexes.length; y++) {
+                        const ele = element.socketIndexes[y]
+                        if (data[ele].singleInitialItemHash != '2285418970') thing.push(perk_filter(ele, socket_name)) // excluding tracker
+                    }
                 }
             }
-            perk_list_info[element[0]] = n_list
-            perk_list_info[element[0]] = n_list
+            function perk_filter(ele, socket_name){
+                new_stuff = {}
+                if (socket_name == 'intrinsic_traits') new_stuff['frame'] = data[ele].singleInitialItemHash // frame
+                if (socket_name == 'weapon_perks') {
+                    if (data[ele].reusablePlugItems && data[ele].reusablePlugItems.length != 0) { // curated perk list
+                        new_stuff['curated_perks'] = curated_perks = []
+                        let curated = data[ele].reusablePlugItems
+                        for (let i = 0; i < curated.length; i++) {
+                            const element = curated[i]
+                            curated_perks.push(element.plugItemHash)
+                        }
+                    } 
+                    if (data[ele].reusablePlugSetHash) {
+                        new_stuff['reusable_perk_list'] = reusable_perks = [] // reusable perk list
+                        let reusable_list = plug_set[data[ele].reusablePlugSetHash].reusablePlugItems
+                        for (let i = 0; i < reusable_list.length; i++) {
+                            const element = reusable_list[i]
+                            reusable_perks.push({'can_roll': element.currentlyCanRoll, 'perk_id': element.plugItemHash})
+                        }
+                    }
+                    if (data[ele].randomizedPlugSetHash) {
+                        new_stuff['random_perk_list'] = random_perks = [] // random perk list
+                        let random_list = plug_set[data[ele].randomizedPlugSetHash].reusablePlugItems
+                        for (let i = 0; i < random_list.length; i++) {
+                            const element = random_list[i]
+                            random_perks.push({'can_roll': element.currentlyCanRoll, 'perk_id': element.plugItemHash})
+                        }
+                    }
+                }
+                return new_stuff
+            }
+            return perks
+        }
+        new_inventory_item[id].damage_type = new_damage_type(data.defaultDamageTypeHash) // damage type
+        function new_damage_type(data) {
+            return damage_type_list[data].displayProperties.name
+        }
+        new_inventory_item[id].formulas = new_formulas(data.itemTypeDisplayName, data.sockets.socketEntries, data.sockets.socketCategories) // formulas
+        function new_formulas(type, socket, index) {
+            for (let i = 0; i < index.length; i++) {
+                const element = index[i];
+                let socket_name = socket_category[element.socketCategoryHash].displayProperties.name.toLowerCase().replace(' ', '_')
+                if (socket_name == 'intrinsic_traits') {
+                    let frame_id = socket[element.socketIndexes[0]].singleInitialItemHash
+                    let frame_name = inventory_item[frame_id].displayProperties.name
+                    if (formulas[type][frame_name]) return formulas[type][frame_name]
+                }
+            }
         }
     }
-    localStorage.setItem('clarity_perk_list_info', JSON.stringify(perk_list_info))
-}
-function run_stat_name_filter(data) {
-    let stat_names = {} // used to find perks using img link
-    for (let i = 0; i < data.length; i++){
-        const element = data[i]
-        if (element[1].statCategory == 1 && element[1].displayProperties.name != '') {
-            let f_stats = {'name': element[1].displayProperties.name}
-            stat_names[element[0]] = f_stats
+    function filter_armor(data_old) {
+        const id = data_old[0]
+        const data = data_old[1]
+        new_inventory_item[id] = {
+            'name': data.displayProperties.name,
+            'icon': data.displayProperties.icon,
+            'type': data.itemTypeDisplayName, // helm, chest, ...
+            'perks': '', // exotic perk
+            'item_type': 'armor'
+        }
+        new_inventory_item[id].perks = new_armor(data.sockets.socketEntries)
+        function new_armor(perk_list) {
+            for (let i = perk_list.length - 1; i >= 0 ; i--) {
+                const element = perk_list[i]
+                if (element.socketTypeHash == '965959289' || element.socketTypeHash == '635551670') {
+                    let name = inventory_item[element.singleInitialItemHash].displayProperties.name
+                    let description = (armor_perks[name]) ? armor_perks[name] : `<div class='new_pd'>${inventory_item[element.singleInitialItemHash].displayProperties.description}</div>`
+                    return {
+                        'name': name,
+                        'description': description,
+                    }
+                }
+            }
         }
     }
-    localStorage.setItem('clarity_stat_names', JSON.stringify(stat_names))
+    function filter_perks_and_sluff(data_old) {
+        const id = data_old[0]
+        const data = data_old[1]
+        let name = data.displayProperties.name
+        let conditional_description = (data.investmentStats.length != 0) ? {'text': `<div></div>`} : {'text': `<div class='new_pd'>${data.displayProperties.description}</div>`}
+        let description = (weapon_perks[name]) ? weapon_perks[name] : conditional_description
+        new_inventory_item[id] = {
+            'name': data.displayProperties.name,
+            'icon': data.displayProperties.icon,
+            'description': description,
+            'item_type': 'perk'
+        }
+        if (data.investmentStats.length != 0) new_inventory_item[id].investment_stats = data.investmentStats
+    }
+    localStorage.setItem('clarity_inventory_item', JSON.stringify(new_inventory_item))
+    console.log(`-  -  Clarity DIM companion  -  - > Clarity inventory item was updated --> Execution time: ${window.performance.now() - start} ms`)
+    add_data_to_instanced_items()
+    enable_refresh_button()
 }
-function run_custom_json(){
-    fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/exotic_armor_perks/?${Math.random()}`)
-    .then(resp => { return resp.json() })
-    .then(data => { localStorage.setItem('clarity_exotic_armor_description', JSON.stringify(data)) })
-
-    fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/weapon_formulas/?${Math.random()}`)
-    .then(resp => { return resp.json() })
-    .then(data => { localStorage.setItem('clarity_weapon_formulas', JSON.stringify(data)) })
-
-    fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/weapon_perks/?${Math.random()}`)
-    .then(resp => { return resp.json() })
-    .then(data => { localStorage.setItem('clarity_weapon_perks', JSON.stringify(data)) })
-
-    let dim_v = (localStorage.getItem('clarity_dim_version') == 'beta') ? 'beta_dim_locations' : 'app_dim_locations'
-    fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/${dim_v}/?${Math.random()}`)
-    .then(resp => { return resp.json() })
-    .then(data => { localStorage.setItem('clarity_dim_div_locations', JSON.stringify(data)) })
-
-    run_dark_mode()
-    info_button_observer()
-}*/
+function enable_refresh_button(){ // instanced item data refresh
+    // let jd = JSON.parse(localStorage.getItem('clarity_locations')).sources_and_more_menu
+    let observer = new MutationObserver((_o, quit) => {
+        let loc = document.querySelector('.Header-m_headerRight-Fbed4 > .Header-m_menuItem-3G0SM')
+        if (loc){
+            loc.addEventListener('click', add_data_to_instanced_items)
+            quit.disconnect()
+        }
+    })
+    observer.observe(document, {
+        childList: true,
+        subtree: true
+    })
+    document.addEventListener('keypress', e => {
+        if (e.key == 'r' && e.defaultPrevented) add_data_to_instanced_items()
+    })
+    document.addEventListener('visibilitychange', _ => {
+        if (document.visibilityState == 'visible') add_data_to_instanced_items()
+    })
+}
+function add_data_to_instanced_items() {
+    let start = window.performance.now()
+    let type = local_get('clarity_user').platform
+    let id = local_get('clarity_user').id
+    let array = [102,201,205,304,305,310]
+    let key = '2b16c291fcff48cbac86bd5f1d0bbc9d'
+    let token = 'Bearer ' + local_get('authorization').accessToken.value
+    let url = `https://www.bungie.net/Platform/Destiny2/${type}/Profile/${id}/?components=${array}`
+    fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'X-API-Key': key,
+            'Authorization': token
+        }
+    })
+    .then(u => u.json())
+    .then(json => {
+        find_items(json)
+    })
+    let instanced_items = {}
+    let inventory_item = local_get('clarity_inventory_item')
+    function find_items(data) {
+        let items = data.Response.profileInventory.data.items;
+        for (let i = 0; i < items.length; i++) {
+            const element = items[i]
+            if (element.itemInstanceId && inventory_item[element.itemHash]) {
+                add_data_to_instanced_items(inventory_item[element.itemHash], element.itemInstanceId)
+            }
+        }
+        function add_data_to_instanced_items(item_data, unique_id){
+            instanced_items[unique_id] = {
+                'manifest': item_data,
+                'stats': data.Response.itemComponents.stats.data[unique_id].stats, // calculated stats
+                'active_perks': data.Response.itemComponents.sockets.data[unique_id].sockets // active perks, frame, shader, ect...
+            }
+            try {instanced_items[unique_id].plugs = data.Response.itemComponents.reusablePlugs.data[unique_id].plugs} catch {} // all perks not all possible but all rolled nothing on weapons with out random perks
+        }
+        session_set_json('instanced_items', instanced_items)
+        console.log(`-  -  Clarity DIM companion  -  - > Instanced item data was updated --> Execution time: ${window.performance.now() - start} ms`);
+    }
+}

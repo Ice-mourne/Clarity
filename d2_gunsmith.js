@@ -39,7 +39,7 @@ function allow_drag(){
     }
 }
 function gunsmith_button(){
-    let json_divs = JSON.parse(localStorage.getItem('clarity_dim_div_locations')).d2_gunsmith
+    let json_divs = JSON.parse(localStorage.getItem('clarity_locations')).d2_gunsmith
     let stat_window = document.getElementById(json_divs.stat_window).nextSibling
     if(!document.getElementById('gunsmith_button')){
         create_element({'ele_type': 'div', 'sw_before_last': json_divs.location, 'id': 'gunsmith_button',      'class': json_divs.class    })
@@ -65,7 +65,7 @@ function gunsmith_button(){
     })
 }
 function open_gunsmith(){
-    let json_divs = local_get('clarity_dim_div_locations').d2_gunsmith
+    let json_divs = local_get('clarity_locations').d2_gunsmith
     let wep_ids = get_in_content(json_divs.link).href.replace('https://destinytracker.com/destiny-2/db/items/', '').replace('?perks=', ',').replace('4248210736', '0').split(',')
     let wep_link = `https://d2gunsmith.com/w/${wep_ids[0]}?s=${wep_ids[2]},${wep_ids[3]},${wep_ids[4]},${wep_ids[5]},0,0`
     create_element({'ele_type': 'div',    'id': 'gunsmith',             'location': '.store-cell'                                                              }) // main window to store everything

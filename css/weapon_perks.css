@@ -1,71 +1,62 @@
-/* weapon perks */
-.ItemPerksList-m_perkInfo-2opoU div, .ItemPerksList-m_perkInfo-2opoU .plug-stats, .ItemPerksList-m_perkInfo-2opoU p {
-    display: none;
-}
-
-.perk_description div:not(:first-child){
-    margin-top: 0px;
-}
-.perk_description {
-    width: 100%;
-    order: 99;
-    cursor: pointer;
-}
-.perk_container {
+.wep_perk_main_container{
     display: flex;
+    flex-direction: column;
+    margin: 10px -10px;  /* -12px -10px;   */
+
     border-top: 1px solid #333;
-    padding: 6px 10px;
-    flex-wrap: wrap;
 }
-
-/*
-.perk_column_container {
-    border-top: 1px solid;
-    margin: 12px -10px -12px -10px;
-}
-
-.perk_class:last-child {
-    margin-right: 0;
-}
-
-
-.perk_class {
+.wep_perk_list{
     display: flex;
-    margin-right: 1em;
-    cursor: pointer;
-    position: relative;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: flex-start;
+    border-bottom: 1px solid #333;
+    padding: 6px 10px;
 }
-.perk_class.active_perk {
+.description_container{
+    order: 999;
+    width: 100%;
+}
+.perk_container{
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    margin-right: 1em;
+}
+.wep_perk_list :nth-last-child(1){
+    margin-right: 0px;
+}
+.perk_container.active_perk, .perk_container.selected_perk{
     flex: 1;
 }
-
-.perk_class .perk_img {
-    width: 26px;
-    height: 26px;
+/*      icon         */
+.wep_perk_icon{
+    width: calc(24 / 50 * var(--item-size));
+    height: calc(24 / 50 * var(--item-size));
     border: 1px solid white;
     border-radius: 50%;
+    position: relative;
     padding: 1px;
 }
-.perk_class.active_perk .perk_img {
+.wep_perk_icon img{
+    height: 100%;
+    width: 100%;
+}
+.perk_container.active_perk .wep_perk_icon{
     background-color: #4887ba;
 }
-
-.perk_class .perk_thumbs_up {
-    position: absolute;
-    top: -5px;
-    right: -7px;
+.perk_container.selected_perk .wep_perk_icon{
+    background-color: #e8a534;
 }
-.perk_class.active_perk .perk_thumbs_up {
-    left: 23px;
-    right: auto;
-}
-
-.perk_class .perk_name {
-    padding-left: 6px;
+/*       name       */
+.perk_name{
     align-self: center;
+    margin-left: 5px;
     display: none;
 }
-.perk_class.active_perk .perk_name {
-    flex: 1;
+.perk_container.active_perk .perk_name{
     display: block;
-}*/
+}
+.perk_container.selected_perk .perk_name{
+    display: block;
+}
