@@ -19,6 +19,8 @@
                 "weps_armor_mods_perks/armor_descriptions.js",
 
                 "weps_armor_mods_perks/new_extra_weapon_stats.js",
+                "all_wep_perks.js",
+
 
                 "content.js",
                 "d2_gunsmith.js",
@@ -37,6 +39,7 @@
     "web_accessible_resources": ["/images/*"],
     "permissions": [
         "https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/*",
+        "https://www.bungie.net/*",
         "webRequest"
     ]
 }

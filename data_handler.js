@@ -32,11 +32,9 @@
     .then(resp => resp.json())
     .then(json_version => {
         let manifest_version = localStorage.getItem('d2-manifest-version')
-        if (!local_get('clarity_info') || true) {
-            run_manifest()
-        } else if (!local_get('clarity_info').json_version || !local_get('clarity_info').manifest_version) {
-            run_manifest()
-        } else if(local_get('clarity_info').json_version != json_version.version || local_get('clarity_info').manifest_version != manifest_version) {
+        const c_info   = local_get('clarity_info')
+        const inv_item = local_get('clarity_inventory_item')
+        if (!c_info || !inv_item || !c_info.json_version || !c_info.manifest_version || c_info.json_version != json_version.version || c_info.manifest_version != manifest_version) {
             run_manifest()
         } else {
             console.log('-  -  Clarity DIM companion  -  - > Clarity inventory item already up to date')
@@ -90,154 +88,142 @@ function filter_inventory_item(data, stat_group, inventory_bucket, socket_catego
         const element = data[i]
         switch (element[1].itemType){
             case 3: // itemType:3 'Weapon'
-                filter_weapons(element)
+                if (element[1].defaultDamageType != 0) filter_weapons(element)
                 break
             case 2: // itemType:2 'armor'
                 if (element[1].inventory.tierTypeName == 'Exotic') filter_armor(element)
                 break
-            case 19: // itemType:19 'mod', itemSubType:0 'None'                  
-                if (element[1].itemSubType == 0) filter_perks_and_sluff(element)
+            case 19: // itemType:19 'mod'
+                if (element[1].displayProperties.name && element[1].displayProperties.hasIcon && element[1].plug) {
+                    //           Arrow,      Barrel,     Battery,    Blade,      Bowstring,  Grip,       Guard,     Launcher Barrel, Magazine,   Scope,      Stock,     Trait    Magazine gl
+                    let perks = [1257608559, 2833605196, 1757026848, 1041766312, 3809303875, 3962145884, 683359327, 1202604782,      1806783418, 2619833294, 577918720, 7906839, 2718120384]
+                    if (perks.indexOf(element[1].plug.plugCategoryHash) > -1) {filter_perks_and_sluff(element, 'perk'); break}
+                    //            Intrinsic
+                    let frames = [1744546145]
+                    if (frames.indexOf(element[1].plug.plugCategoryHash) > -1) {filter_perks_and_sluff(element, 'frame'); break}
+                    //                Range,      Handling,  Accuracy,   Impact,     Stability,  Draw,      Charge,     Blast,      Velocity,   Reload                               
+                    let masterwork = [1392237582, 199786516, 1238043140, 2458812152, 1762223024, 482070447, 2827428737, 1847616696, 2321551094, 717646604]
+                    if (masterwork.indexOf(element[1].plug.plugCategoryHash) > -1) {filter_perks_and_sluff(element, 'masterwork'); break}
+                    //                              
+                    if (element[1].itemTypeDisplayName == 'Weapon Mod') {filter_perks_and_sluff(element, 'w_mod'); break}
+                    //
+                    if (element[1].plug.uiPlugLabel == 'masterwork') {filter_perks_and_sluff(element, 'catalyst'); break} // == masterwork applies to catalysts
+                    filter_perks_and_sluff(element, 'other'); break
+                } 
                 break
         }
     }
-    function filter_weapons(data_old) {
-        const id = data_old[0]
-        const data = data_old[1]
+    function filter_weapons(data_arr) {
+        const id = data_arr[0]
+        const data = data_arr[1]
         new_inventory_item[id] = {
             'name': data.displayProperties.name,
             'icon': data.displayProperties.icon, // icon link
             'item_type': data.itemTypeDisplayName, // (sniper, ...)
             'item_tier': data.inventory.tierTypeName, // (legendary, ...)
             'stats': {
-                'stat_group': '', // (0-100, 10-100)
-                'base_stats': '',
-                'investment_stats': ''
+                'stat_group':       new_stat_group(), // (0-100, 10-100)
+                'base_stats':       new_base_stats(),
+                'investment_stats': new_investment_stats()
             },
-            'slot_type': '', // (kinetic, energy, heavy)
-            'ammo_type': '', // (primary, special, heavy)
+            'slot_type': inventory_bucket[data.equippingBlock.equipmentSlotTypeHash].displayProperties.name.replace(' Weapons', ''), // (kinetic, energy, heavy)
+            'ammo_type': new_ammo_type(), // (primary, special, heavy)
             
-            'sockets': '', // perks, frame
-            'damage_type': '', // damage type
-            'formulas': '',
+            'sockets': new_sockets(), // perks, frame
+            'damage_type': damage_type_list[data.defaultDamageTypeHash].displayProperties.name, // damage type
+            'formulas': new_formulas(),
             'item_type': 'weapon'
         }
-        new_inventory_item[id].stats.stat_group = new_stat_group(stat_group[data.stats.statGroupHash].scaledStats) // stat group (0-100, 10-100)
-        function new_stat_group(data) {
-            let stat_group = {}
-            for (let i = 0; i < data.length; i++) {
-                const element = data[i];
-                stat_group[element.statHash] = element.displayInterpolation
-            }
-            return stat_group
+        function new_stat_group() { // stat group (0-100, 10-100)
+            let x = {}
+            stat_group[data.stats.statGroupHash].scaledStats.forEach(element => {
+                x[element.statHash] = element.displayInterpolation
+            })
+            return x
         }
-        new_inventory_item[id].stats.base_stats = new_base_stats(data.stats.stats) // base stats
-        function new_base_stats(data) {
-            data = Object.entries(data)
-            let base_stats = {}
-            for (let i = 0; i < data.length; i++) {
-                const element = data[i];
-                base_stats[element[0]] = element[1].value
-            }
-            return base_stats
+        function new_base_stats() { // base stats
+            let x = {}
+            Object.entries(data.stats.stats).forEach(element => {
+                if (element[1].value != 0) x[element[0]] = element[1].value
+            })
+            return x 
         }
-        new_inventory_item[id].stats.investment_stats = new_investment_stats(data.investmentStats) // investment_stats
-        function new_investment_stats(data) {
-            let investment_stats = {}
-            for (let i = 0; i < data.length; i++) {
-                const element = data[i];
-                investment_stats[element.statTypeHash] = element.value
-            }
-            return investment_stats
+        function new_investment_stats() { // investment_stats
+            let x = {}
+            data.investmentStats.forEach(element => {
+                if (element.value != 0) x[element.statTypeHash] = element.value
+            })
+            return x 
         }
-        new_inventory_item[id].slot_type = new_slot_type(data.equippingBlock.equipmentSlotTypeHash) // slot type
-        function new_slot_type(data) {
-            return inventory_bucket[data].displayProperties.name.replace(' Weapons', '')
-             
+        function new_ammo_type() { // ammo type
+            const ammo = data.equippingBlock.ammoType
+            if (ammo == 1) return 'primary'
+            if (ammo == 2) return 'special'
+            if (ammo == 3) return 'heavy'
         }
-        new_inventory_item[id].ammo_type = new_ammo_type(data.equippingBlock.ammoType) // ammo type
-        function new_ammo_type(data) {
-            if (data == 1) return 'primary'
-            if (data == 2) return 'special'
-            if (data == 3) return 'heavy'
-        }
-        new_inventory_item[id].sockets = new_sockets(data.sockets.socketEntries, data.sockets.socketCategories) // sockets
-        function new_sockets(data, index) {
+        function new_sockets() { // sockets
             let perks = {}
-            for (let i = 0; i < index.length; i++) {
-                const element = index[i]
-                let socket_name = socket_category[element.socketCategoryHash].displayProperties.name.toLowerCase().replace(' ', '_')
-                if (socket_name != 'weapon_cosmetics' && socket_name != 'weapon_mods') {
-                    perks[socket_name] = thing = []
-                    for (let y = 0; y < element.socketIndexes.length; y++) {
-                        const ele = element.socketIndexes[y]
-                        if (data[ele].singleInitialItemHash != '2285418970') thing.push(perk_filter(ele, socket_name)) // excluding tracker
+            perks.indexes = []
+            data.sockets.socketCategories.forEach(element => { // add weapon frame and find perk indexes
+                if (element.socketCategoryHash == 3956125808) element.socketIndexes.forEach(element => { // frame
+                    perks.frame = data.sockets.socketEntries[element].singleInitialItemHash
+                })
+                if (element.socketCategoryHash == 4241085061) element.socketIndexes.forEach(element => { // (element.socketCategoryHash == 4241085061) => perk socket list // for each item in list will give sockets is 1,2,3,4,9 or similar 9 is tracker
+                    if (data.sockets.socketEntries[element].singleInitialItemHash != 2285418970) { // excluding tracker because it is perk??? Bungie stop smoking crack
+                        perks[element] = filter_perks(element) // element = perk socket index 1, 2, 3, 4 -- usually
+                        perks.indexes.push(element)                    
                     }
-                }
-            }
-            function perk_filter(ele, socket_name){
-                new_stuff = {}
-                if (socket_name == 'intrinsic_traits') new_stuff['frame'] = data[ele].singleInitialItemHash // frame
-                if (socket_name == 'weapon_perks') {
-                    if (data[ele].reusablePlugItems && data[ele].reusablePlugItems.length != 0) { // curated perk list
-                        new_stuff['curated_perks'] = curated_perks = []
-                        let curated = data[ele].reusablePlugItems
-                        for (let i = 0; i < curated.length; i++) {
-                            const element = curated[i]
-                            curated_perks.push(element.plugItemHash)
-                        }
-                    } 
-                    if (data[ele].reusablePlugSetHash) {
-                        new_stuff['reusable_perk_list'] = reusable_perks = [] // reusable perk list
-                        let reusable_list = plug_set[data[ele].reusablePlugSetHash].reusablePlugItems
-                        for (let i = 0; i < reusable_list.length; i++) {
-                            const element = reusable_list[i]
-                            reusable_perks.push({'can_roll': element.currentlyCanRoll, 'perk_id': element.plugItemHash})
-                        }
+                })
+                if (element.socketCategoryHash == 2685412949) element.socketIndexes.forEach(element => { // mod and masterwork indexes
+                    perks.indexes.push(element) 
+                })
+            })
+            function filter_perks(index){
+                let perk = {}
+                const element = data.sockets.socketEntries[index]
+                    const curated = element.reusablePlugItems
+                    if (curated && curated.length != 0) { // curated perk list
+                        perk.curated_perks = x = []
+                        curated.forEach(element => { x.push(element.plugItemHash) })
                     }
-                    if (data[ele].randomizedPlugSetHash) {
-                        new_stuff['random_perk_list'] = random_perks = [] // random perk list
-                        let random_list = plug_set[data[ele].randomizedPlugSetHash].reusablePlugItems
-                        for (let i = 0; i < random_list.length; i++) {
-                            const element = random_list[i]
-                            random_perks.push({'can_roll': element.currentlyCanRoll, 'perk_id': element.plugItemHash})
-                        }
+                    if (element.reusablePlugSetHash) { // reusable perk list
+                        perk.reusable_perk_list = x = []
+                        plug_set[element.reusablePlugSetHash].reusablePlugItems.forEach(element => { x.push({'can_roll': element.currentlyCanRoll, 'perk_id': element.plugItemHash}) })
                     }
-                }
-                return new_stuff
+
+                    if (element.randomizedPlugSetHash) { // random perk list
+                        perk.random_perks = x = []
+                        plug_set[element.randomizedPlugSetHash].reusablePlugItems.forEach(element => { x.push({'can_roll': element.currentlyCanRoll, 'perk_id': element.plugItemHash}) })
+                    }
+                return perk
             }
             return perks
         }
-        new_inventory_item[id].damage_type = new_damage_type(data.defaultDamageTypeHash) // damage type
-        function new_damage_type(data) {
-            return damage_type_list[data].displayProperties.name
-        }
-        new_inventory_item[id].formulas = new_formulas(data.itemTypeDisplayName, data.sockets.socketEntries, data.sockets.socketCategories) // formulas
-        function new_formulas(type, socket, index) {
-            for (let i = 0; i < index.length; i++) {
-                const element = index[i];
-                let socket_name = socket_category[element.socketCategoryHash].displayProperties.name.toLowerCase().replace(' ', '_')
-                if (socket_name == 'intrinsic_traits') {
-                    let frame_id = socket[element.socketIndexes[0]].singleInitialItemHash
-                    let frame_name = inventory_item[frame_id].displayProperties.name
+        function new_formulas() { // formulas
+            const type = data.itemTypeDisplayName
+            for (let i = 0; i < data.sockets.socketCategories.length; i++) { 
+                const element = data.sockets.socketCategories[i]
+                if (element.socketCategoryHash == 3956125808) { // if socket category = INTRINSIC TRAITS
+                    let frame_index = element.socketIndexes[0] // weapons frames index in socketEntries
+                    let frame_id    = data.sockets.socketEntries[frame_index].singleInitialItemHash
+                    let frame_name  = inventory_item[frame_id].displayProperties.name
                     if (formulas[type][frame_name]) return formulas[type][frame_name]
                 }
             }
         }
     }
-    function filter_armor(data_old) {
-        const id = data_old[0]
-        const data = data_old[1]
+    function filter_armor(data_arr) {
+        const id = data_arr[0]
+        const data = data_arr[1]
         new_inventory_item[id] = {
             'name': data.displayProperties.name,
             'icon': data.displayProperties.icon,
             'type': data.itemTypeDisplayName, // helm, chest, ...
-            'perks': '', // exotic perk
+            'perks': new_armor(), // exotic perk
             'item_type': 'armor'
         }
-        new_inventory_item[id].perks = new_armor(data.sockets.socketEntries)
-        function new_armor(perk_list) {
-            for (let i = perk_list.length - 1; i >= 0 ; i--) {
-                const element = perk_list[i]
+        function new_armor() {
+            data.sockets.socketEntries.forEach(element => {
                 if (element.socketTypeHash == '965959289' || element.socketTypeHash == '635551670') {
                     let name = inventory_item[element.singleInitialItemHash].displayProperties.name
                     let description = (armor_perks[name]) ? armor_perks[name] : `<div class='new_pd'>${inventory_item[element.singleInitialItemHash].displayProperties.description}</div>`
@@ -246,22 +232,39 @@ function filter_inventory_item(data, stat_group, inventory_bucket, socket_catego
                         'description': description,
                     }
                 }
-            }
+            })
         }
     }
-    function filter_perks_and_sluff(data_old) {
-        const id = data_old[0]
-        const data = data_old[1]
-        let name = data.displayProperties.name
-        let conditional_description = (data.investmentStats.length != 0) ? {'text': `<div></div>`} : {'text': `<div class='new_pd'>${data.displayProperties.description}</div>`}
-        let description = (weapon_perks[name]) ? weapon_perks[name] : conditional_description
-        new_inventory_item[id] = {
-            'name': data.displayProperties.name,
-            'icon': data.displayProperties.icon,
-            'description': description,
-            'item_type': 'perk'
+    function filter_perks_and_sluff(data_arr, item_type) {
+        const id   = data_arr[0]
+        const data = data_arr[1]
+        let name   = data.displayProperties.name
+        if (item_type != 'other'){
+            new_inventory_item[id] = {
+                'name': name,
+                'icon': data.displayProperties.icon,
+                'item_type': item_type,
+                "description": new_description(),
+                "investment_stats": new_investment_stats()
+            }
+            function new_description(){
+                if (data.investmentStats.length == 0) return (weapon_perks[name]) ? weapon_perks[name] : {'text': `<div class='new_pd'>${data.displayProperties.description}</div>`} 
+            }
+            function new_investment_stats(){
+                if (data.investmentStats.length != 0){
+                    let x = []
+                    data.investmentStats.forEach(element => {
+                        if (element.value != 0) x.push(element)
+                    })
+                    return x
+                }
+            }
+        } else{
+            new_inventory_item[id] = {
+                'name': name,
+                'item_type': item_type
+            }
         }
-        if (data.investmentStats.length != 0) new_inventory_item[id].investment_stats = data.investmentStats
     }
     localStorage.setItem('clarity_inventory_item', JSON.stringify(new_inventory_item))
     console.log(`-  -  Clarity DIM companion  -  - > Clarity inventory item was updated --> Execution time: ${window.performance.now() - start} ms`)
@@ -299,18 +302,13 @@ function add_data_to_instanced_items() {
     fetch(url, {
         method: 'GET',
         mode: 'cors',
-        headers: {
-            'X-API-Key': key,
-            'Authorization': token
-        }
+        headers: { 'X-API-Key': key, 'Authorization': token }
     })
-    .then(u => u.json())
-    .then(json => {
-        find_items(json)
-    })
+    .then(u => u.json()).then(json => find_items(json))
     let instanced_items = {}
     let inventory_item = local_get('clarity_inventory_item')
     function find_items(data) {
+    let api_end = window.performance.now()
         let items = data.Response.profileInventory.data.items;
         for (let i = 0; i < items.length; i++) {
             const element = items[i]
@@ -322,11 +320,16 @@ function add_data_to_instanced_items() {
             instanced_items[unique_id] = {
                 'manifest': item_data,
                 'stats': data.Response.itemComponents.stats.data[unique_id].stats, // calculated stats
-                'active_perks': data.Response.itemComponents.sockets.data[unique_id].sockets // active perks, frame, shader, ect...
+                'active_perks': data.Response.itemComponents.sockets.data[unique_id].sockets, // active perks, frame, shader, ect...
             }
             try {instanced_items[unique_id].plugs = data.Response.itemComponents.reusablePlugs.data[unique_id].plugs} catch {} // all perks not all possible but all rolled nothing on weapons with out random perks
         }
         session_set_json('instanced_items', instanced_items)
-        console.log(`-  -  Clarity DIM companion  -  - > Instanced item data was updated --> Execution time: ${window.performance.now() - start} ms`);
+        // console.log(`-  -  Clarity DIM companion  -  - > Instanced item data was updated
+        // Execution time: 
+        //     API call: ${api_end - start} ms
+        //     Processing data: ${window.performance.now() - api_end} ms
+        //     Total: ${window.performance.now() - start} ms`
+        // )
     }
 }

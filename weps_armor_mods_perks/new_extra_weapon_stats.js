@@ -1,4 +1,4 @@
-function weapon_pressed(unique_item){
+function _weapon_pressed(unique_item){
     let jd          = local_get('clarity_locations').extra_weapon_stats
     let manifest    = local_get('clarity_inventory_item')
     let range_stat  = (unique_item.stats[1240592695]) ? unique_item.stats[1240592695].value : undefined
@@ -34,7 +34,7 @@ function weapon_pressed(unique_item){
     add_new_perks(unique_item, manifest)
 }
 function add_new_perks(unique_item, manifest){
-    let perk_slot_count = -1 // number of active perks -1 because it counts frame as perk
+    let perk_slot_count = 0 // number of active perks
     let location = get_in_content('.item-details.sockets')
     let fragment = document.createDocumentFragment() 
     let main_container = fragment.appendChild(document.createElement('div'))// box holding all perks
@@ -51,6 +51,7 @@ function add_new_perks(unique_item, manifest){
             let description_container = document.createElement('div')
             perk_list.appendChild(description_container).className = 'description_container'
             description_container.addEventListener('click', e => {e.currentTarget.textContent = ''; e.currentTarget.id = ''})
+            //let unique_item_plugs_length = (unique_item.plugs[i]) ? unique_item.plugs[i].length : 0
             for (let y = 0; y < unique_item.plugs[i].length; y++) {
                 perk_container = document.createElement('div')
                 let container_class_name = 'perk_container'
@@ -66,7 +67,26 @@ function add_new_perks(unique_item, manifest){
         }
     }
     function add_perk_slots_curated_roll(){
-
+        for (let i = perk_slot_count; i > 0; i--) {
+            perk_list = document.createElement('div')
+            main_container.appendChild(perk_list).className = 'wep_perk_list'
+            let description_container = document.createElement('div')
+            perk_list.appendChild(description_container).className = 'description_container'
+            description_container.addEventListener('click', e => {e.currentTarget.textContent = ''; e.currentTarget.id = ''})
+            //let unique_item_plugs_length = (unique_item.plugs[i]) ? unique_item.plugs[i].length : 0
+            // for (let y = 0; y < unique_item.plugs[i].length; y++) {
+            //     perk_container = document.createElement('div')
+            //     let container_class_name = 'perk_container'
+            //     for (let x = 0; x < unique_item.active_perks.length; x++) {
+            //         const element = unique_item.active_perks[x]
+            //         if (element.plugHash == unique_item.plugs[i][y].plugItemHash) container_class_name = 'perk_container active_perk'
+            //     }
+            //     perk_list.appendChild(perk_container).className = container_class_name
+            //     add_perk_details(unique_item.plugs[i][y].plugItemHash, perk_container)
+            //     perk_container.addEventListener('click', e => {add_wep_perk_description(e, manifest, unique_item)})
+            //     perk_container.id = unique_item.plugs[i][y].plugItemHash
+            // }
+        }
     }
     function add_perk_details(perk_id, location){
         let perk_info      = manifest[perk_id]
@@ -86,7 +106,7 @@ function add_wep_perk_description(event, manifest, unique_item){
     let target                = event.currentTarget
     let description_container = target.parentElement.firstChild
     let perk_id               = target.id
-    let new_description       = manifest[perk_id].description.text // DOMPurify.sanitize(manifest[perk_id].description.text, {USE_PROFILES: {html: true}})
+    let new_description       = DOMPurify.sanitize(manifest[perk_id].description.text, {USE_PROFILES: {html: true}}) // manifest[perk_id].description.text
     if (description_container.id == perk_id) {
         description_container.textContent = ''
         description_container.id          = ''
@@ -102,40 +122,35 @@ function add_wep_perk_description(event, manifest, unique_item){
                 const ele = manifest[unique_item.active_perks[i].plugHash].investment_stats
                 for (let y = 0; y < ele.length; y++) {
                     const element = ele[y];
-                    if (!element.isConditionallyActive) investment_stat_calculator(element)
+                    if (!element.isConditionallyActive) investment_stats.push({'id': element.statTypeHash, 'value': element.value})
                 }
             }
         }
-        function investment_stat_calculator(element){
-            //let inv_stats = investment_stats[element.statTypeHash] = []
-            //inv_stats.push(element.value)
-
-            investment_stats.push({'name': element.statTypeHash, 'value': element.value})
+        let all_inv_stats = Array.from(investment_stats.reduce((m, {id, value}) => m.set(id, (m.get(id) || 0) + value), new Map), ([id, value]) => ({id, value}))
 
 
 
-            
-            //const arr = [ { 'name': 'P1', 'value': 150 }, { 'name': 'P1', 'value': 150 }, { 'name': 'P2', 'value': 200 }, { 'name': 'P3', 'value': 450 } ];
 
- 
-
-            //console.log(res);
-                
-
-
+        let complete_inv_stats = {}
+        //let min_max_sss = {}
+        for (let i = 0; i < all_inv_stats.length; i++) {
+            const element = all_inv_stats[i]
+            complete_inv_stats[element.id] = unique_item.manifest.stats.investment_stats[element.id] + element.value
+            calculate_stats(complete_inv_stats, undefined, unique_item.manifest.stats.stat_group[element.id], element.id)
 
         }
-        const res = Array.from(
-            investment_stats.reduce((m, {name, value}) => m.set(name, (m.get(name) || 0) + value), new Map), ([name, value]) => ({name, value})
-        )
-        console.log(investment_stats);
-        console.log(res)
+        // find min and max https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
+        // findIndex()
+
+        function calculate_stats(inv_stat, base_stat, stat_group, id) {
+            let x = []
+            stat_group.forEach(element => {x.push(element.value)});
+            console.log(x);
+        }
+        //console.log(min_max_sss);
+        
 
 
 
     }
-
-
-
-    console.log(target);
 }
