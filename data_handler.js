@@ -1,3 +1,4 @@
+
 ;(() => {    
     let dim_url = document.querySelector('body').baseURI
     let key = '2b16c291fcff48cbac86bd5f1d0bbc9d'
@@ -27,7 +28,7 @@
         info_button_observer()
     })
 })()
-;(() => { // - - checks if data base needs updating
+;(() => { // - - checks if database needs updating
     fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/version/?${Math.random()}`)
     .then(resp => resp.json())
     .then(json_version => {
@@ -119,7 +120,7 @@ function filter_inventory_item(data, stat_group, inventory_bucket, socket_catego
         new_inventory_item[id] = {
             'name': data.displayProperties.name,
             'icon': data.displayProperties.icon, // icon link
-            'item_type': data.itemTypeDisplayName, // (sniper, ...)
+            'weapon_type': data.itemTypeDisplayName, // (sniper, ...)
             'item_tier': data.inventory.tierTypeName, // (legendary, ...)
             'stats': {
                 'stat_group':       new_stat_group(), // (0-100, 10-100)
@@ -144,14 +145,14 @@ function filter_inventory_item(data, stat_group, inventory_bucket, socket_catego
         function new_base_stats() { // base stats
             let x = {}
             Object.entries(data.stats.stats).forEach(element => {
-                if (element[1].value != 0) x[element[0]] = element[1].value
+                if (element[0] != 1885944937 && element[0] != 1935470627 && element[0] != 1480404414 && element[0] != 3291498656) x[element[0]] = element[1].value
             })
             return x 
         }
         function new_investment_stats() { // investment_stats
             let x = {}
             data.investmentStats.forEach(element => {
-                if (element.value != 0) x[element.statTypeHash] = element.value
+                if (element.statTypeHash != 1885944937 && element.statTypeHash != 1935470627 && element.statTypeHash != 1480404414 && element.statTypeHash != 3291498656) x[element.statTypeHash] = element.value
             })
             return x 
         }
@@ -167,15 +168,16 @@ function filter_inventory_item(data, stat_group, inventory_bucket, socket_catego
             data.sockets.socketCategories.forEach(element => { // add weapon frame and find perk indexes
                 if (element.socketCategoryHash == 3956125808) element.socketIndexes.forEach(element => { // frame
                     perks.frame = data.sockets.socketEntries[element].singleInitialItemHash
+                    perks.indexes.push(element)
                 })
                 if (element.socketCategoryHash == 4241085061) element.socketIndexes.forEach(element => { // (element.socketCategoryHash == 4241085061) => perk socket list // for each item in list will give sockets is 1,2,3,4,9 or similar 9 is tracker
                     if (data.sockets.socketEntries[element].singleInitialItemHash != 2285418970) { // excluding tracker because it is perk??? Bungie stop smoking crack
                         perks[element] = filter_perks(element) // element = perk socket index 1, 2, 3, 4 -- usually
-                        perks.indexes.push(element)                    
+                        perks.indexes.push(element)
                     }
                 })
                 if (element.socketCategoryHash == 2685412949) element.socketIndexes.forEach(element => { // mod and masterwork indexes
-                    perks.indexes.push(element) 
+                    perks.indexes.push(element)
                 })
             })
             function filter_perks(index){
@@ -190,7 +192,6 @@ function filter_inventory_item(data, stat_group, inventory_bucket, socket_catego
                         perk.reusable_perk_list = x = []
                         plug_set[element.reusablePlugSetHash].reusablePlugItems.forEach(element => { x.push({'can_roll': element.currentlyCanRoll, 'perk_id': element.plugItemHash}) })
                     }
-
                     if (element.randomizedPlugSetHash) { // random perk list
                         perk.random_perks = x = []
                         plug_set[element.randomizedPlugSetHash].reusablePlugItems.forEach(element => { x.push({'can_roll': element.currentlyCanRoll, 'perk_id': element.plugItemHash}) })
@@ -254,17 +255,22 @@ function filter_inventory_item(data, stat_group, inventory_bucket, socket_catego
                 if (data.investmentStats.length != 0){
                     let x = []
                     data.investmentStats.forEach(element => {
-                        if (element.value != 0) x.push(element)
+                        if (element.value != 0 && element.statTypeHash != 1885944937 && element.statTypeHash != 1935470627 && element.statTypeHash != 1480404414 && element.statTypeHash != 3291498656) x.push(element)
                     })
                     return x
                 }
             }
-        } else{
+        } else {
             new_inventory_item[id] = {
                 'name': name,
                 'item_type': item_type
             }
         }
+    }
+    new_inventory_item['712324018'] = { // extra perk
+        'name': 'Transformative',
+        'icon': '/common/destiny2_content/icons/f2ff6ea4498ad2d808b4af21e93cf5fe.png',
+        'item_type': 'perk',
     }
     localStorage.setItem('clarity_inventory_item', JSON.stringify(new_inventory_item))
     console.log(`-  -  Clarity DIM companion  -  - > Clarity inventory item was updated --> Execution time: ${window.performance.now() - start} ms`)
@@ -308,11 +314,14 @@ function add_data_to_instanced_items() {
     let instanced_items = {}
     let inventory_item = local_get('clarity_inventory_item')
     function find_items(data) {
-    let api_end = window.performance.now()
-        let items = data.Response.profileInventory.data.items;
+        let api_end = window.performance.now()
+        let items = []
+        items = data.Response.profileInventory.data.items
+        Object.entries(data.Response.characterInventories.data).forEach(element => { items = items.concat(element[1].items) })
+        Object.entries(data.Response.characterEquipment  .data).forEach(element => { items = items.concat(element[1].items) })
         for (let i = 0; i < items.length; i++) {
             const element = items[i]
-            if (element.itemInstanceId && inventory_item[element.itemHash]) {
+            if (element.itemInstanceId && inventory_item[element.itemHash] && inventory_item[element.itemHash].item_type != 'other') {
                 add_data_to_instanced_items(inventory_item[element.itemHash], element.itemInstanceId)
             }
         }
@@ -333,3 +342,4 @@ function add_data_to_instanced_items() {
         // )
     }
 }
+// 305 active perks, 310  perks on weapon, 307 item id

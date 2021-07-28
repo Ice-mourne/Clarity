@@ -69,7 +69,7 @@ function start_looking_for_clicks(){
         //    /  O  \  - - - - 🡳 🡳 - - - - Click filter
         let unique_id
         function find_unique_id(target, x){
-            if(target.id > 999999999999999) return unique_id = target.id
+            if(target && target.id > 999999999999999) return unique_id = target.id
             if(x < 2) find_unique_id(target.parentElement, x + 1)
         }
         find_unique_id(event.target, 0)

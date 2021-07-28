@@ -54,3 +54,17 @@
 #mini_gunsmith_div {
     text-align: right;
 }
+
+
+.image-container {
+    position: relative;
+}
+.image {
+    display: block;
+}
+.water-mark {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+    

@@ -10,7 +10,9 @@
 /*.ItemPerksList-m_perkInfo-2opoU > div, .ItemPerksList-m_perkInfo-2opoU > p{
     display: none;
 }*/
-
+#itmInfo tr:nth-child(even){
+    width: 70%;
+}
 
 
 

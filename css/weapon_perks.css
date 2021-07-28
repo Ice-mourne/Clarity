@@ -17,7 +17,7 @@
     order: 999;
     width: 100%;
 }
-.perk_container{
+.wep_perk{
     display: flex;
     flex-direction: row;
     cursor: pointer;
@@ -26,7 +26,7 @@
 .wep_perk_list :nth-last-child(1){
     margin-right: 0px;
 }
-.perk_container.active_perk, .perk_container.selected_perk{
+.wep_perk.active_perk, .wep_perk.selected_perk{
     flex: 1;
 }
 /*      icon         */
@@ -42,10 +42,10 @@
     height: 100%;
     width: 100%;
 }
-.perk_container.active_perk .wep_perk_icon{
+.wep_perk.active_perk .wep_perk_icon{
     background-color: #4887ba;
 }
-.perk_container.selected_perk .wep_perk_icon{
+.wep_perk.selected_perk .wep_perk_icon{
     background-color: #e8a534;
 }
 /*       name       */
@@ -54,9 +54,20 @@
     margin-left: 5px;
     display: none;
 }
-.perk_container.active_perk .perk_name{
+.wep_perk.active_perk .perk_name{
     display: block;
 }
-.perk_container.selected_perk .perk_name{
+.wep_perk.selected_perk .perk_name{
     display: block;
+}
+
+.new_pd.wep_perk_stats{
+    display: grid;
+    grid-template: auto / auto 1fr;
+    grid-column-gap: 4px;
+    margin-top: 4px;
+}
+.new_pd.wep_perk_stats .wep_stat_value{
+    font-weight: bold;
+    text-align: end;
 }

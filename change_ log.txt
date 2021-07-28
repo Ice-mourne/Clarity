@@ -33,6 +33,18 @@ then putting all that data back to indexDDB
  now all data comes from indexDB
  - content.js
 reworked how click location is found
- 
+
+
+
+
+
+loDash
+ _.isEqual
+_.difference
+
+
+
+
+
 
 

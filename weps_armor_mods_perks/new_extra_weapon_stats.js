@@ -33,7 +33,7 @@ function _weapon_pressed(unique_item){
     }
     add_new_perks(unique_item, manifest)
 }
-function add_new_perks(unique_item, manifest){
+function _add_new_perks(unique_item, manifest){
     let perk_slot_count = 0 // number of active perks
     let location = get_in_content('.item-details.sockets')
     let fragment = document.createDocumentFragment() 

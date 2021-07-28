@@ -13,6 +13,7 @@
                 "tools/element_creator.js",
                 "tools/purify.min.js",
                 "tools/random_tools.js",
+                "tools/lodash.js",
 
                 "weps_armor_mods_perks/weapon_perks.js",
                 "weps_armor_mods_perks/extra_weapon_stats.js",
@@ -20,7 +21,7 @@
 
                 "weps_armor_mods_perks/new_extra_weapon_stats.js",
                 "all_wep_perks.js",
-
+                "data_handler_5.js",
 
                 "content.js",
                 "d2_gunsmith.js",
