@@ -2,7 +2,14 @@
 - Bringing the truth to light in their gear management. 
 - Extension aimed to improve Destiny item manager.
 
-# Common question: does this work on mobile:
+# Can i get this extension on my browswes store: Yes
+- Chrome [Clarity, A DIM Companion](https://chrome.google.com/webstore/detail/dim-better-name-pending/mbhfgfjjllobldiodabdmaoimehdkdjc?hl=en)
+- FireFox [Clarity, A DIM Companion](https://addons.mozilla.org/en-US/firefox/addon/dim-better-name-pending/)
+- Opera [Clarity, A DIM Companion](https://addons.opera.com/en/extensions/details/dim-better-name-pending/)
+- MS Edge [Clarity, A DIM Companion](https://microsoftedge.microsoft.com/addons/detail/dim-better-name-pending/lapeplimkpcfoapapdjakgnkkabckjjc)
+- Big thx to AE×GS from Massive Breakdown discord for paying 5$ fee needed for a Chrome developer account
+
+# Does this work on mobile:
 - Short answer: Yes
 - Long answer: Yes it works but you have to use [Firefox nightly app](https://play.google.com/store/apps/details?id=org.mozilla.fenix) as far as I can tell this works only for Android phones sorry iPhone users if you know of another browser with addon support hit me up I will upload to their store to
 - Extension installation on [FireFox nightly app](https://play.google.com/store/apps/details?id=org.mozilla.fenix):
@@ -14,11 +21,6 @@
 6. You are asked to type the User ID of the collection owner and the name of the Collection.
 7. Type 16825313 and DIM
 - Or create your own hare: [Custom Add-on Collection](https://addons.mozilla.org/en-US/firefox/collections/)
-
-# Will I upload this to browser extension stores:
-- Yes FireFox is avalable now [DIM Better name pending extension](https://addons.mozilla.org/en-US/firefox/addon/dim-better-name-pending/)
-- Chrome, MS Edge, Opera are in validation process at the time of writing this
-- Big thx to AE×GS from Massive Breakdown discord for paying 5$ fee needed for a Chrome developer account
 
 # Manual Installation
 - First of all grab source because I rarely do release Code > Download zip

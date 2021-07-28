@@ -10,7 +10,41 @@ Added spreadsheet, range calculator, gunsmith images
 Updated with relevant information
 1.3.10
 - manifest.json
-changed extensions name from DIM Beter name pending to Clarity, A DIM Companion
+changed extensions name from DIM Better name pending to Clarity, A DIM Companion
 Updated description
 - README.md
 Updated with more relevant information
+1.3.11
+ - weaponFilter.js
+ - weapon_related_info.js
+ - armor_related_info.js
+ - content.js
+changed place where it looks what version of DIM user is on
+1.3.12
+ - README.md
+just added some info moved around some
+new version
+ - data_handler.js
+new file
+used for getting json data from my server, filter existing data in indexDB
+then putting all that data back to indexDDB
+ - armor_related_info.js
+ replaced by armor_descriptions.js
+ now all data comes from indexDB
+ - content.js
+reworked how click location is found
+
+
+
+
+
+loDash
+ _.isEqual
+_.difference
+
+
+
+
+
+
+
