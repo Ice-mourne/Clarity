@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Clarity, A DIM Companion",
-    "version": "1.4.4",
+    "version": "1.5.4",
     "author": "Icemourne",
     "description": "Bringing the truth to light in their gear management. Extension aimed to improve Destiny item manager",
     "homepage_url": "https://github.com/Ice-mourne/DIM_Better_name_pending", 
@@ -13,26 +13,19 @@
                 "tools/element_creator.js",
                 "tools/purify.min.js",
                 "tools/random_tools.js",
-                "tools/lodash.js",
 
-                "weps_armor_mods_perks/weapon_perks.js",
-                "weps_armor_mods_perks/extra_weapon_stats.js",
-                "weps_armor_mods_perks/armor_descriptions.js",
+                "main_data_handling/random_functions.js",
+                "main_data_handling/auth.js",
+                "main_data_handling/handle_data.js",
 
-                "weps_armor_mods_perks/new_extra_weapon_stats.js",
-                "all_wep_perks.js",
-                "data_handler_5.js",
-
-                "content.js",
                 "d2_gunsmith.js",
-                "data_handler.js",
                 "sources_&_more_menu.js",
-                "weapon_related_info.js"
+                "stuff.js"
             ],
             "css": [
+                "css/style.css",
                 "css/d2_gunsmith.css",
                 "css/sources_and_more_menu.css",
-                "css/style.css",
                 "css/weapon_perks.css"
             ]
         }
