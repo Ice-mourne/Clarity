@@ -89,7 +89,7 @@ function authorization_button() {
 		})
 	}
 }
-function ask_for_authorization() {
+function ask_for_authorization(jd) {
 	let auth_token = local_get('clarity_authorization')
 	let user = local_get('clarity_user')
 	if (!auth_token && !user) {
@@ -104,6 +104,6 @@ function ask_for_authorization() {
 			window.location.href = 'https://www.bungie.net/en/OAuth/Authorize?client_id=37087&response_type=code'
 		})
 		auth_box.append(auth_text, auth_button, bottom_text, x_button)
-		document.querySelector('.Header-m_header-QeSPR').append(auth_box)
+		document.querySelector(jd.header).append(auth_box)
 	}
 }

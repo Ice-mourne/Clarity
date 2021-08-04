@@ -1,8 +1,16 @@
 let DIMs_stalker = new MutationObserver((_, rageQuit) =>{
     let DIM_Detailed_Item_Explanations = document.getElementsByClassName('item')[0]
     if (DIM_Detailed_Item_Explanations){
-        start_looking_for_clicks()
-        ask_for_authorization()
+        let jd = local_get('clarity_locations')
+        if (jd) {
+            start_looking_for_clicks(jd)
+            ask_for_authorization(jd)
+        } else {window.addEventListener('storage', () => {
+            if (jd) {
+                start_looking_for_clicks(jd)
+                ask_for_authorization(jd)
+            }
+        })}
         rageQuit.disconnect()
     }
 })
@@ -10,7 +18,7 @@ DIMs_stalker.observe(document, {
     childList: true,
     subtree: true
 })
-function start_looking_for_clicks() {
+function start_looking_for_clicks(jd) {
     document.getElementById('app').addEventListener('click', event => {
         let unique_id 
         function get_unique_id(target, x) {
@@ -18,11 +26,11 @@ function start_looking_for_clicks() {
             if (x < 2) get_unique_id(target.parentElement, x + 1)
         }
         get_unique_id(event.target, 0)
-        if (unique_id  > 99999999) add_item_info(unique_id)
+        if (unique_id  > 99999999) add_item_info(unique_id, jd)
     })
 }
-function add_item_info(unique_id) {
-    data_base = JSON.parse(localStorage.getItem('clarity_data'))
+function add_item_info(unique_id, jd) {
+    data_base = local_get('clarity_data')
     if (!data_base[unique_id]) return // if unique id is not in data base return
     if (data_base[unique_id].item_type == 'weapon') add_info_to_weapon()
     if (data_base[unique_id].item_type == 'armor')  add_info_to_armor()
@@ -34,7 +42,7 @@ function add_item_info(unique_id) {
             let extra_stat_letter = element_creator('div', {'textContent': stat.letter})
             extra_stat_box.append(extra_stat_name, extra_stat_value, extra_stat_letter)
         })
-        document.getElementById('content').nextSibling.getElementsByClassName('ItemStats-m_stats-riz7_')[0].append(extra_stat_box)
+        document.getElementById('content').nextSibling.querySelector(jd.weapon_stats).append(extra_stat_box)
         // - - - - - - - - - - - - - - - - - - - -
         let main_box = element_creator('div', {'className': 'Clarity_main_box'})
         data_base[unique_id].perks.perks.forEach(add_perk_list)
@@ -77,9 +85,9 @@ function add_item_info(unique_id) {
             let name = element_creator('div', {'className': 'Clarity_perk_name', 'textContent': perk.name})
             element.append(icon_container, name)
         }
-        let all_perks = document.getElementById('content').nextSibling.getElementsByClassName('item-details')[0] // ItemPerksList-m_sockets-fgnTy
-        document.getElementById('content').nextSibling.getElementsByClassName('ItemPerksList-m_sockets-fgnTy')[0].remove()
-        all_perks.append(main_box)
+        let all_perks_mods = document.getElementById('content').nextSibling.getElementsByClassName('item-details')[0]
+        document.getElementById('content').nextSibling.querySelector(jd.all_weapon_perks)[0].remove()
+        all_perks_mods.append(main_box)
     }
     function add_info_to_armor() {
         if(data_base[unique_id].tier != 'Exotic') return
@@ -91,7 +99,7 @@ function add_item_info(unique_id) {
         description.innerHTML = perk.description
 
         main_box.append(img, name, description)
-        document.getElementById('content').nextSibling.getElementsByClassName('ArchetypeSocket-m_row-_RDjK')[0].remove()
+        document.getElementById('content').nextSibling.querySelector(jd.armor_description)[0].remove()
         document.getElementById('content').nextSibling.getElementsByClassName('item-details')[0].prepend(main_box)
     }
     document.getElementById('content').nextSibling.getElementsByClassName('fa-balance-scale-left')[0].parentElement.addEventListener('click', _ => {
