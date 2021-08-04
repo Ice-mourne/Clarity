@@ -1,0 +1,124 @@
+:root {
+    --Clarity_menu_top_and_shadow: hsl(120deg, 100%, 8%);
+    --Clarity_menu_background: hsl(120deg, 100%, 3%);
+    --Clarity_menu_text: hsl(0deg, 0%, 100%);
+    --Clarity_menu_box_names_and_hover: hsl(120, 100%, 70%);
+}
+
+:root {
+    --Clarity_menu_top_and_shadow: hsl(240deg, 100%, 8%);
+    --Clarity_menu_background: hsl(240deg, 100%, 3%);
+    --Clarity_menu_text: hsl(0deg, 0%, 100%);
+    --Clarity_menu_box_names_and_hover: hsl(240, 100%, 70%);
+}
+/* Clarity menu button */
+.Clarity_menu_button{
+    margin: 0 8px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    direction: ltr;
+    &:hover{
+        color: hsl(38, 80%, 56%);
+        transition: color 0.2s linear;
+    }
+    .Clarity_show_menu{
+        display: grid;
+    }
+}
+/* Clarity menu window */
+.Clarity_new_menu{
+    position: absolute;
+    margin: auto;
+    border-radius: 5px;
+    margin-inline-start: auto; 
+    top: 45px;
+    cursor: default;
+    display: none;
+    grid-template-columns: auto auto;
+}
+/* Clarity menu content */
+.Clarity_menu_top_text{
+    background-color: var(--Clarity_menu_top_and_shadow);
+    color: var(--Clarity_menu_text);
+    font-size: medium;
+    font-weight: 600;
+    box-shadow: inset 0px 0px 20px 2px rgba(255, 255, 255, 0.05);
+    padding: 5px;
+    white-space: break-spaces;
+    grid-column-end: span 2;
+    text-align: center;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    a{
+        text-decoration: none;
+        font-size: inherit;
+        color: inherit;
+        &:hover{
+            color: var(--Clarity_menu_box_names_and_hover);
+            transition: color 0.2s linear;
+        }
+    }
+}
+@mixin stuff_box_defaults {
+    box-shadow: inset 0px 0px 5px 3px var(--Clarity_menu_top_and_shadow);
+    background-color: var(--Clarity_menu_background);
+    color: var(--Clarity_menu_text);
+    padding: 7px;
+    .Clarity_menu_box_name{
+        text-align: center;
+        color: var(--Clarity_menu_box_names_and_hover);
+        font-size: 14px;
+        margin-bottom: 5px;
+        grid-column-end: span 2;
+    }
+}
+.Clarity_links_box{
+    @include stuff_box_defaults;
+    display: grid;
+    grid-template-columns: 26px auto;
+    grid-row-gap: 1px;
+    img{
+        height: 20px;
+        cursor: default;
+        place-self: center;
+    }
+    a{
+        text-decoration: none;
+        align-self: center;
+        &:hover{
+            color: var(--Clarity_menu_box_names_and_hover);
+            transition: color 0.2s linear;
+        }
+    }
+}
+.Clarity_settings_box{
+    @include stuff_box_defaults;
+    div:hover{
+        color: var(--Clarity_menu_box_names_and_hover);
+        transition: color 0.2s linear;
+    }
+}
+.dark_mode_settings_box{
+    @include stuff_box_defaults;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-row-gap: 2px;
+    grid-column-gap: 5px;
+    label{
+        align-self: center;
+        color: hsl(0, 0%, 87%);
+    }
+    input, button{
+        color: var(--Clarity_menu_text);
+        background-color: var(--Clarity_menu_top_and_shadow);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    button:hover{
+        background-color: var(--Clarity_menu_box_names_and_hover);
+        transition: color 0.2s linear;
+    }
+}

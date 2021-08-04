@@ -53,5 +53,6 @@ function element_creator(type, properties, extra) {
         element[property[0]] = property[1]
     })
     if(extra && extra.img) element.src = chrome.runtime.getURL(extra.img)
+    if(extra && extra.color_picker) element.setAttribute('data-jscolor', `{preset: 'dark'}`)
     return element
 }

@@ -1,0 +1,15 @@
+.Clarity_weapon_stat_name {
+  grid-column: 1;
+  text-align: right;
+  margin-right: 8px;
+}
+
+.Clarity_weapon_stat_value {
+  grid-column: 2;
+  text-align: right;
+}
+
+.Clarity_compare_stat_name {
+  padding-right: 4px !important;
+  padding-left: 0px !important;
+}

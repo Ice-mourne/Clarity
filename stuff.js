@@ -23,14 +23,15 @@ function start_looking_for_clicks() {
 }
 function add_item_info(unique_id) {
     data_base = JSON.parse(localStorage.getItem('clarity_data'))
+    if (!data_base[unique_id]) return // if unique id is not in data base return
     if (data_base[unique_id].item_type == 'weapon') add_info_to_weapon()
     if (data_base[unique_id].item_type == 'armor')  add_info_to_armor()
     function add_info_to_weapon() {
         let extra_stat_box = document.createDocumentFragment()
         if(data_base[unique_id].stats.extra_stats) data_base[unique_id].stats.extra_stats.forEach(stat => {
-            let extra_stat_name = element_creator('div', {'className': 'ItemStat-m_statName-xZERT', 'textContent': stat.name})
-            let extra_stat_value = element_creator('div', {'className': 'ItemStat-m_value-_vy_c', 'textContent': stat.value})
-            let extra_stat_letter = element_creator('div', {'className': 'ItemStat-m_statBar-Pd_wR', 'textContent': stat.letter})
+            let extra_stat_name = element_creator('div', {'className': 'Clarity_weapon_stat_name', 'textContent': stat.name})
+            let extra_stat_value = element_creator('div', {'className': 'Clarity_weapon_stat_value', 'textContent': stat.value})
+            let extra_stat_letter = element_creator('div', {'textContent': stat.letter})
             extra_stat_box.append(extra_stat_name, extra_stat_value, extra_stat_letter)
         })
         document.getElementById('content').nextSibling.getElementsByClassName('ItemStats-m_stats-riz7_')[0].append(extra_stat_box)
@@ -81,6 +82,7 @@ function add_item_info(unique_id) {
         all_perks.append(main_box)
     }
     function add_info_to_armor() {
+        if(data_base[unique_id].tier != 'Exotic') return
         let perk = data_base[unique_id].perk
         let main_box = element_creator('div', {'className': 'Clarity_armor_perk_box'})
         let img = element_creator('img', {'className': 'Clarity_armor_perk_icon', 'src': `https://www.bungie.net/common/destiny2_content/icons/${perk.icon}`})
@@ -105,20 +107,21 @@ function add_item_info(unique_id) {
             })
         }, 50)
         function add_stats_to_compare_window() {
+            document.querySelector('.sheet-close').firstChild.addEventListener('click', () => {return}) // then quit button pressed return // fixes error
             document.getElementById('loadout-drawer').querySelectorAll('.compare-items > .compare-item').forEach(item => {
                 let stat_value = document.createDocumentFragment()
                 id = item.querySelector('.itemAside').firstChild.id
                 data_base[id].stats.extra_stats.forEach(stat => {
-                    let extra_stat_value = element_creator('div', {'className': 'Clarity_class', 'textContent': `${stat.value} ${stat.letter}`})
+                    let extra_stat_value = element_creator('div', {'className': 'Clarity_check', 'textContent': `${stat.value} ${stat.letter}`})
                     stat_value.append(extra_stat_value)
                 })
-                if (!item.querySelector('.Clarity_class')) item.insertBefore(stat_value, item.lastChild)
+                if (!item.querySelector('.Clarity_check')) item.insertBefore(stat_value, item.lastChild)
             })
         }
         function add_stat_names_compare_window() {
             let stat_name = document.createDocumentFragment()
             data_base[id].stats.extra_stats.forEach(stat => {
-                let extra_stat_name = element_creator('div', {'className': 'compare-stat-label', 'textContent': stat.name})
+                let extra_stat_name = element_creator('div', {'className': 'Clarity_compare_stat_name', 'textContent': stat.name})
                 stat_name.append(extra_stat_name)
             })
             document.getElementById('loadout-drawer').querySelector('.compare-item.fixed-left').append(stat_name)

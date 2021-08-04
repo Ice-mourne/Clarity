@@ -1,3 +1,25 @@
+(() => { // create settings on first launch or incase cache was cleared
+    if (local_get('clarity_settings')) return
+    let settings = {
+        'dark_mode': false,
+        'dark_mode_colors': {
+            'background_color_1': 'hsl(240, 21%, 16%)',
+            'background_color_2': 'hsl(240, 30%, 4%)',
+            'masterwork_item': 'hsl(50, 90%, 65%)',
+            'masterwork_item_text': 'hsl(0, 0%, 0%)'
+        },
+    }
+    local_set('clarity_settings', settings)
+}) ()
+/**
+ * @param {string} setting setting to configure
+ * @param {*} value value to configure
+ */
+function update_clarity_settings(setting, value) {
+    let stuff = local_get('clarity_settings')
+    stuff[setting] = value
+    local_set('clarity_settings', stuff)
+}
 /**
  * Get element in stats window
  * Works as getElementByClassName if . or # is first letter works as querySelector
@@ -10,7 +32,7 @@ function get_in_content(className) {
     return content.getElementsByClassName(className)[0]
 }
 /**
- * Get json object from local storage
+ * Get stuff from Local Storage
  * @param {string} key 
  * @returns {JSON} JsonObject
  */
@@ -19,6 +41,18 @@ function local_get(key) {
         return JSON.parse(localStorage.getItem(key))
     } catch {
         return localStorage.getItem(key)
+    }
+}
+/**
+ * Set stuff to Local Storage
+ * @param {string} key 
+ * @param {string} value 
+ */
+ function local_set(key, value) {
+    if (typeof(value) == 'object') {
+        localStorage.setItem(key, JSON.stringify(value))
+    } else {
+        localStorage.setItem(key, value)
     }
 }
 /**
@@ -60,7 +94,7 @@ function stat_calculator(investment_stat, stat_group, id) {
     }
 }
 /**
- * Calculates range in metters
+ * Calculates range in meters
  * @param {number} range_stat In game range stat
  * @param {number} zoom In game zoom stat
  * @param {array} formula Numbers used in formula

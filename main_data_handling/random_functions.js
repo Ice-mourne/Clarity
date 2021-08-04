@@ -110,7 +110,7 @@ function get_stat_group(item, stat_group) {
             let tx = db.transaction(store, 'readonly')
             let st = tx.objectStore(store)
             let data = st.get(key)
-            data.onsuccess = _ => resolve(data.result)
+            data.onsuccess = () => resolve(data.result)
         }
     })
 }

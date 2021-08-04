@@ -1,7 +1,7 @@
 ;( () => {    
     let dim_url = document.querySelector('body').baseURI
     let version = dim_url.slice(8, dim_url.search('.destiny'))
-    fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/dim_locations/?${Math.random()}`)
+    fetch(`https://ice-mourne.github.io/Database-for-Clarity/Database/locations.json?${Math.random()}`)
     .then(resp => resp.json())
     .then(data => localStorage.setItem('clarity_locations', JSON.stringify(data[version])))
 }) ()
@@ -21,8 +21,6 @@ function work_on_item_info() {
             headers: { 'X-API-Key': atob('MmFkYmVlZDcyNmRiNDJmMDg1MjQ3YmYwOGY5MjZiMDE='), 'Authorization': 'Bearer ' + local_get('clarity_authorization').access_token }
         })
         .then(u => u.json()),
-        // fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/json_test/?${Math.random()}`) // 3
-        // .then(resp => resp.json()),
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         get_from_indexedDB('keyval-store', 'keyval', 'd2-manifest') // 4 - d2 manifest
         .then(resp => resp)
@@ -79,7 +77,8 @@ function filter_inventory_item(user_data, inventory_item, stat_group, stat_names
             let info = {
                 'description': get_description(),
                 'name': inventory_item[perk_id].displayProperties.name,
-                'icon': inventory_item[perk_id].displayProperties.icon.replace('/common/destiny2_content/icons/', '')
+                'icon': inventory_item[perk_id].displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
+                'tier': inventory_item[perk_id].inventory.tierTypeName
             }
             function get_description() {
                 if(exotic_armor_perks[inventory_item[perk_id].displayProperties.name]) {
@@ -116,12 +115,8 @@ function filter_inventory_item(user_data, inventory_item, stat_group, stat_names
         function all_perks() {
             let all_perks = []
             let random_perks = user_data.Response.itemComponents.reusablePlugs.data[unique_id]
-            if (unique_id == 6917529313295576905) {
-                debugger
-            }
-
             item.sockets.socketCategories.find(x => x.socketCategoryHash == 4241085061).socketIndexes
-                .filter(x => x < 5)
+                .filter(x => x < 6)
                 .forEach(get_perk_ids) // possible indexes 1,2,3,4, 8,9 only 1-4 used
             return all_perks
             function get_perk_ids(index) {

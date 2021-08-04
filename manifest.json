@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Clarity, A DIM Companion",
-    "version": "1.5.4",
+    "version": "1.5.5",
     "author": "Icemourne",
     "description": "Bringing the truth to light in their gear management. Extension aimed to improve Destiny item manager",
     "homepage_url": "https://github.com/Ice-mourne/DIM_Better_name_pending", 
@@ -19,20 +19,22 @@
                 "main_data_handling/handle_data.js",
 
                 "d2_gunsmith.js",
-                "sources_&_more_menu.js",
+                "clarity_menu.js",
                 "stuff.js"
             ],
             "css": [
-                "css/style.css",
-                "css/d2_gunsmith.css",
-                "css/sources_and_more_menu.css",
-                "css/weapon_perks.css"
+                "styles/css/style.css",
+                "styles/css/d2_gunsmith.css",
+                "styles/css/clarity_menu.css",
+                "styles/css/weapon_perks.css",
+                "styles/css/weapons.css"
             ]
         }
     ],
     "web_accessible_resources": ["/images/*"],
     "permissions": [
         "https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/*",
+        "https://ice-mourne.github.io/Database-for-Clarity/Database/*",
         "https://www.bungie.net/*",
         "webRequest"
     ]

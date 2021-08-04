@@ -96,7 +96,7 @@ function ask_for_authorization() {
 		let auth_box = element_creator('div', {'className': 'Clarity_authorization_box'})
 		let auth_text = element_creator('div', {'className': 'Clarity_authorization_text', 'textContent': 'Clarity, A DIM Companion \nNeeds your permission to view your Destiny characters and vault'})
 		let auth_button = element_creator('div', {'className': 'Clarity_authorization_button', 'id': 'clarity_auth', 'textContent': 'Authorize with Bungie.net'})
-		let bottom_text = element_creator('div', {'className': 'Clarity_authorization_text', 'textContent': `Clarity, A DIM Companion doesn't collet any users data and is unable to send data anywhere except bungie.net \nUnless you are in destiny massive breakdown discord then you are doomed`})
+		let bottom_text = element_creator('div', {'className': 'Clarity_authorization_text', 'textContent': `Clarity, A DIM Companion does not collect any users data and is unable to send data anywhere except bungie.net \nUnless you are in destiny massive breakdown discord then you are doomed`})
 		let x_button = element_creator('img', {'className': 'Clarity_authorization_exit_button'}, {'img': 'images/close.png'})
 		x_button.addEventListener('click', () => document.querySelector('.Clarity_authorization_box').remove())
 		auth_button.addEventListener('click', () => {
