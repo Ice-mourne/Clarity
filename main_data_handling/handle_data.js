@@ -68,6 +68,7 @@ function filter_inventory_item(user_data, inventory_item, stat_group, stat_names
                 'icon': item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
                 'perk':armor_perks(item),
                 'item_type': 'armor',
+                'tier': item.inventory.tierTypeName
             }
         }
     }
@@ -78,7 +79,6 @@ function filter_inventory_item(user_data, inventory_item, stat_group, stat_names
                 'description': get_description(),
                 'name': inventory_item[perk_id].displayProperties.name,
                 'icon': inventory_item[perk_id].displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
-                'tier': inventory_item[perk_id].inventory.tierTypeName
             }
             function get_description() {
                 if(exotic_armor_perks[inventory_item[perk_id].displayProperties.name]) {
