@@ -2,7 +2,7 @@
 - Bringing the truth to light in their gear management. 
 - Extension aimed to improve Destiny item manager.
 
-# Can i get this extension on my browswes store: Yes
+# Can i get this extension on my browser store: Yes
 - Chrome [Clarity, A DIM Companion](https://chrome.google.com/webstore/detail/dim-better-name-pending/mbhfgfjjllobldiodabdmaoimehdkdjc?hl=en)
 - FireFox [Clarity, A DIM Companion](https://addons.mozilla.org/en-US/firefox/addon/dim-better-name-pending/)
 - Opera [Clarity, A DIM Companion](https://addons.opera.com/en/extensions/details/dim-better-name-pending/)
@@ -27,7 +27,7 @@
 - Then extract contents of the folder and depending on browser fallow installation instructions
 
 # Chrome: 
-- Paste this `chrome://extensions/` in the address bar without quotes than on the top right press "Developer mode" and on to left "load unpaced" select folder extracted earlier and you done
+- Paste this `chrome://extensions/` in the address bar without quotes than on the top right press "Developer mode" and on to left "load unpacked" select folder extracted earlier and you done
 
 # FireFox:
 - First of all, I don't recommend using Firefox because you will need to add an extension every time you open Firefox (basically if you close Firefox you will need to add an extension again)
