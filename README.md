@@ -4,6 +4,7 @@
 
 # Can i get this extension on my browser store: Yes
 __Extension version in browser stores are old AF better look bellow how to manually install new version__
+__Extension also works if you use desktop app for DIM installation is same just just make sure DIM app you have is using same browser (its possible DIM will use chrome even if yor default browser is firefox or something else)__
 - Chrome [Clarity, A DIM Companion](https://chrome.google.com/webstore/detail/dim-better-name-pending/mbhfgfjjllobldiodabdmaoimehdkdjc?hl=en)
 - FireFox [Clarity, A DIM Companion](https://addons.mozilla.org/en-US/firefox/addon/dim-better-name-pending/)
 - Opera [Clarity, A DIM Companion](https://addons.opera.com/en/extensions/details/dim-better-name-pending/)
@@ -24,11 +25,11 @@ __Extension version in browser stores are old AF better look bellow how to manua
 - Or create your own hare: [Custom Add-on Collection](https://addons.mozilla.org/en-US/firefox/collections/)
 
 # Manual Installation
-- First of all grab source because I rarely do release Code > Download zip
+- Get newest version [here](https://github.com/Ice-mourne/Clarity-A-DIM-Companion/releases) file called 'Source code(zip)'
 - Then extract contents of the folder and depending on browser fallow installation instructions
 
 # Chrome: 
-- Paste this `chrome://extensions/` in the address bar without quotes than on the top right press "Developer mode" and on to left "load unpacked" select folder extracted earlier and you done
+- Paste this `chrome://extensions/` in the address bar without quotes then on the top right press "Developer mode" and on to left "load unpacked" select folder with files extracted earlier and you done
 
 # FireFox:
 - First of all, I don't recommend using Firefox because you will need to add an extension every time you open Firefox (basically if you close Firefox you will need to add an extension again)
