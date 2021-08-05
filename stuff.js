@@ -100,7 +100,7 @@ function add_item_info(unique_id, jd) {
         description.innerHTML = perk.description
 
         main_box.append(img, name, description)
-        document.getElementById('content').nextSibling.querySelector(jd.armor_description)[0].remove()
+        document.getElementById('content').nextSibling.querySelector(jd.armor_description).remove()
         document.getElementById('content').nextSibling.getElementsByClassName('item-details')[0].prepend(main_box)
     }
     document.getElementById('content').nextSibling.getElementsByClassName('fa-balance-scale-left')[0].parentElement.addEventListener('click', _ => {
