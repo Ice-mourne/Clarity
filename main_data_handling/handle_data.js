@@ -7,6 +7,7 @@
 }) ()
 if (local_get('clarity_user') && local_get('clarity_authorization')) work_on_item_info() // if data required is present update item info // this runs on startup
 function work_on_item_info() {
+    let nr = local_get('clarity_settings').version
     Promise.all([
         fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/weapon_formulas/?${Math.random()}`) // 0
         .then(resp => resp.json()),
@@ -18,7 +19,7 @@ function work_on_item_info() {
         fetch(`https://www.bungie.net/Platform/Destiny2/${local_get('clarity_user').platform}/Profile/${local_get('clarity_user').id}/?components=102,201,205,304,305,310`, {
             method: 'GET',
             mode: 'cors', // if you digging hare looking for API key or something DM me and i will help you get one and explain how to use it
-            headers: { 'X-API-Key': atob('MmFkYmVlZDcyNmRiNDJmMDg1MjQ3YmYwOGY5MjZiMDE='), 'Authorization': 'Bearer ' + local_get('clarity_authorization').access_token }
+            headers: { 'X-API-Key': atob(nr.k), 'Authorization': 'Bearer ' + local_get('clarity_authorization').access_token }
         })
         .then(u => u.json()),
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -2,13 +2,14 @@ let DIMs_stalker = new MutationObserver((_, rageQuit) =>{
     let DIM_Detailed_Item_Explanations = document.getElementsByClassName('item')[0]
     if (DIM_Detailed_Item_Explanations){
         let jd = local_get('clarity_locations')
+	    let nr = local_get('clarity_settings').version
         if (jd) {
-            start_looking_for_clicks(jd)
-            ask_for_authorization(jd)
+            start_looking_for_clicks(jd.stuff)
+            ask_for_authorization(jd.stuff, nr)
         } else {window.addEventListener('storage', () => {
             if (jd) {
-                start_looking_for_clicks(jd)
-                ask_for_authorization(jd)
+                start_looking_for_clicks(jd.stuff)
+                ask_for_authorization(jd.stuff, nr)
             }
         })}
         rageQuit.disconnect()
@@ -86,7 +87,7 @@ function add_item_info(unique_id, jd) {
             element.append(icon_container, name)
         }
         let all_perks_mods = document.getElementById('content').nextSibling.getElementsByClassName('item-details')[0]
-        document.getElementById('content').nextSibling.querySelector(jd.all_weapon_perks)[0].remove()
+        document.getElementById('content').nextSibling.querySelector(jd.all_weapon_perks).remove()
         all_perks_mods.append(main_box)
     }
     function add_info_to_armor() {

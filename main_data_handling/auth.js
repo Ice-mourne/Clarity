@@ -1,5 +1,6 @@
 authorization_button() // has to run on startup and then auth button is pressed
 function authorization_button() {
+	let nr = local_get('clarity_settings').version
 	;( () => { // check if necessary users data is present // if not get user data
 		let auth_token = local_get('clarity_authorization')
 		let user = local_get('clarity_user')
@@ -29,11 +30,15 @@ function authorization_button() {
 		if (local_get('clarity_temp')) {
 			if (href.includes('?code=')) { // if in code window get code and redirect back
 				localStorage.setItem('clarity_temp', href.split('?code=')[1])
-				if (href.includes('beta')) { // just looking where to redirect 
-					window.location.href = 'https://beta.destinyitemmanager.com/'
-				} else {
-					window.location.href = 'https://app.destinyitemmanager.com/'
-				}
+				window.addEventListener('storage', () => {
+					if (local_get('clarity_user')) {
+						if (href.includes('beta')) { // just looking where to redirect 
+							window.location.href = 'https://beta.destinyitemmanager.com/'
+						} else {
+							window.location.href = 'https://app.destinyitemmanager.com/'
+						}
+					}
+				})
 			}
 			// after rededication key was set in local storage and can be used
 			let auth_code = localStorage.getItem('clarity_temp')
@@ -50,6 +55,7 @@ function authorization_button() {
 				.then(data => {
 					let user_info = {'platform': data.Response.destinyMemberships[0].LastSeenDisplayNameType, 'id': data.Response.destinyMemberships[0].membershipId}
 					localStorage.setItem('clarity_user', JSON.stringify(user_info))
+					window.dispatchEvent(new Event('storage'))
 				})
 				.then(() => work_on_item_info()) // runs code in handle_data.json
 				.catch(err => console.error('%c Failed to get user info', 'font-size: large;', err))
@@ -62,7 +68,10 @@ function authorization_button() {
 			fetch('https://www.bungie.net/Platform/App/OAuth/Token/', {
 				method: 'POST',
 				mode: 'cors', // if you digging hare looking for API key or something DM me and i will help you get one and explain how to use it
-				headers: JSON.parse(atob('eyJYLUFQSS1LZXkiOiIyYWRiZWVkNzI2ZGI0MmYwODUyNDdiZjA4ZjkyNmIwMSIsImF1dGhvcml6YXRpb24iOiJCYXNpYyBNemN3T0RjNlJtMVRXblZZVkV4eE1FUndTVE5pY1hGeFVIbDBaa1o0ZFVjM01qUTNSVXBET1VkRU5HVkVNR28wV1E9PSIsIkNvbnRlbnQtVHlwZSI6ImFwcGxpY2F0aW9uL3gtd3d3LWZvcm0tdXJsZW5jb2RlZCJ9')),
+				headers: {'X-API-Key': atob(nr.k),
+					'authorization': `Basic ${nr.s}`,
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
 				body: `grant_type=${type}=${code}`
 			})
 			.then(resp => {
@@ -78,7 +87,7 @@ function authorization_button() {
 			fetch('https://www.bungie.net/Platform/User/GetMembershipsForCurrentUser/', {
 				method: 'GET',
 				mode: 'cors', // if you digging hare looking for API key or something DM me and i will help you get one and explain how to use it
-				headers: {'X-API-Key': atob('MmFkYmVlZDcyNmRiNDJmMDg1MjQ3YmYwOGY5MjZiMDE='), 'Authorization': `Bearer ${local_get('clarity_authorization').access_token}`}
+				headers: {'X-API-Key': atob(nr.k), 'Authorization': `Bearer ${local_get('clarity_authorization').access_token}`}
 			})
 			.then(resp => {
 				if (resp.ok) return resp.json()
@@ -89,7 +98,7 @@ function authorization_button() {
 		})
 	}
 }
-function ask_for_authorization(jd) {
+function ask_for_authorization(jd, nr) {
 	let auth_token = local_get('clarity_authorization')
 	let user = local_get('clarity_user')
 	if (!auth_token && !user) {
@@ -100,8 +109,8 @@ function ask_for_authorization(jd) {
 		let x_button = element_creator('img', {'className': 'Clarity_authorization_exit_button'}, {'img': 'images/close.png'})
 		x_button.addEventListener('click', () => document.querySelector('.Clarity_authorization_box').remove())
 		auth_button.addEventListener('click', () => {
-			localStorage.setItem('clarity_temp', 'true')
-			window.location.href = 'https://www.bungie.net/en/OAuth/Authorize?client_id=37087&response_type=code'
+			localStorage.setItem('clarity_temp', window.location.href)
+			window.location.href = `https://www.bungie.net/en/OAuth/Authorize?client_id=${nr.i}&response_type=code`
 		})
 		auth_box.append(auth_text, auth_button, bottom_text, x_button)
 		document.querySelector(jd.header).append(auth_box)
