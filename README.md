@@ -3,7 +3,7 @@
 - Extension aimed to improve Destiny item manager.
 
 # Can i get this extension on my browser store: Yes
-- Extension version in stores are old AF better look bellow how to manually install new version only supports beta DIM aka blue one app DIM version orange soon 
+__Extension version in browser stores are old AF better look bellow how to manually install new version__
 - Chrome [Clarity, A DIM Companion](https://chrome.google.com/webstore/detail/dim-better-name-pending/mbhfgfjjllobldiodabdmaoimehdkdjc?hl=en)
 - FireFox [Clarity, A DIM Companion](https://addons.mozilla.org/en-US/firefox/addon/dim-better-name-pending/)
 - Opera [Clarity, A DIM Companion](https://addons.opera.com/en/extensions/details/dim-better-name-pending/)
