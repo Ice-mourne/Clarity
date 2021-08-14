@@ -14,7 +14,7 @@
             'masterwork_item': 'hsl(50, 90%, 65%)',
             'masterwork_item_text': 'hsl(0, 0%, 0%)'
         },
-        'settings_version': 1,
+        'settings_version': 2,
         'version': version()
     }
     local_set('clarity_settings', settings)
@@ -54,14 +54,11 @@ function local_get(key) {
 /**
  * Set stuff to Local Storage
  * @param {string} key 
- * @param {string} value 
+ * @param {any} value 
  */
  function local_set(key, value) {
-    if (typeof(value) == 'object') {
-        localStorage.setItem(key, JSON.stringify(value))
-    } else {
-        localStorage.setItem(key, value)
-    }
+    if (typeof value == 'object') {localStorage.setItem(key, JSON.stringify(value)); return}
+    localStorage.setItem(key, value)
 }
 /**
  * Set json object to session storage
@@ -79,28 +76,7 @@ function session_set_json(key, value) {
  function session_get_json(key) {
     return JSON.parse(sessionStorage.getItem(key))
 }
-/**
- * Calculates in game stat
- * @param {number} investment_stat Investment stat value
- * @param {array} stat_group Stat group array
- * @param {number} id stat hash
- * @returns {number} Calculated in game stat
- */
-function stat_calculator(investment_stat, stat_group, id) {
-    let inv_stat = Math.min(Math.max(investment_stat, 0), 100) // min max to keep values in range of possible
-    if (id == 1345609583 || id == 2715839340 || id == 3555269338) return inv_stat // final stat is investment stat
-    if (id == 1240592695 || id == 4188031367 || id == 155624089 || id == 2837207746 || id == 2523465841) return 10 + inv_stat * 0.9 // easy calculation
-    if (stat_group && id != 1931675084){ // its inventory size id no clue what to do with it
-        let end_index = stat_group.findIndex(x => x.value >= inv_stat)
-        if (stat_group.length > 1){
-            let start = (end_index == 0) ? stat_group[0] : stat_group[end_index - 1]
-            let end   = (end_index <= 1) ? stat_group[1] : stat_group[end_index]
-            let t = (inv_stat - start.value) / (end.value - start.value)
-            return start.weight + t * (end.weight - start.weight)
-        }
-        if (stat_group.length == 1) return stat_group[0].weight + (inv_stat - stat_group[0].value)
-    }
-}
+
 /**
  * Calculates range in meters
  * @param {number} range_stat In game range stat
@@ -138,30 +114,6 @@ function reload_calculator(reload_stat, magazine, weapon_type, formula, active_p
             let multi = (check != -1) ? 2 : 1
             return ((formula.a * reload_stat * reload_stat + formula.b * reload_stat + formula.c) * Math.floor(magazine / multi)).toFixed(2)
         }
-    }
-}
-
-function fix_elemental_capacitor(investment_stats, unique_item, perk_id){
-    if (perk_id == 3511092054) {
-        let in_game_handling = Math.round(stat_calculator(investment_stats[943549884], unique_item.manifest.stats.stat_group[943549884], 943549884))
-        let in_game_reload = Math.round(stat_calculator(investment_stats[4188031367], unique_item.manifest.stats.stat_group[4188031367], 4188031367))
-        let in_game_stability = Math.round(stat_calculator(investment_stats[155624089], unique_item.manifest.stats.stat_group[155624089], 155624089))
-        let in_game_recoil = Math.round(stat_calculator(investment_stats[2715839340], unique_item.manifest.stats.stat_group[2715839340], 2715839340))
-        let stat_location = get_in_content('.ItemStats-m_stats-3ywbI')
-        let stat_numbers  = stat_location.querySelectorAll('.ItemStat-m_value-3utrN')
-        let stat_barr     = stat_location.querySelectorAll('.ItemStat-m_statBar-3cO_I')
-        stat_location.querySelectorAll('.ItemStat-m_statName-1XPu7').forEach((element, index) => {
-            if (element.textContent == 'Handling'        ) stat_numbers[index].textContent = in_game_handling
-            if (element.textContent == 'Reload Speed'    ) stat_numbers[index].textContent = in_game_reload
-            if (element.textContent == 'Stability'       ) stat_numbers[index].textContent = in_game_stability
-            if (element.textContent == 'Recoil Direction') stat_numbers[index].textContent = in_game_recoil
-        })
-        stat_barr.forEach(element => {
-            if (element.ariaLabel == 'Handling'        ) element.firstChild.firstChild.style.cssText = `width: ${in_game_handling}%;`
-            if (element.ariaLabel == 'Reload Speed'    ) element.firstChild.firstChild.style.cssText = `width: ${in_game_reload}%;` 
-            if (element.ariaLabel == 'Stability'       ) element.firstChild.firstChild.style.cssText = `width: ${in_game_stability}%;` 
-            if (element.ariaLabel == 'Recoil Direction') element.firstChild.firstChild.style.cssText = `width: ${in_game_recoil}%;`
-        })
     }
 }
 

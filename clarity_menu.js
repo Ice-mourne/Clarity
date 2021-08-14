@@ -1,8 +1,10 @@
-if (local_get('clarity_locations')) {
+if (local_storage('clarity_locations').clarity_menu) {
     info_button_observer()
-} else {window.addEventListener('storage', _ => {if (local_get('clarity_locations')) info_button_observer()} )}
+} else {
+    window.addEventListener('storage', _ => {if (local_storage('clarity_locations').clarity_menu) info_button_observer()} )
+}
 function info_button_observer() {
-    let jd = local_get('clarity_locations').clarity_menu
+    let jd = local_storage('clarity_locations').clarity_menu
     let observer = new MutationObserver((_o, quit) => {
         let header = document.querySelector(jd.dim_header)
         if (header){
@@ -15,9 +17,9 @@ function info_button_observer() {
         subtree: true
     })
 }
-//  (っ◔◡◔)っ 
+//  (っ◔◡◔)っ
 document.querySelector('html').append(element_creator('style', {'id': 'clarity_dark_mode'})) // create place for dark mode css
-function info_button(jd){
+function info_button(jd) {
     let clarity_menu = element_creator('div', {'textContent': 'Clarity menu', 'className': 'Clarity_menu_button'}) // create button 'Clarity menu'
 
     let new_menu       = element_creator('div',{'className':'Clarity_new_menu'})
@@ -28,7 +30,7 @@ function info_button(jd){
         let top_text_box = element_creator('div', {'className': 'Clarity_menu_top_text'})
 
         let top_text     = element_creator('div', {'textContent': 'Extension is created and maintained by Icemourne\nYou can report bugs and ask for new features on '})
-        let discord_link = element_creator('a',   {'textContent': 'Discord', 'target': '_blank', 'href': 'https://discord.gg/X72eWB6j'})
+        let discord_link = element_creator('a',   {'textContent': 'Discord', 'target': '_blank', 'href': 'https://discord.gg/43TPU5ehmP'})
         top_text.append(discord_link)
         top_text_box.append(top_text)
         return top_text_box
@@ -37,12 +39,12 @@ function info_button(jd){
         let sources_box = element_creator('div', {'className': 'Clarity_links_box'})
 
         let sources_box_text = element_creator('div', {'textContent': 'Links to Sources used creating this extension', 'className': 'Clarity_menu_box_name'})
-    
-        let Pip1n          = element_creator('a',  {'textContent': 'Mods, Abilities, and More by Pip1n',            'target': '_blank', 'href': 'https://docs.google.com/spreadsheets/d/1WaxvbLx7UoSZaBqdFr1u32F2uWVLo-CJunJB4nlGUE4/'})
-        let Court          = element_creator('a',  {'textContent': 'Damage Buffs, Debuffs, and Modifiers by Court', 'target': '_blank', 'href': 'https://docs.google.com/spreadsheets/d/1i1KUwgVkd8qhwYj481gkV9sZNJQCE-C3Q-dpQutPCi4/'})
-        let Van_Holden     = element_creator('a',  {'textContent': 'Reload Speed started by Van Holden',            'target': '_blank', 'href': 'https://docs.google.com/spreadsheets/d/13heG_rKRB9UU5DpvRbl1q11WGFs8QPPzpFA60uIOT8w/'})
-        let Mmonx          = element_creator('a',  {'textContent': 'Weapon Range Calculator by Mmonx',              'target': '_blank', 'href': 'https://destinyindepth.com/range_calculator/'})
-    
+
+        let Pip1n      = element_creator('a', {'textContent': 'Mods, Abilities, and More by Pip1n',            'target': '_blank', 'href': 'https://docs.google.com/spreadsheets/d/1WaxvbLx7UoSZaBqdFr1u32F2uWVLo-CJunJB4nlGUE4/'})
+        let Court      = element_creator('a', {'textContent': 'Damage Buffs, Debuffs, and Modifiers by Court', 'target': '_blank', 'href': 'https://docs.google.com/spreadsheets/d/1i1KUwgVkd8qhwYj481gkV9sZNJQCE-C3Q-dpQutPCi4/'})
+        let Van_Holden = element_creator('a', {'textContent': 'Reload Speed started by Van Holden',            'target': '_blank', 'href': 'https://docs.google.com/spreadsheets/d/13heG_rKRB9UU5DpvRbl1q11WGFs8QPPzpFA60uIOT8w/'})
+        let Mmonx      = element_creator('a', {'textContent': 'Weapon Range Calculator by Mmonx',              'target': '_blank', 'href': 'https://destinyindepth.com/range_calculator/'})
+
         sources_box.append(sources_box_text, sheet_img.cloneNode(), Pip1n, sheet_img.cloneNode(), Court, sheet_img.cloneNode(), Van_Holden, range_calc_img, Mmonx)
         return sources_box
     }
@@ -50,11 +52,11 @@ function info_button(jd){
         let useful_links_box = element_creator('div', {'className': 'Clarity_links_box'})
 
         let useful_links_box_text = element_creator('div', {'textContent': 'Other useful links', 'className': 'Clarity_menu_box_name'})
-    
-        let D2_Gunsmith = element_creator('a',  {'textContent': 'D2 Gunsmith by dre',                'target': '_blank', 'href': 'https://d2gunsmith.com/'})
-        let Mercules904 = element_creator('a',  {'textContent': 'Weapon Stats & TTK by Mercules904', 'target': '_blank', 'href': 'https://docs.google.com/spreadsheets/d/1_6zsM7kzvg0aUT8YtM_-Wg_5K1gKDOlrwfVzutEjq-s/'})
-        let SkyWarrior  = element_creator('a',  {'textContent': 'Weapon DPS by SkyWarrior',          'target': '_blank', 'href': 'https://docs.google.com/spreadsheets/d/12vF7ckMzN4hex-Tse4HPiVs_d9huFOKlvUoq5V41nxU/'})
-    
+
+        let D2_Gunsmith = element_creator('a', {'textContent': 'D2 Gunsmith by dre',                'target': '_blank', 'href': 'https://d2gunsmith.com/'})
+        let Mercules904 = element_creator('a', {'textContent': 'Weapon Stats & TTK by Mercules904', 'target': '_blank', 'href': 'https://docs.google.com/spreadsheets/d/1_6zsM7kzvg0aUT8YtM_-Wg_5K1gKDOlrwfVzutEjq-s/'})
+        let SkyWarrior  = element_creator('a', {'textContent': 'Weapon DPS by SkyWarrior',          'target': '_blank', 'href': 'https://docs.google.com/spreadsheets/d/12vF7ckMzN4hex-Tse4HPiVs_d9huFOKlvUoq5V41nxU/'})
+
         useful_links_box.append(useful_links_box_text, gunsmith_img, D2_Gunsmith, sheet_img.cloneNode(), Mercules904, sheet_img.cloneNode(), SkyWarrior)
         return useful_links_box
     }
@@ -62,11 +64,11 @@ function info_button(jd){
         let settings_box = element_creator('div', {'className': 'Clarity_settings_box'})
 
         let settings_box_text = element_creator('div', {'textContent': 'Settings', 'className': 'Clarity_menu_box_name'})
-    
-        let dark_mode_display = (local_get('clarity_settings').dark_mode) ? 'Disable' : 'Enable'
+
+        let dark_mode_display = (local_storage('clarity_settings').dark_mode) ? 'Disable' : 'Enable'
         let dark_mode_button = element_creator('div', {'textContent': `${dark_mode_display} Dark Mode`, 'id': 'dark_mode_toggle'})
         dark_mode_button.addEventListener('click', dark_mode_toggle)
-    
+
         settings_box.append(settings_box_text, dark_mode_button)
         return settings_box
     }
@@ -74,8 +76,8 @@ function info_button(jd){
         let dark_mode_settings_box = element_creator('div', {'className': 'dark_mode_settings_box'})
 
         let dark_mode_settings_box_text = element_creator('div', {'textContent': 'Dark mode color selection', 'className': 'Clarity_menu_box_name'})
-    
-        let dark_mode_values = local_get('clarity_settings').dark_mode_colors
+
+        let dark_mode_values = local_storage('clarity_settings').dark_mode_colors
         let dark_mode_elements = [
             element_creator('label', {'textContent': 'Background color 1'}),
             element_creator('input', {'value': dark_mode_values.background_color_1, 'className': 'Clarity_color_input'}),
@@ -86,7 +88,7 @@ function info_button(jd){
             element_creator('label', {'textContent': 'Masterwork text'}),
             element_creator('input', {'value': dark_mode_values.masterwork_item_text})
         ]
-        
+
 
         dark_mode_settings_box.append(dark_mode_settings_box_text, ...dark_mode_elements, save_button())
         return dark_mode_settings_box
@@ -118,11 +120,11 @@ function open_close() {
         if(event.target.classList.contains('Clarity_menu_button')) event.currentTarget.lastChild.classList.toggle('Clarity_show_menu')
     })
 }
-if (local_get('clarity_settings').dark_mode) dark_mode()
+if (local_storage('clarity_settings').dark_mode && local_storage('clarity_locations').clarity_menu) dark_mode()
 function dark_mode(){
-    const jd = local_get('clarity_locations').clarity_menu
-    const colors = local_get('clarity_settings').dark_mode_colors
-    
+    const jd = local_storage('clarity_locations').clarity_menu
+    const colors = local_storage('clarity_settings').dark_mode_colors
+
     document.documentElement.style.setProperty('--clarity_background_1', colors.background_color_1);
     document.documentElement.style.setProperty('--clarity_background_2', colors.background_color_2);
     document.documentElement.style.setProperty('--clarity_masterwork_item', colors.masterwork_item);

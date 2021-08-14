@@ -10,7 +10,7 @@ function authorization_button() {
 	function renew_access_tokens(auth_token) {
 		let expires_in = auth_token.access_expiration_date * 1000 - Date.now()
 		handle_auth()
-		document.addEventListener('visibilitychange', () => { 
+		document.addEventListener('visibilitychange', () => {
 			if (document.visibilityState == 'visible' && expires_in < 60 * 1000) handle_auth()
 		})
 		function handle_auth() {
@@ -32,7 +32,7 @@ function authorization_button() {
 				localStorage.setItem('clarity_temp', href.split('?code=')[1])
 				window.addEventListener('storage', () => {
 					if (local_get('clarity_user')) {
-						if (href.includes('beta')) { // just looking where to redirect 
+						if (href.includes('beta')) { // just looking where to redirect
 							window.location.href = 'https://beta.destinyitemmanager.com/'
 						} else {
 							window.location.href = 'https://app.destinyitemmanager.com/'

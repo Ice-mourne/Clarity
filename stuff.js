@@ -21,7 +21,7 @@ DIMs_stalker.observe(document, {
 })
 function start_looking_for_clicks(jd) {
     document.getElementById('app').addEventListener('click', event => {
-        let unique_id 
+        let unique_id
         function get_unique_id(target, x) {
             if (target.classList.contains('item') && target.id) unique_id = target.id
             if (x < 2) get_unique_id(target.parentElement, x + 1)

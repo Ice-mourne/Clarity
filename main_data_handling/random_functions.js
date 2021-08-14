@@ -11,15 +11,15 @@ function find_item_ids(user_data, inventory_item) {
             }
         }
     }
-    find_hare(user_data.Response.profileInventory.data.items)
-    Object.entries(user_data.Response.characterInventories.data).forEach(x => find_hare(x[1].items))
-    Object.entries(user_data.Response.characterEquipment  .data).forEach(x => find_hare(x[1].items))
+    find_hare(user_data.profileInventory.data.items)
+    Object.entries(user_data.characterInventories.data).forEach(x => find_hare(x[1].items))
+    Object.entries(user_data.characterEquipment  .data).forEach(x => find_hare(x[1].items))
     return item_ids
 }
 /**
- * @param {number} investment_stat 
- * @param {array} stat_group 
- * @param {number} id 
+ * @param {number} investment_stat
+ * @param {array} stat_group
+ * @param {number} id
  * @returns {number}
  */
 function stat_calculator(investment_stat, stat_group, id) {
@@ -59,7 +59,7 @@ function stat_calculator(investment_stat, stat_group, id) {
  */
 function get_item_investment_stats(unique_id, static_id, user_data, inventory_item) {
     let investment_stats = {}
-    user_data.Response.itemComponents.sockets.data[unique_id].sockets
+    user_data.itemComponents.sockets.data[unique_id].sockets
     .filter(perk => perk.isEnabled && perk.isVisible && perk.plugHash != 3511092054)
     .map(perk => filter_and_add_stats(inventory_item[perk.plugHash].investmentStats)) // perk stats
 
@@ -102,7 +102,7 @@ function get_stat_group(item, stat_group) {
  * @param {string} key Key name
  * @returns {Promise} Promise with data
  */
- function get_from_indexedDB(db, store, key) {
+function get_from_indexedDB(db, store, key) {
     return new Promise((resolve, reject) => {
         let dim_indexed_db = window.indexedDB.open(db)
         dim_indexed_db.onsuccess = e => {
