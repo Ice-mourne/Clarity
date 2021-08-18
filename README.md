@@ -1,4 +1,4 @@
-# Stopping all work on this project most likely indefinitely
+# Suspending all work on this project likely indefinitely (unless something changes)
 - Why? well...
 - Making description for perks is way to much for me i hate doing that and its big part of extension with out them i don't see point in continuing
 - I have asked if anyone wants to help me with this many times but no one was willing to do it
@@ -7,14 +7,6 @@
 1. I like programing
 2. And i wanted to help people
 - Thats it i guess
-
-
-
-
-
-
-
-
 
 # DIM Better name pending
 - Bringing the truth to light in their gear management.
