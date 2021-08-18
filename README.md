@@ -1,9 +1,29 @@
+# Stopping all work on this project most likely indefinitely
+- Why? well...
+- Making description for perks is way to much for me i hate doing that and its big part of extension with out them i don't see point in continuing
+- I have asked if anyone wants to help me with this many times but no one was willing to do it
+- If people care so little why i should spend my time making this for them
+- I made this project because of 2 reasons
+1. I like programing
+2. And i wanted to help people
+- Thats it i guess
+
+
+
+
+
+
+
+
+
 # DIM Better name pending
-- Bringing the truth to light in their gear management. 
+- Bringing the truth to light in their gear management.
 - Extension aimed to improve Destiny item manager.
 
 # Can i get this extension on my browser store: Yes
-__Extension version in browser stores are old AF better look bellow how to manually install new version__
+```diff
+- Extension version in browser stores are old AF better look bellow how to manually install new version
+```
 __Extension also works if you use desktop app for DIM installation is same just just make sure DIM app you have is using same browser (its possible DIM will use chrome even if yor default browser is firefox or something else)__
 - Chrome [Clarity, A DIM Companion](https://chrome.google.com/webstore/detail/dim-better-name-pending/mbhfgfjjllobldiodabdmaoimehdkdjc?hl=en)
 - FireFox [Clarity, A DIM Companion](https://addons.mozilla.org/en-US/firefox/addon/dim-better-name-pending/)
@@ -28,7 +48,7 @@ __Extension also works if you use desktop app for DIM installation is same just 
 - Get newest version [here](https://github.com/Ice-mourne/Clarity-A-DIM-Companion/releases) file called 'Source code(zip)'
 - Then extract contents of the folder and depending on browser fallow installation instructions
 
-# Chrome: 
+# Chrome:
 - Paste this `chrome://extensions/` in the address bar without quotes then on the top right press "Developer mode" and on to left "load unpacked" select folder with files extracted earlier and you done
 
 # FireFox:

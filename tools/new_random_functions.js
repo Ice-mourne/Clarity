@@ -236,9 +236,10 @@ function handling_calculator(stat, formula, multiplayer) {
  */
 function get_formula(item, formulas) {
     let item_type = item.itemTypeDisplayName
-    let z = item.sockets.socketCategories.find(x => x.socketCategoryHash == 3956125808)
-    let frame_id = item.sockets.socketEntries[z.socketIndexes[0]].singleInitialItemHash
-    return formulas[item_type][frame_id]
+    let frame_socked_index = item.sockets.socketCategories.find(x => x.socketCategoryHash == 3956125808).socketIndexes[0] // its intrinsic traits socked index aka frame socked index
+    let frame_id = item.sockets.socketEntries[frame_socked_index].singleInitialItemHash
+    let category_name = formulas[item_type][frame_id].category // name of category this weapon take info from
+    return formulas[item_type].category[category_name]
 }
 /**
  * Finds unique and static id's for weapons and armor
@@ -302,15 +303,5 @@ function get_stat_group(item, stat_group) {
     stat_group_object = {}
     stat_group[item.stats.statGroupHash].scaledStats.forEach(x => {stat_group_object[x.statHash] = x.displayInterpolation})
     return stat_group_object
-}
-
-
-
-function get_active_perks() {
-    //           Arrow,      Barrel,     Battery,    Blade,      Bowstring,  Grip,       Guard,     Launcher Barrel, Magazine,   Scope,      Stock,     Trait    Magazine gl
-    let perks = [1257608559, 2833605196, 1757026848, 1041766312, 3809303875, 3962145884, 683359327, 1202604782,      1806783418, 2619833294, 577918720, 7906839, 2718120384]
-    return user_data.itemComponents.sockets.data[unique_id].sockets
-        .filter(active_perk => active_perk.plugHash != undefined && perks.indexOf(inventory_item[active_perk.plugHash].plug.plugCategoryHash) > -1)
-        .map(active_perk => active_perk.plugHash)
 }
 //--- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
