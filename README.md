@@ -2,7 +2,8 @@
 - Why? well...
 - Making descriptions for perks is way too much for me I hate doing that and it's a big part of extension without them I don't see the point in continuing
 - I have asked if anyone wants to help me with this many times but no one was willing to do it
-- If people care so little why I should spend my time making this for them
+- If people are so lazy they can't even copy paste some text then ....
+- And they care so little why I should spend my time making this for them
 - I made this project because of 2 reasons
 1. I like programming
 2. And I wanted to help people
