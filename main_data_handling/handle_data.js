@@ -460,19 +460,6 @@ class Description_maker {
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         if (perk_info_json) { // adds stat number to description
             if (perk_info_json.range_stat) {
                 for (let i = 0; i < perk_info_json.range_stat.length; i++) {
@@ -566,14 +553,6 @@ class Description_maker {
 */
 
 
-
-
-
-
-
-
-
-
 // class Filter_weapon {
 //     constructor(user_data, manifest, /**/ wep_formulas, wep_perks, unique_id, item) {
 //         this.user_data = user_data
@@ -664,19 +643,6 @@ class Description_maker {
 //                 }
 //             }
 //         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //         if (perk_info_json) { // adds stat number to description
 //             if (perk_info_json.range_stat) {
@@ -815,13 +781,6 @@ class Description_maker {
 //         }
 //     }
 // }
-
-
-
-
-
-
-
 
 
 // function armor_perks(item) {

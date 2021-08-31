@@ -1,4 +1,5 @@
-# Suspending all work on this project likely indefinitely (unless something changes)
+# Suspending all work on this project likely indefinitely (apparently indefinitely is one day)
+- Still looking for help with perks its very easy to do i am just way to picky for me perfect or nothing that is problem if someone else would do it i wouldn't care as much
 - Why? well...
 - Making descriptions for perks is way too much for me I hate doing that and it's a big part of extension without them I don't see the point in continuing
 - I have asked if anyone wants to help me with this many times but no one was willing to do it

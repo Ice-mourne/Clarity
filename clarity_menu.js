@@ -1,3 +1,4 @@
+//@ts-check
 if (local_storage('clarity_locations').clarity_menu) {
     info_button_observer()
 } else {
@@ -88,7 +89,6 @@ function info_button(jd) {
             element_creator('label', {'textContent': 'Masterwork text'}),
             element_creator('input', {'value': dark_mode_values.masterwork_item_text})
         ]
-
 
         dark_mode_settings_box.append(dark_mode_settings_box_text, ...dark_mode_elements, save_button())
         return dark_mode_settings_box

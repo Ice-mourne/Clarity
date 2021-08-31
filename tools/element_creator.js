@@ -3,7 +3,7 @@
  ** 'location': ''      > where to pace element query selector format
  ** 'stat_window': ''   > same as above but in stats window
  ** 'ele_type': ''      > type of element to create
- ** 'text': ''          > text content 
+ ** 'text': ''          > text content
  ** 'id': ''            > id
  ** 'class': ''         > class name
  ** 'css': ''           > style.cssText adds css text
@@ -41,17 +41,25 @@ function create_element(p) {
             break
         case p['sw_before_last'] != undefined:
             let last_hare = document.getElementById('content').nextSibling.querySelectorAll(p['sw_before_last']) // place to look
-            let last_element = last_hare[last_hare.length - 1] // location of last 
+            let last_element = last_hare[last_hare.length - 1] // location of last
             last_element.parentElement.insertBefore(e, last_element) // it will insert before last
             break
     }
 }
-
+/**
+** Creates HTML elements
+** Example ('div', {'className': myClassName, 'textContent': 'some text'},)
+* @param {string} type - HTML object (div, span, a, img)
+*
+* @param {object} properties - HTML attributes: value ({ClassName: myClass, textContent: text})
+* @param {object} extra - description
+* @returns {HTMLElement}
+*/
 function element_creator(type, properties, extra) {
     let element = document.createElement(type)
     Object.entries(properties).forEach(property => {
         element[property[0]] = property[1]
     })
-    if(extra && extra.img) element.src = chrome.runtime.getURL(extra.img)
+    if(extra?.img) element.src = chrome.runtime.getURL(extra.img)
     return element
 }
