@@ -35,7 +35,7 @@ function update_clarity_settings(setting, value) {
  * @returns {HTMLElement} A reference to the first object with the specified value
 */
 function get_in_content(className) {
-    let content = document.getElementById('content').nextSibling
+    let content = document
     if(className[0] == '.' || className[0] == '#') return content.querySelector(className)
     return content.getElementsByClassName(className)[0]
 }

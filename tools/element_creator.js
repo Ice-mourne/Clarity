@@ -40,7 +40,7 @@ function create_element(p) {
             loc_before.parentElement.insertBefore(e, loc_before)
             break
         case p['sw_before_last'] != undefined:
-            let last_hare = document.getElementById('content').nextSibling.querySelectorAll(p['sw_before_last']) // place to look
+            let last_hare = document.querySelectorAll(p['sw_before_last']) // place to look
             let last_element = last_hare[last_hare.length - 1] // location of last 
             last_element.parentElement.insertBefore(e, last_element) // it will insert before last
             break
