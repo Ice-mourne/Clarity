@@ -43,7 +43,7 @@ function add_item_info(unique_id, jd) {
             let extra_stat_letter = element_creator('div', {'textContent': stat.letter})
             extra_stat_box.append(extra_stat_name, extra_stat_value, extra_stat_letter)
         })
-        document.getElementById('content').nextSibling.querySelector(jd.weapon_stats).append(extra_stat_box)
+        document.querySelector(jd.weapon_stats).append(extra_stat_box)
         // - - - - - - - - - - - - - - - - - - - -
         let main_box = element_creator('div', {'className': 'Clarity_main_box'})
         data_base[unique_id].perks.perks.forEach(add_perk_list)
