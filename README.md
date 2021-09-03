@@ -1,3 +1,5 @@
+# Latest update: I'm to lazy to work on this alone it takes to much time updates will be rare if i update at all
+
 # Suspending all work on this project likely indefinitely (apparently indefinitely is one day)
 - Still looking for help with perks its very easy to do i am just way to picky for me perfect or nothing that is problem if someone else would do it i wouldn't care as much
 - Why? well...
