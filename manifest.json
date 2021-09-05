@@ -1,10 +1,10 @@
 {
     "manifest_version": 2,
     "name": "Clarity, A DIM Companion",
-    "version": "1.5.6",
+    "version": "1.5.8",
     "author": "Icemourne",
     "description": "Bringing the truth to light in their gear management. Extension aimed to improve Destiny item manager",
-    "homepage_url": "https://github.com/Ice-mourne/DIM_Better_name_pending", 
+    "homepage_url": "https://github.com/Ice-mourne/DIM_Better_name_pending",
     "icons": { "128": "images/icon.png" },
     "content_scripts": [
         {

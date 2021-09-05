@@ -21,7 +21,7 @@ DIMs_stalker.observe(document, {
 })
 function start_looking_for_clicks(jd) {
     document.getElementById('app').addEventListener('click', event => {
-        let unique_id 
+        let unique_id
         function get_unique_id(target, x) {
             if (target.classList.contains('item') && target.id) unique_id = target.id
             if (x < 2) get_unique_id(target.parentElement, x + 1)
@@ -117,10 +117,10 @@ function add_item_info(unique_id, jd) {
         }, 50)
         function add_stats_to_compare_window() {
             document.querySelector('.sheet-close').firstChild.addEventListener('click', () => {return}) // then quit button pressed return // fixes error
-            document.getElementById('loadout-drawer').querySelectorAll('.compare-items > .compare-item').forEach(item => {
+            document.getElementById('loadout-drawer').querySelectorAll('.compare-item').forEach(item => {
                 let stat_value = document.createDocumentFragment()
-                id = item.querySelector('.itemAside').firstChild.id
-                data_base[id].stats.extra_stats.forEach(stat => {
+                id = item.querySelector('.CompareItem-m_itemAside-W9Gi3')?.firstChild.id
+                data_base[id]?.stats.extra_stats.forEach(stat => {
                     let extra_stat_value = element_creator('div', {'className': 'Clarity_check', 'textContent': `${stat.value} ${stat.letter}`})
                     stat_value.append(extra_stat_value)
                 })
@@ -133,7 +133,7 @@ function add_item_info(unique_id, jd) {
                 let extra_stat_name = element_creator('div', {'className': 'Clarity_compare_stat_name', 'textContent': stat.name})
                 stat_name.append(extra_stat_name)
             })
-            document.getElementById('loadout-drawer').querySelector('.compare-item.fixed-left').append(stat_name)
+            document.getElementById('loadout-drawer').querySelector('.compare-item.Compare-m_fixedLeft-UsPPD').append(stat_name)
         }
     })
 }
