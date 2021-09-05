@@ -1,4 +1,3 @@
-//@ts-check
 if (local_storage('clarity_locations').clarity_menu) {
     info_button_observer()
 } else {
