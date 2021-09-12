@@ -1,25 +1,8 @@
-if (local_storage('clarity_locations').clarity_menu) {
-    info_button_observer()
-} else {
-    window.addEventListener('storage', _ => {if (local_storage('clarity_locations').clarity_menu) info_button_observer()} )
-}
-function info_button_observer() {
-    let jd = local_storage('clarity_locations').clarity_menu
-    let observer = new MutationObserver((_o, quit) => {
-        let header = document.querySelector(jd.dim_header)
-        if (header){
-            info_button(jd)
-            quit.disconnect()
-        }
-    })
-    observer.observe(document, {
-        childList: true,
-        subtree: true
-    })
-}
+window.addEventListener('header_ready', () => info_button())
 //  (っ◔◡◔)っ
 document.querySelector('html').append(element_creator('style', {'id': 'clarity_dark_mode'})) // create place for dark mode css
-function info_button(jd) {
+function info_button() {
+    const jd = local_storage('clarity_locations').clarity_menu
     let clarity_menu = element_creator('div', {'textContent': 'Clarity menu', 'className': 'Clarity_menu_button'}) // create button 'Clarity menu'
 
     let new_menu       = element_creator('div',{'className':'Clarity_new_menu'})

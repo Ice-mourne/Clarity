@@ -1,24 +1,4 @@
-let DIMs_stalker = new MutationObserver((_, rageQuit) =>{
-    let DIM_Detailed_Item_Explanations = document.getElementsByClassName('item')[0]
-    if (DIM_Detailed_Item_Explanations){
-        let jd = local_get('clarity_locations')
-	    let nr = local_get('clarity_settings').version
-        if (jd) {
-            start_looking_for_clicks(jd.stuff)
-            ask_for_authorization(jd.stuff, nr)
-        } else {window.addEventListener('storage', () => {
-            if (jd) {
-                start_looking_for_clicks(jd.stuff)
-                ask_for_authorization(jd.stuff, nr)
-            }
-        })}
-        rageQuit.disconnect()
-    }
-})
-DIMs_stalker.observe(document, {
-    childList: true,
-    subtree: true
-})
+
 function start_looking_for_clicks(jd) {
     document.getElementById('app').addEventListener('click', event => {
         let unique_id
@@ -31,7 +11,7 @@ function start_looking_for_clicks(jd) {
     })
 }
 function add_item_info(unique_id, jd) {
-    data_base = local_get('clarity_data')
+    data_base = local_storage('clarity_data')
     if (!data_base[unique_id]) return // if unique id is not in data base return
     if (data_base[unique_id].item_type == 'weapon') add_info_to_weapon()
     if (data_base[unique_id].item_type == 'armor')  add_info_to_armor()

@@ -26,6 +26,7 @@
     padding: 10px;
     width: 30%;
     border-radius: 5px;
+    z-index: 99;
 }
 .Clarity_authorization_text, .Clarity_authorization_text{
     text-align: center;
