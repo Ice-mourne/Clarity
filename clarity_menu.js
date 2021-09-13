@@ -28,7 +28,7 @@ function info_button(jd){
         let top_text_box = element_creator('div', {'className': 'Clarity_menu_top_text'})
 
         let top_text     = element_creator('div', {'textContent': 'Extension is created and maintained by Icemourne\nYou can report bugs and ask for new features on '})
-        let discord_link = element_creator('a',   {'textContent': 'Discord', 'target': '_blank', 'href': 'https://discord.gg/X72eWB6j'})
+        let discord_link = element_creator('a',   {'textContent': 'Discord', 'target': '_blank', 'href': 'https://discord.gg/43TPU5ehmP'})
         top_text.append(discord_link)
         top_text_box.append(top_text)
         return top_text_box

@@ -1,16 +1,6 @@
-# Latest update: I'm to lazy to work on this alone it takes to much time updates will be rare if i update at all
+# Looking for people willing to take some easy no programing involved job from me to speed up updates
 
-# Suspending all work on this project likely indefinitely (apparently indefinitely is one day)
-- Still looking for help with perks its very easy to do i am just way to picky for me perfect or nothing that is problem if someone else would do it i wouldn't care as much
-- Why? well...
-- Making descriptions for perks is way too much for me I hate doing that and it's a big part of extension without them I don't see the point in continuing
-- I have asked if anyone wants to help me with this many times but no one was willing to do it
-- If people are so lazy they can't even copy paste some text then ....
-- And they care so little why I should spend my time making this for them
-- I made this project because of 2 reasons
-1. I like programming
-2. And I wanted to help people
-- That's it I guess
+# If you have any problems join my [Discord](https://discord.gg/43TPU5ehmP) or DM me Icemourne#8622
 
 # DIM Better name pending
 - Bringing the truth to light in their gear management.
