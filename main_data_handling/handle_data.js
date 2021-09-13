@@ -19,15 +19,15 @@ function work_on_item_info() {
             weapon_mods:    json_data[1].weapon_mods,
             // exotic_weapons: json_data[1].exotic_weapons, // todo add this to database
         }
-        let user_data = json_data[3].Response
+        let user_data = json_data[2].Response
 
         let manifest = {
-            inventory_item: json_data[4].DestinyInventoryItemDefinition,
-            stat_group:     json_data[4].DestinyStatGroupDefinition,
-            stat_names:     json_data[4].DestinyStatDefinition,
-            item_category:  json_data[4].DestinyItemCategoryDefinition,
-            damage_type:    json_data[4].DestinyDamageTypeDefinition,
-            plug_sets:      json_data[4].DestinyPlugSetDefinition
+            inventory_item: json_data[3].DestinyInventoryItemDefinition,
+            stat_group:     json_data[3].DestinyStatGroupDefinition,
+            stat_names:     json_data[3].DestinyStatDefinition,
+            item_category:  json_data[3].DestinyItemCategoryDefinition,
+            damage_type:    json_data[3].DestinyDamageTypeDefinition,
+            plug_sets:      json_data[3].DestinyPlugSetDefinition
         }
         // filter_inventory_item(user_data, manifest, /**/ wep_formulas, community_data) //-!- old
         get_basic_info(user_data, manifest)
@@ -38,12 +38,10 @@ function get_basic_info(user_data, manifest) {
         let item_ids = []
         function find_hare(items) {
             for (let i = 0; i < items.length; i++) {
-                let item_type = manifest.inventory_item[items[i].itemHash].itemType
-                if (items[i].itemInstanceId && (item_type == 3 || item_type == 2)) { // if has instanced id and is weapon or armor
+                if (items[i].itemInstanceId) { // if has instanced id
                     let x = []
                     x.push(items[i].itemInstanceId)
                     x.push(items[i].itemHash)
-                    x.push(manifest.inventory_item[items[i].itemHash].itemType)
                     item_ids.push(x)
                 }
             }
@@ -54,7 +52,52 @@ function get_basic_info(user_data, manifest) {
         return item_ids
     }
     let item_ids = find_item_ids()
-    console.log(item_ids);
+    let new_item_list = {}
+    for (let i = 0; i < item_ids.length; i++) {
+        const unique_id = item_ids[i][0]
+        const item = manifest.inventory_item[item_ids[i][1]]
+        if (item.itemType == 3                                           ) new_item_list[unique_id] = weapon(unique_id, item)
+        // if (item.itemType == 2 && item.inventory.tierTypeName == 'Exotic') new_item_list[unique_id] = armor(unique_id, item)
+    }
+    function weapon(unique_id, item) {
+        // let weapon_data = new Weapon_constructor(user_data, manifest, /**/ wep_formulas, wep_perks, unique_id, item)
+        return {
+            'name': item.displayProperties.name,
+            'icon': item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
+            'type': item.itemTypeDisplayName, // hand cannon, sniper, shotgun...
+            'ammo': ammo_type(), // primary, special, heavy...
+            'slot': manifest.item_category[item.itemCategoryHashes[0]].shortTitle, // kinetic, energy, power...
+            'damage_type': manifest.damage_type[item.defaultDamageTypeHash].displayProperties.name, // arch, solar, void...
+            'item_type': 'weapon',
+            'perks': {
+                'active_perks': user_data.itemComponents.sockets.data[unique_id].sockets,
+                'perks': item.sockets.socketCategories
+            },
+            // 'stats': weapon_filter.stats(),
+        }
+        function ammo_type() { // ammo type
+            switch (item.equippingBlock.ammoType) {
+                case 1:
+                    return 'primary'
+                case 2:
+                    return 'special'
+                case 3:
+                    return 'heavy'
+            }
+        }
+    }
+    function armor(item) {
+        return {
+            'name': item.displayProperties.name,
+            'icon': item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
+            'perk': new Filter_armor.armor_perks(item, inventory_item, exotic_armor_perks),
+            'item_type': 'armor',
+            'tier': item.inventory.tierTypeName
+        }
+    }
+    console.log(new_item_list);
+
+
 
 }
 
@@ -98,7 +141,7 @@ function filter_inventory_item(user_data, manifest, /**/ wep_formulas, community
                 'active_perks': weapon_data.active_perks(),
                 'perks': weapon_data.all_perks()
             },
-            //'stats': weapon_filter.stats(),
+            'stats': weapon_filter.stats(),
         }
     }
     function make_new_armor(item) {
