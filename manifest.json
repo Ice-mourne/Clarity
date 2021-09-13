@@ -33,7 +33,6 @@
     ],
     "web_accessible_resources": ["/images/*"],
     "permissions": [
-        "https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/*",
         "https://ice-mourne.github.io/Database-for-Clarity/Database/*",
         "https://www.bungie.net/*",
         "webRequest"
