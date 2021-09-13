@@ -1,45 +1,71 @@
+window.addEventListener('update_item_info', work_on_item_info)
 function work_on_item_info() {
-    let nr = local_storage('clarity_settings').version
     Promise.all([
-        fetch(`https://ice-mourne.github.io/Database-for-Clarity/Database/weapon_formulas.json?${Math.random()}`) // 0
+        fetch(`https://ice-mourne.github.io/Database-for-Clarity/Database/weapon_formulas.json?${Math.random()}`)
         .then(resp => resp.json()),
-        fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/exotic_armor_perks/?${Math.random()}`) // 1
+        fetch(`https://ice-mourne.github.io/Database-for-Clarity/Database/D2_community_data.json?${Math.random()}`)
         .then(resp => resp.json()),
-        fetch(`https://ice-mourne.github.io/Database-for-Clarity/Database/weapon_perks.json?${Math.random()}`) // 2
-        .then(resp => resp.json()),
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        fetch(`https://www.bungie.net/Platform/Destiny2/${local_storage('clarity_user').platform}/Profile/${local_storage('clarity_user').id}/?components=102,201,205,304,305,310`, {
-            method: 'GET',
-            mode: 'cors', // if you digging hare looking for API key or something DM me and i will help you get one and explain how to use it
-            headers: {
-                'X-API-Key': atob(nr.k),
-                'Authorization': `Bearer ${local_storage('clarity_authorization').access_token}`
-            }
-        })
-        .then(u => u.json()),
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        indexed_DB('keyval-store', 'keyval', 'd2-manifest') // 4 - d2 manifest
-        .then(resp => resp)
+
+        fetch_bungie('user_info'),
+        indexed_DB('keyval-store', 'keyval', 'd2-manifest')
     ])
     .then(json_data => {
         let wep_formulas = json_data[0]
-        let exotic_armor_perks = json_data[1]
-        let wep_perks = json_data[2]
+        let community_data = {
+            exotic_armor:   json_data[1].exotic_armor,
+            armor_mods:     json_data[1].armor_mods,
+            weapon_perks:   json_data[1].weapon_perks,
+            weapon_frames:  json_data[1].weapon_frames,
+            weapon_mods:    json_data[1].weapon_mods,
+            // exotic_weapons: json_data[1].exotic_weapons, // todo add this to database
+        }
         let user_data = json_data[3].Response
 
-        let manifest = [
-            json_data[4].DestinyInventoryItemDefinition, // 0 inventory_item
-            json_data[4].DestinyStatGroupDefinition, // 1 stat_group
-            json_data[4].DestinyStatDefinition, // 2 stat_names
-            json_data[4].DestinyItemCategoryDefinition, // 3 item_category
-            json_data[4].DestinyDamageTypeDefinition, // 4 damage_type
-            json_data[4].DestinyPlugSetDefinition // 5 plug_sets
-        ]
-        filter_inventory_item(user_data, manifest, /**/ wep_formulas, exotic_armor_perks, wep_perks)
+        let manifest = {
+            inventory_item: json_data[4].DestinyInventoryItemDefinition,
+            stat_group:     json_data[4].DestinyStatGroupDefinition,
+            stat_names:     json_data[4].DestinyStatDefinition,
+            item_category:  json_data[4].DestinyItemCategoryDefinition,
+            damage_type:    json_data[4].DestinyDamageTypeDefinition,
+            plug_sets:      json_data[4].DestinyPlugSetDefinition
+        }
+        // filter_inventory_item(user_data, manifest, /**/ wep_formulas, community_data) //-!- old
+        get_basic_info(user_data, manifest)
     })
 }
+function get_basic_info(user_data, manifest) {
+    function find_item_ids() {
+        let item_ids = []
+        function find_hare(items) {
+            for (let i = 0; i < items.length; i++) {
+                let item_type = manifest.inventory_item[items[i].itemHash].itemType
+                if (items[i].itemInstanceId && (item_type == 3 || item_type == 2)) { // if has instanced id and is weapon or armor
+                    let x = []
+                    x.push(items[i].itemInstanceId)
+                    x.push(items[i].itemHash)
+                    x.push(manifest.inventory_item[items[i].itemHash].itemType)
+                    item_ids.push(x)
+                }
+            }
+        }
+        find_hare(user_data.profileInventory.data.items)
+        Object.entries(user_data.characterInventories.data).forEach(x => find_hare(x[1].items))
+        Object.entries(user_data.characterEquipment  .data).forEach(x => find_hare(x[1].items))
+        return item_ids
+    }
+    let item_ids = find_item_ids()
+    console.log(item_ids);
 
-function filter_inventory_item(user_data, manifest, /**/ wep_formulas, exotic_armor_perks, wep_perks) {
+}
+
+
+
+
+
+
+
+
+function filter_inventory_item(user_data, manifest, /**/ wep_formulas, community_data) {
     console.time('timer') // checking how long it takes to get all data reformated
     const json = {
         'inventory_item': manifest[0],

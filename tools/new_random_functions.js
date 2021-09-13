@@ -1,24 +1,3 @@
-(() => { // create settings on first launch or incase cache was cleared
-    if (local_get('clarity_settings') && local_get('clarity_settings').settings_version != 1) return
-    let dim_url = document.querySelector('body').baseURI
-    let dim_version = dim_url.slice(8, dim_url.search('.destiny'))
-    function version() {
-        if(dim_version == 'beta') return {'k':'Y2RhN2I2ZTRmYzlmNDlhZGE0ZmVkNjE4ZTExODQxYWI=','i':'37074','s':'MzcwNzQ6eHhYUU1zMjl1OTBBcnpCVi50U2J1MU1Bei01Z1ZoeXdPSmNET3NNWjdjaw=='}
-        if(dim_version == 'app') return {'k':'N2I4ZWExNGM0MjZjNGE1MDg1M2MyM2JjZTJkZDU1ZGE=','i':'37290','s':'MzcyOTA6LTA4RnV3RWJ1Wk1TSU03bElvSWNoeVl2bHJkSXpWVlFQMUdUbWk4OVBIcw=='}
-    }
-    let settings = {
-        'dark_mode': false,
-        'dark_mode_colors': {
-            'background_color_1': 'hsl(240, 21%, 16%)',
-            'background_color_2': 'hsl(240, 30%, 4%)',
-            'masterwork_item': 'hsl(50, 90%, 65%)',
-            'masterwork_item_text': 'hsl(0, 0%, 0%)'
-        },
-        'settings_version': 2,
-        'version': version()
-    }
-    local_set('clarity_settings', settings)
-}) ()
 function element_creator(type, properties, extra) {
     let element = document.createElement(type)
     Object.entries(properties).forEach(property => {
@@ -112,9 +91,9 @@ async function indexed_DB(db, store, key) {
  * @param {*} value value to configure
  */
  function update_clarity_settings(path, value) {
-    let stuff = local_get('clarity_settings')
+    let stuff = local_storage('clarity_settings')
     stuff[path] = value
-    local_set('clarity_settings', stuff)
+    local_storage('clarity_settings', stuff)
 }
 //--- - - - - - - - - - - - - - - - - - - - - - - - - - Calculators - - - - - - - - - - - - - - - - - - - - - - - - -
 /**

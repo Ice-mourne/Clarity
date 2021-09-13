@@ -8,6 +8,8 @@ function info_button() {
     let new_menu       = element_creator('div',{'className':'Clarity_new_menu'})
     let sheet_img      = element_creator('img',{}, {'img': 'images/spreadsheet.png'})
     let range_calc_img = element_creator('img',{}, {'img': 'images/range_calc.png'})
+    let pip1n_img      = element_creator('img',{}, {'img': 'images/pip1n.png'})
+    let court_img      = element_creator('img',{}, {'img': 'images/court.png'})
     let gunsmith_img   = element_creator('img',{}, {'img': 'images/gunsmith.png'})
     function create_top_text() {
         let top_text_box = element_creator('div', {'className': 'Clarity_menu_top_text'})
@@ -28,7 +30,7 @@ function info_button() {
         let Van_Holden = element_creator('a', {'textContent': 'Reload Speed started by Van Holden',            'target': '_blank', 'href': 'https://docs.google.com/spreadsheets/d/13heG_rKRB9UU5DpvRbl1q11WGFs8QPPzpFA60uIOT8w/'})
         let Mmonx      = element_creator('a', {'textContent': 'Weapon Range Calculator by Mmonx',              'target': '_blank', 'href': 'https://destinyindepth.com/range_calculator/'})
 
-        sources_box.append(sources_box_text, sheet_img.cloneNode(), Pip1n, sheet_img.cloneNode(), Court, sheet_img.cloneNode(), Van_Holden, range_calc_img, Mmonx)
+        sources_box.append(sources_box_text, pip1n_img, Pip1n, court_img, Court, sheet_img.cloneNode(), Van_Holden, range_calc_img, Mmonx)
         return sources_box
     }
     function create_useful_links_box() {
@@ -101,8 +103,13 @@ function open_close() {
     button.addEventListener('click', event => {
         if(event.target.classList.contains('Clarity_menu_button')) event.currentTarget.lastChild.classList.toggle('Clarity_show_menu')
     })
+    document.addEventListener('click', event => {
+        if(event.path.find(element => element.classList?.contains('Clarity_menu_button'))) return
+        let menu_window = document.querySelector('.Clarity_new_menu')
+        menu_window.classList.remove('Clarity_show_menu')
+    })
 }
-if (local_storage('clarity_settings').dark_mode && local_storage('clarity_locations').clarity_menu) dark_mode()
+if (local_storage('clarity_locations').clarity_menu) dark_mode()
 function dark_mode(){
     const jd = local_storage('clarity_locations').clarity_menu
     const colors = local_storage('clarity_settings').dark_mode_colors
