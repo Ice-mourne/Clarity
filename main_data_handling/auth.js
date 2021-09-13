@@ -4,10 +4,7 @@
 	let ask_to_auth = local_storage('clarity_temp')
 
 	const href = window.location.href
-
-	const nr = (href.includes('beta.destiny')) ?
-		{'k':'Y2RhN2I2ZTRmYzlmNDlhZGE0ZmVkNjE4ZTExODQxYWI=','i':'37074','s':'MzcwNzQ6eHhYUU1zMjl1OTBBcnpCVi50U2J1MU1Bei01Z1ZoeXdPSmNET3NNWjdjaw=='} :
-		{'k':'N2I4ZWExNGM0MjZjNGE1MDg1M2MyM2JjZTJkZDU1ZGE=','i':'37290','s':'MzcyOTA6LTA4RnV3RWJ1Wk1TSU03bElvSWNoeVl2bHJkSXpWVlFQMUdUbWk4OVBIcw=='}
+	const nr = (href.includes('beta.destiny')) ? {'i':'37074'} : {'i':'37290'}
 
 	if ((!auth || !user) && !ask_to_auth) {ask_for_authorization(); return}
 
@@ -70,62 +67,68 @@
 			window.dispatchEvent(new Event('auth_complete'))
 		})
 	}
+}) ()
 
-	async function fetch_bungie(auth_type, code) {
-		let info = {
-			authorization: {
-				'link':'App/OAuth/Token/',
-				'method': 'POST',
-				'authorization': `Basic ${nr.s}`,
-				'content_type': 'application/x-www-form-urlencoded',
-				'body': `grant_type=authorization_code&code=${code}`
-			},
-			token_refresh: {
-				'link':'App/OAuth/Token/',
-				'method': 'POST',
-				'authorization': `Basic ${nr.s}`,
-				'content_type': 'application/x-www-form-urlencoded',
-				'body': `grant_type=refresh_token&refresh_token=${auth?.refresh_token}`
-			},
-			current_user: {
-				'link': 'User/GetMembershipsForCurrentUser/',
-				'method': 'GET',
-				'authorization': `Bearer ${auth?.access_token}`
-			},
-			user_info: {
-				'link': `Destiny2/${user?.platform}/Profile/${user?.id}/?components=102,201,205,304,305,310`,
-				'method': 'GET',
-				'authorization': `Bearer ${auth?.access_token}`
-			}
-		}
-		return new Promise((resolve, reject) => {
-			fetch(`https://www.bungie.net/Platform/${info[auth_type].link}`, {
-				method: info[auth_type].method,
-				mode: 'cors',
-				headers: {
-					'X-API-Key': atob(nr.k),
-					'authorization': info[auth_type].authorization,
-					'Content-Type': info[auth_type].content_type
-				},
-				body: info[auth_type].body
-			})
-			.then(resp => {
-				if (resp.ok) return resp.json()
-				handle_errors(resp, auth_type)
-			})
-			.then(resp => resolve(resp))
-		})
-		function handle_errors(err, auth_type) {                                                                                   // todo better error handling
-			switch (err.status) {
-				case 500: // internal bungie error // simulate auth pressing to try again
-					local_storage('clarity_temp', true)
-					window.location.href = `https://www.bungie.net/en/OAuth/Authorize?client_id=${nr.i}&response_type=code`
-					break
-			}
-			console.error(`%c Something then wrong with auth => ${auth_type}`, 'font-size: large;')
-			console.log(err.status)
-			console.log(err)
-			console.error(`%c End of error logs for => ${auth_type}`, 'font-size: large;')
+async function fetch_bungie(auth_type, code) {
+	const auth = local_storage('clarity_authorization')
+	const user = local_storage('clarity_user')
+	const href = window.location.href
+	const nr = (href.includes('beta.destiny')) ?
+		{'k':'Y2RhN2I2ZTRmYzlmNDlhZGE0ZmVkNjE4ZTExODQxYWI=','i':'37074','s':'MzcwNzQ6eHhYUU1zMjl1OTBBcnpCVi50U2J1MU1Bei01Z1ZoeXdPSmNET3NNWjdjaw=='} :
+		{'k':'N2I4ZWExNGM0MjZjNGE1MDg1M2MyM2JjZTJkZDU1ZGE=','i':'37290','s':'MzcyOTA6LTA4RnV3RWJ1Wk1TSU03bElvSWNoeVl2bHJkSXpWVlFQMUdUbWk4OVBIcw=='}
+	let info = {
+		authorization: {
+			'link':'App/OAuth/Token/',
+			'method': 'POST',
+			'authorization': `Basic ${nr.s}`,
+			'content_type': 'application/x-www-form-urlencoded',
+			'body': `grant_type=authorization_code&code=${code}`
+		},
+		token_refresh: {
+			'link':'App/OAuth/Token/',
+			'method': 'POST',
+			'authorization': `Basic ${nr.s}`,
+			'content_type': 'application/x-www-form-urlencoded',
+			'body': `grant_type=refresh_token&refresh_token=${auth?.refresh_token}`
+		},
+		current_user: {
+			'link': 'User/GetMembershipsForCurrentUser/',
+			'method': 'GET',
+			'authorization': `Bearer ${auth?.access_token}`
+		},
+		user_info: {
+			'link': `Destiny2/${user?.platform}/Profile/${user?.id}/?components=102,201,205,304,305,310`,
+			'method': 'GET',
+			'authorization': `Bearer ${auth?.access_token}`
 		}
 	}
-}) ()
+	return new Promise((resolve, reject) => {
+		fetch(`https://www.bungie.net/Platform/${info[auth_type].link}`, {
+			method: info[auth_type].method,
+			mode: 'cors',
+			headers: {
+				'X-API-Key': atob(nr.k),
+				'authorization': info[auth_type].authorization,
+				'Content-Type': info[auth_type].content_type
+			},
+			body: info[auth_type].body
+		})
+		.then(resp => {
+			if (resp.ok) return resp.json()
+			handle_errors(resp, auth_type)
+		})
+		.then(resp => resolve(resp))
+	})
+	function handle_errors(err, auth_type) {                                                                                   // todo better error handling
+		switch (err.status) {
+			case 500: // internal bungie error // simulate auth pressing to try again
+				local_storage('clarity_temp', true)
+				window.location.href = `https://www.bungie.net/en/OAuth/Authorize?client_id=${nr.i}&response_type=code`
+				break
+		}
+		console.error(`%c Something then wrong with auth => ${auth_type}`, 'font-size: large;')
+		console.log(err.status)
+		console.log(err)
+		console.error(`%c End of error logs for => ${auth_type}`, 'font-size: large;')
+	}
+}
