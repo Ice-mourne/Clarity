@@ -57,7 +57,7 @@ function get_basic_info(user_data, manifest) {
         const unique_id = item_ids[i][0]
         const item = manifest.inventory_item[item_ids[i][1]]
         if (item.itemType == 3                                           ) new_item_list[unique_id] = weapon(unique_id, item)
-        // if (item.itemType == 2 && item.inventory.tierTypeName == 'Exotic') new_item_list[unique_id] = armor(unique_id, item)
+        if (item.itemType == 2 && item.inventory.tierTypeName == 'Exotic') new_item_list[unique_id] = armor(item)
     }
     function weapon(unique_id, item) {
         // let weapon_data = new Weapon_constructor(user_data, manifest, /**/ wep_formulas, wep_perks, unique_id, item)
@@ -70,8 +70,9 @@ function get_basic_info(user_data, manifest) {
             'damage_type': manifest.damage_type[item.defaultDamageTypeHash].displayProperties.name, // arch, solar, void...
             'item_type': 'weapon',
             'perks': {
-                'active_perks': user_data.itemComponents.sockets.data[unique_id].sockets,
-                'perks': item.sockets.socketCategories
+                'active': user_data.itemComponents.sockets.data[unique_id].sockets,
+                'rolled': item.sockets.socketCategories,
+                'all': item.sockets
             },
             // 'stats': weapon_filter.stats(),
         }
@@ -90,7 +91,10 @@ function get_basic_info(user_data, manifest) {
         return {
             'name': item.displayProperties.name,
             'icon': item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
-            'perk': new Filter_armor.armor_perks(item, inventory_item, exotic_armor_perks),
+            'perk': {
+                'id': 'asd',
+                'icon': 'ff',
+            },
             'item_type': 'armor',
             'tier': item.inventory.tierTypeName
         }
