@@ -57,10 +57,24 @@ function get_basic_info(user_data, manifest) {
         const unique_id = item_ids[i][0]
         const item = manifest.inventory_item[item_ids[i][1]]
         if (item.itemType == 3                                           ) new_item_list[unique_id] = weapon(unique_id, item)
-        if (item.itemType == 2 && item.inventory.tierTypeName == 'Exotic') new_item_list[unique_id] = armor(item)
+        if (item.itemType == 2 && item.inventory.tierTypeName == 'Exotic') new_item_list[unique_id] = armor(unique_id, item)
     }
     function weapon(unique_id, item) {
-        // let weapon_data = new Weapon_constructor(user_data, manifest, /**/ wep_formulas, wep_perks, unique_id, item)
+        let perk_types = [
+            1257608559, // Arrow
+            2833605196, // Barrel
+            1757026848, // Battery
+            1041766312, // Blade
+            3809303875, // Bowstring
+            3962145884, // Grip
+            683359327,  // Guard
+            1202604782, // Launcher Barrel
+            1806783418, // Magazine
+            2619833294, // Scope
+            577918720,  // Stock
+            7906839,    // Trait
+            2718120384  // Magazine gl
+        ]
         return {
             'name': item.displayProperties.name,
             'icon': item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
@@ -70,10 +84,10 @@ function get_basic_info(user_data, manifest) {
             'damage_type': manifest.damage_type[item.defaultDamageTypeHash].displayProperties.name, // arch, solar, void...
             'item_type': 'weapon',
             'perks': {
-                'active': user_data.itemComponents.sockets.data[unique_id].sockets,
-                'rolled': item.sockets.socketCategories,
+                'active': active_perks(),
+                'rolled': rolled(), // item.sockets.socketCategories,
                 'all': item.sockets
-            },
+            },                                                                                                          // todo include active frame and masterwork because i need stats from them to
             // 'stats': weapon_filter.stats(),
         }
         function ammo_type() { // ammo type
@@ -86,23 +100,48 @@ function get_basic_info(user_data, manifest) {
                     return 'heavy'
             }
         }
+        function active_perks() {
+            return user_data.itemComponents.sockets.data[unique_id].sockets
+            .flatMap(perk => {
+                return (
+                    perk.isEnabled &&
+                    perk.isVisible &&
+                    perk_types.includes(manifest.inventory_item[perk.plugHash].plug.plugCategoryHash)
+                ) ? perk.plugHash : []
+            })
+        }
+        function rolled() {
+            let data = user_data.itemComponents.reusablePlugs.data[unique_id]?.plugs
+            if(!data) return
+            return Object.entries(data)
+            .map(perk_slot => {
+                return perk_slot[1].flatMap(perk => {
+                    return (
+                        perk.canInsert &&
+                        perk.enabled &&
+                        perk_types.includes(manifest.inventory_item[perk.plugItemHash].plug.plugCategoryHash)
+                    ) ? perk.plugItemHash : []
+                })
+            })
+            .filter(array => array.length != 0)
+        }
+
     }
-    function armor(item) {
+    function armor(unique_id, item) {
+        let perk_id = user_data.itemComponents.sockets.data[unique_id].sockets[11].plugHash
         return {
             'name': item.displayProperties.name,
             'icon': item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
             'perk': {
-                'id': 'asd',
-                'icon': 'ff',
+                'id': perk_id,
+                'name': manifest.inventory_item[perk_id].displayProperties.name,
+                'icon': manifest.inventory_item[perk_id].displayProperties.icon.replace('/common/destiny2_content/icons/', '')
             },
             'item_type': 'armor',
             'tier': item.inventory.tierTypeName
         }
     }
-    console.log(new_item_list);
-
-
-
+    console.log(new_item_list)
 }
 
 
