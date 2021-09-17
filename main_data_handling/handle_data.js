@@ -84,9 +84,9 @@ function get_basic_info(user_data, manifest) {
             'damage_type': manifest.damage_type[item.defaultDamageTypeHash].displayProperties.name, // arch, solar, void...
             'item_type': 'weapon',
             'perks': {
-                'active': active_perks(),
-                'rolled': rolled(), // item.sockets.socketCategories,
-                'all': item.sockets
+                'active': active_perks(), // currently selected perks
+                'rolled': rolled(), // selectable perks
+                'all': item.sockets // all perks weapon can roll
             },                                                                                                          // todo include active frame and masterwork because i need stats from them to
             // 'stats': weapon_filter.stats(),
         }
