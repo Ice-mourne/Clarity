@@ -38,6 +38,7 @@ function get_in_content(className) {
     if(className[0] == '.' || className[0] == '#') return document.querySelector(className)
     return content.getElementsByClassName(className)[0]
 }
+
 /**
  * Get stuff from Local Storage
  * @param {string} key 
@@ -192,4 +193,29 @@ function get_item_hashes(json) {
     }
     console.timeEnd("loop_test -  -  -  -  -  - - - - - - - - - - - - - - - - - - -")
     return items
+}
+
+
+
+
+function local_storage(key, value) {
+    if(value) {
+        let new_value
+        try {
+            new_value = JSON.stringify(value)
+        }
+        catch {
+            new_value = value
+        }
+        localStorage.setItem(key, new_value)
+        return
+    }
+
+    let item = localStorage.getItem(key)
+    try {
+        return JSON.parse(item)
+    }
+    catch {
+        return item
+    }
 }
