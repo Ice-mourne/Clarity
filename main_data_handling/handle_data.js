@@ -27,13 +27,15 @@ function work_on_item_info() {
             stat_names:     json_data[3].DestinyStatDefinition,
             item_category:  json_data[3].DestinyItemCategoryDefinition,
             damage_type:    json_data[3].DestinyDamageTypeDefinition,
-            plug_sets:      json_data[3].DestinyPlugSetDefinition
+            plug_sets:      json_data[3].DestinyPlugSetDefinition,
+            socket_type:    json_data[3].DestinySocketTypeDefinition,
         }
         // filter_inventory_item(user_data, manifest, /**/ wep_formulas, community_data) //-!- old
         get_basic_info(user_data, manifest)
     })
 }
 function get_basic_info(user_data, manifest) {
+    console.time('timer')
     function find_item_ids() {
         let item_ids = []
         function find_hare(items) {
@@ -56,41 +58,36 @@ function get_basic_info(user_data, manifest) {
     for (let i = 0; i < item_ids.length; i++) {
         const unique_id = item_ids[i][0]
         const item = manifest.inventory_item[item_ids[i][1]]
-        if (item.itemType == 3                                           ) new_item_list[unique_id] = weapon(unique_id, item)
-        if (item.itemType == 2 && item.inventory.tierTypeName == 'Exotic') new_item_list[unique_id] = armor(unique_id, item)
+        if (item.itemType == 3            && item.inventory.tierTypeName == 'Exotic'                             ) new_item_list[unique_id] = weapon(unique_id, item)
+        // if (item.itemType == 2 && item.inventory.tierTypeName == 'Exotic') new_item_list[unique_id] = armor(unique_id, item)
     }
     function weapon(unique_id, item) {
-        let perk_types = [
-            1257608559, // Arrow
-            2833605196, // Barrel
-            1757026848, // Battery
-            1041766312, // Blade
-            3809303875, // Bowstring
-            3962145884, // Grip
-            683359327,  // Guard
-            1202604782, // Launcher Barrel
-            1806783418, // Magazine
-            2619833294, // Scope
-            577918720,  // Stock
-            7906839,    // Trait
-            2718120384  // Magazine gl
-        ]
-        return {
-            'name': item.displayProperties.name,
-            'icon': item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
-            'type': item.itemTypeDisplayName, // hand cannon, sniper, shotgun...
-            'ammo': ammo_type(), // primary, special, heavy...
-            'slot': manifest.item_category[item.itemCategoryHashes[0]].shortTitle, // kinetic, energy, power...
-            'damage_type': manifest.damage_type[item.defaultDamageTypeHash].displayProperties.name, // arch, solar, void...
-            'item_type': 'weapon',
-            'perks': {
-                'active': active_perks(), // currently selected perks
-                'rolled': rolled(), // selectable perks
-                'all': item.sockets // all perks weapon can roll
-            },                                                                                                          // todo include active frame and masterwork because i need stats from them to
-            // 'stats': weapon_filter.stats(),
+        function check_type(id, use_manifest) {
+            let perk_types = [
+                1257608559, // Arrow
+                2833605196, // Barrel
+                1757026848, // Battery
+                1041766312, // Blade
+                3809303875, // Bowstring
+                3962145884, // Grip
+                683359327,  // Guard
+                1202604782, // Launcher Barrel
+                1806783418, // Magazine
+                2619833294, // Scope
+                577918720,  // Stock
+                7906839,    // Trait // named frame in API
+                2718120384  // Magazine gl
+            ]
+
+            if (use_manifest) return perk_types.includes(manifest.inventory_item[id].plug.plugCategoryHash) // return true if its one of listed perk types
+            return perk_types.includes(id)
         }
-        function ammo_type() { // ammo type
+        let socket_indexes = {
+            'intrinsic': item.sockets.socketCategories.find(socket_category => socket_category.socketCategoryHash == 3956125808).socketIndexes,
+            'perks': item.sockets.socketCategories.find(socket_category => socket_category.socketCategoryHash == 4241085061).socketIndexes,
+            'mods': item.sockets.socketCategories.find(socket_category => socket_category.socketCategoryHash == 2685412949)?.socketIndexes
+        }
+        function ammo_type() {
             switch (item.equippingBlock.ammoType) {
                 case 1:
                     return 'primary'
@@ -100,35 +97,154 @@ function get_basic_info(user_data, manifest) {
                     return 'heavy'
             }
         }
-        function active_perks() {
-            return user_data.itemComponents.sockets.data[unique_id].sockets
-            .flatMap(perk => {
-                return (
-                    perk.isEnabled &&
-                    perk.isVisible &&
-                    perk_types.includes(manifest.inventory_item[perk.plugHash].plug.plugCategoryHash)
-                ) ? perk.plugHash : []
-            })
-        }
-        function rolled() {
-            let data = user_data.itemComponents.reusablePlugs.data[unique_id]?.plugs
-            if(!data) return
-            return Object.entries(data)
-            .map(perk_slot => {
-                return perk_slot[1].flatMap(perk => {
+        const perks = {
+            active() {
+                return user_data.itemComponents.sockets.data[unique_id].sockets
+                .flatMap(perk => {
                     return (
-                        perk.canInsert &&
-                        perk.enabled &&
-                        perk_types.includes(manifest.inventory_item[perk.plugItemHash].plug.plugCategoryHash)
-                    ) ? perk.plugItemHash : []
+                        perk.isEnabled &&
+                        perk.isVisible &&
+                        check_type(perk.plugHash, true)
+                    ) ? perk.plugHash : []
                 })
-            })
-            .filter(array => array.length != 0)
-        }
+            },
+            rolled() {
+                const data = user_data.itemComponents.reusablePlugs.data[unique_id]?.plugs
+                if(!data) return
+                let perk_array = Object.entries(data)
+                .map(perk_slot => {
+                    return perk_slot[1].flatMap(perk => {
+                        return (
+                            perk.canInsert &&
+                            perk.enabled &&
+                            check_type(perk.plugItemHash, true)
+                        ) ? perk.plugItemHash : []
+                    })
+                })
+                .filter(array => array.length != 0)
 
+                return (perk_array.length != 0) ? perk_array : undefined
+            },
+            curated_random(type) {
+                let perk_array = socket_indexes.perks.flatMap(index => {
+                    const socket_entry = item.sockets.socketEntries[index]
+                    const socket_type_id = manifest.socket_type[socket_entry.socketTypeHash]
+
+                    if(!check_type(socket_type_id.plugWhitelist[0].categoryHash, false)) return [] // check if perk type is actually perk // kill tracker is "perk" because bongo
+
+                    const perks = manifest.plug_sets[socket_entry[type]]?.reusablePlugItems
+                    const look_in = (type == 'randomizedPlugSetHash') // if on random perks
+                    ? perks                                           // just look for random perks
+                    : perks                                           // if not look if there are any curated perks
+                    || socket_entry.reusablePlugItems                 // if where are no curated perks look in hare for curated perks
+
+                    return [look_in?.map(perk => {
+                        return {
+                            'can_roll': perk.currentlyCanRoll,
+                            'id': perk.plugItemHash
+                        }
+                    })]
+                })
+                .filter(perk => perk) // removes pesky undefined values
+
+                return (perk_array.length != 0) ? perk_array : undefined
+            }
+        }
+        const mods = {
+            active() {
+                return user_data.itemComponents.sockets.data[unique_id].sockets.find(perks_mods =>
+                    manifest.inventory_item[perks_mods.plugHash]?.itemTypeDisplayName == 'Weapon Mod'
+                )?.plugHash
+            },
+            all() {
+                if(!socket_indexes.mods) return undefined
+                let wep_adept = (item.displayProperties.name.match(/ \(Timelost\)| \(Adept\)/)) ? true : false
+                let mod_array = socket_indexes.mods.flatMap(index => {
+                    const socket_entry = item.sockets.socketEntries[index]
+                    if(socket_entry.singleInitialItemHash != 2323986101) return [] // check if its empty mod socket
+
+                    return manifest.plug_sets[socket_entry.reusablePlugSetHash]?.reusablePlugItems.flatMap(mod => {
+                        if(mod.plugHash == 2323986101) return [] // ignore empty mod socket
+                        if(wep_adept) return mod.plugItemHash // return all mods
+                        let mod_adept = manifest.inventory_item[mod.plugItemHash].displayProperties.name.includes('Adept')
+                        if(!mod_adept) return mod.plugItemHash // return non adept mods
+                        if(mod_adept) return [] // return empty
+                    })
+                })
+                return (mod_array.length != 0) ? mod_array : undefined
+            }
+        }
+        const masterwork = {
+            active() {
+                if(item.inventory.tierTypeName == 'Exotic') {
+                    return user_data.itemComponents.sockets.data[unique_id].sockets.find(masterwork =>
+                        manifest.inventory_item[masterwork.plugHash]?.plug.uiPlugLabel == 'masterwork'
+                    )?.plugHash
+                }
+                else {
+
+                }
+            },
+            all() {
+                if(item.inventory.tierTypeName == 'Exotic') {
+                    return socket_indexes.mods.flatMap(index => {
+                        const socket_entry = item.sockets.socketEntries[index]
+                        if(socket_entry.singleInitialItemHash == 1498917124) return socket_entry.reusablePlugItems[0].plugItemHash // if empty catalyst socked
+                        if(socket_entry.reusablePlugItems.some(e => // if its older exotic look for upgrade masterwork
+                            manifest.inventory_item[e.plugItemHash].displayProperties.name == 'Upgrade Masterwork'
+                        )) return socket_entry.singleInitialItemHash
+                        return []
+                    })
+                }
+                else {
+
+                }
+            }
+        }
+        const stats = {
+            investment() {
+
+            },
+            stats() {
+
+            },
+            stat_group() {
+
+            }
+        }
+        return {
+            'name': item.displayProperties.name,
+            'icon': item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
+            'type': item.itemTypeDisplayName, // hand cannon, sniper, shotgun...
+            'ammo': ammo_type(), // primary, special, heavy...
+            'slot': manifest.item_category[item.itemCategoryHashes[0]].shortTitle, // kinetic, energy, power...
+            'damage_type': manifest.damage_type[item.defaultDamageTypeHash].displayProperties.name, // arch, solar, void...
+            'item_type': 'weapon',
+            'tier': item.inventory.tierTypeName, // legendary, exotic...
+            'perks': {
+                'active':  perks.active(), // currently selected perks // unique item
+                'rolled':  perks.rolled(), // selectable perks // unique item
+                'random':  perks.curated_random('randomizedPlugSetHash'), // random perks weapon can roll
+                'curated': perks.curated_random('reusablePlugSetHash'),   // curated perks weapon can roll
+                'frame':   item.sockets.socketEntries[0].singleInitialItemHash
+            },
+            'mods': {
+                'active': mods.active(), // mod on unique weapon // if weapon dont have mod them empty socked id // if weapon can't have mod undefined
+                'all': mods.all() // all mods weapon can use
+            },
+            'masterwork': {
+                'active': masterwork.active(), // todo
+                'all': masterwork.all(), // todo
+            },
+            'stats': {
+                'investment': stats.investment(), // todo
+                'stats': stats.stats(), // todo
+                'stat_group': stats.stat_group() // todo
+            }
+        }
     }
     function armor(unique_id, item) {
-        let perk_id = user_data.itemComponents.sockets.data[unique_id].sockets[11].plugHash
+        const perk_id = user_data.itemComponents.sockets.data[unique_id].sockets[11].plugHash
         return {
             'name': item.displayProperties.name,
             'icon': item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
@@ -141,17 +257,20 @@ function get_basic_info(user_data, manifest) {
             'tier': item.inventory.tierTypeName
         }
     }
-    console.log(new_item_list)
+    console.timeEnd('timer')
+    console.log(JSON.parse(JSON.stringify(new_item_list)))
 }
 
 
 
+//! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//? - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
+/*
 
-
-
-function filter_inventory_item(user_data, manifest, /**/ wep_formulas, community_data) {
+function filter_inventory_item(user_data, manifest,  wep_formulas, community_data) {
     console.time('timer') // checking how long it takes to get all data reformated
     const json = {
         'inventory_item': manifest[0],
@@ -171,7 +290,7 @@ function filter_inventory_item(user_data, manifest, /**/ wep_formulas, community
         // }
     }
     function make_new_weapon(unique_id, item) {
-        let weapon_data = new Weapon_constructor(user_data, manifest, /**/ wep_formulas, wep_perks, unique_id, item)
+        let weapon_data = new Weapon_constructor(user_data, manifest,  wep_formulas, wep_perks, unique_id, item)
         return {
             'name': item.displayProperties.name,
             'icon': item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
@@ -198,7 +317,7 @@ function filter_inventory_item(user_data, manifest, /**/ wep_formulas, community
     }
 }
 class Weapon_constructor {
-    constructor(user_data, manifest, /**/ wep_formulas, wep_perks, unique_id, item) {
+    constructor(user_data, manifest,  wep_formulas, wep_perks, unique_id, item) {
         this.user_data = user_data
         this.inventory_item = manifest[0]
         this.plug_set = manifest[5]
@@ -379,4 +498,4 @@ class Description_maker {
 
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+*/
