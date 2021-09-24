@@ -5,11 +5,9 @@ let DIMs_stalker = new MutationObserver((_, rageQuit) =>{
 	    let nr = local_get('clarity_settings').version
         if (jd) {
             start_looking_for_clicks(jd.stuff)
-            ask_for_authorization(jd.stuff, nr)
         } else {window.addEventListener('storage', () => {
             if (jd) {
                 start_looking_for_clicks(jd.stuff)
-                ask_for_authorization(jd.stuff, nr)
             }
         })}
         rageQuit.disconnect()

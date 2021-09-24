@@ -1,5 +1,5 @@
 (() => { // create settings on first launch or incase cache was cleared
-    if (local_get('clarity_settings') && local_get('clarity_settings').settings_version != 1) return
+    if (local_storage('clarity_settings') && local_storage('clarity_settings').settings_version != 1) return
     let dim_url = document.querySelector('body').baseURI
     let dim_version = dim_url.slice(8, dim_url.search('.destiny'))
     function version() {
@@ -24,7 +24,7 @@
  * @param {*} value value to configure
  */
 function update_clarity_settings(setting, value) {
-    let stuff = local_get('clarity_settings')
+    let stuff = local_storage('clarity_settings')
     stuff[setting] = value
     local_set('clarity_settings', stuff)
 }

@@ -1,4 +1,4 @@
-;( () => {    
+;( () => {
     let dim_url = document.querySelector('body').baseURI
     let version = dim_url.slice(8, dim_url.search('.destiny'))
     fetch(`https://ice-mourne.github.io/Database-for-Clarity/Database/locations.json?${Math.random()}`)
@@ -6,6 +6,7 @@
     .then(data => localStorage.setItem('clarity_locations', JSON.stringify(data[version])))
 }) ()
 if (local_get('clarity_user') && local_get('clarity_authorization')) work_on_item_info() // if data required is present update item info // this runs on startup
+window.addEventListener('update_item_info', _ => work_on_item_info())
 function work_on_item_info() {
     let nr = local_get('clarity_settings').version
     Promise.all([
@@ -16,22 +17,17 @@ function work_on_item_info() {
         fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/weapon_perks/?${Math.random()}`) // 2
         .then(resp => resp.json()),
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        fetch(`https://www.bungie.net/Platform/Destiny2/${local_get('clarity_user').platform}/Profile/${local_get('clarity_user').id}/?components=102,201,205,304,305,310`, {
-            method: 'GET',
-            mode: 'cors', // if you digging hare looking for API key or something DM me and i will help you get one and explain how to use it
-            headers: { 'X-API-Key': atob(nr.k), 'Authorization': 'Bearer ' + local_get('clarity_authorization').access_token }
-        })
-        .then(u => u.json()),
+        fetch_bungie('user_info'),
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         get_from_indexedDB('keyval-store', 'keyval', 'd2-manifest') // 4 - d2 manifest
         .then(resp => resp)
     ])
     .then(json_data => {
-        let wep_formulas        = json_data[0]
-        let exotic_armor_perks  = json_data[1]
-        let wep_perks           = json_data[2]
-        let user_data           = json_data[3]
-    
+        let wep_formulas       = json_data[0]
+        let exotic_armor_perks = json_data[1]
+        let wep_perks          = json_data[2]
+        let user_data          = json_data[3]
+
         let manifest = [
             json_data[4].DestinyInventoryItemDefinition,
             json_data[4].DestinyStatGroupDefinition,
