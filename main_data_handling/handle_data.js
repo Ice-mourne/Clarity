@@ -1,4 +1,5 @@
 window.addEventListener('update_item_info', work_on_item_info)
+window.addEventListener('auth_complete', work_on_item_info, {once: true})
 function work_on_item_info() {
     Promise.all([
         fetch(`https://ice-mourne.github.io/Database-for-Clarity/Database/weapon_formulas.json?${Math.random()}`)
@@ -58,8 +59,8 @@ function get_basic_info(user_data, manifest) {
     for (let i = 0; i < item_ids.length; i++) {
         const unique_id = item_ids[i][0]
         const item = manifest.inventory_item[item_ids[i][1]]
-        if (item.itemType == 3            && item.inventory.tierTypeName == 'Exotic'                             ) new_item_list[unique_id] = weapon(unique_id, item)
-        // if (item.itemType == 2 && item.inventory.tierTypeName == 'Exotic') new_item_list[unique_id] = armor(unique_id, item)
+        if (item.itemType == 3                                           ) new_item_list[unique_id] = weapon(unique_id, item)
+        if (item.itemType == 2 && item.inventory.tierTypeName == 'Exotic') new_item_list[unique_id] = armor(unique_id, item)
     }
     function weapon(unique_id, item) {
         function check_type(id, use_manifest) {
@@ -86,6 +87,145 @@ function get_basic_info(user_data, manifest) {
             'intrinsic': item.sockets.socketCategories.find(socket_category => socket_category.socketCategoryHash == 3956125808).socketIndexes,
             'perks': item.sockets.socketCategories.find(socket_category => socket_category.socketCategoryHash == 4241085061).socketIndexes,
             'mods': item.sockets.socketCategories.find(socket_category => socket_category.socketCategoryHash == 2685412949)?.socketIndexes
+        }
+        const ms_list = {
+            "stability": [
+                1590375901,
+                1590375902,
+                1590375903,
+                1590375896,
+                1590375897,
+                1590375898,
+                1590375899,
+                1590375892,
+                1590375893,
+                384158423
+            ],
+            "range": [
+                150943607,
+                150943604,
+                150943605,
+                150943602,
+                150943603,
+                150943600,
+                150943601,
+                150943614,
+                150943615,
+                2697220197
+            ],
+            "handling": [
+                518224747,
+                518224744,
+                518224745,
+                518224750,
+                518224751,
+                518224748,
+                518224749,
+                518224738,
+                518224739,
+                186337601
+            ],
+            "impact": [
+                1486919755,
+                1486919752,
+                1486919753,
+                1486919758,
+                1486919759,
+                1486919756,
+                1486919757,
+                1486919746,
+                1486919747,
+                3486498337
+            ],
+            "reload": [
+                4283235143,
+                4283235140,
+                4283235141,
+                4283235138,
+                4283235139,
+                4283235136,
+                4283235137,
+                4283235150,
+                4283235151,
+                758092021
+            ],
+            "blast": [
+                3928770367,
+                3928770364,
+                3928770365,
+                3928770362,
+                3928770363,
+                3928770360,
+                3928770361,
+                3928770358,
+                3928770359,
+                3803457565
+            ],
+            "velocity": [
+                4105787909,
+                4105787910,
+                4105787911,
+                4105787904,
+                4105787905,
+                4105787906,
+                4105787907,
+                4105787916,
+                4105787917,
+                1154004463
+            ],
+            "charge_time": [
+                3353797898,
+                3353797897,
+                3353797896,
+                3353797903,
+                3353797902,
+                3353797901,
+                3353797900,
+                3353797891,
+                3353797890,
+                3128594062
+            ],
+            "draw_time": [
+                2203506848,
+                2203506851,
+                2203506850,
+                2203506853,
+                2203506852,
+                2203506855,
+                2203506854,
+                2203506857,
+                2203506856,
+                1639384016
+            ],
+            "accuracy": [
+                892374263,
+                892374260,
+                892374261,
+                892374258,
+                892374259,
+                892374256,
+                892374257,
+                892374270,
+                892374271,
+                2993547493
+            ]
+        }
+        const weapon_masterworks = {
+            'Auto Rifle':          {'stability': ms_list.stability, 'handling': ms_list.handling, 'reload':    ms_list.reload,    'range':    ms_list.range   },
+            'Combat Bow':          {'stability': ms_list.stability, 'handling': ms_list.handling, 'draw_time': ms_list.draw_time, 'accuracy': ms_list.accuracy},
+            'Fusion Rifle':        {'stability': ms_list.stability, 'handling': ms_list.handling, 'reload':    ms_list.reload,    'range':    ms_list.range,	'charge_time': ms_list.charge_time},
+            'Grenade Launcher':    {'stability': ms_list.stability, 'handling': ms_list.handling, 'blast':     ms_list.blast,     'velocity': ms_list.velocity},
+            'Hand Cannon':         {'stability': ms_list.stability, 'handling': ms_list.handling, 'reload':    ms_list.reload,    'range':    ms_list.range   },
+            'Linear Fusion Rifle': {'stability': ms_list.stability, 'handling': ms_list.handling, 'reload':    ms_list.reload,    'range':    ms_list.range,	'charge_time': ms_list.charge_time},
+            'Machine Gun':         {'stability': ms_list.stability, 'handling': ms_list.handling, 'reload':    ms_list.reload,    'range':    ms_list.range   },
+            'Pulse Rifle':         {'stability': ms_list.stability, 'handling': ms_list.handling, 'reload':    ms_list.reload,    'range':    ms_list.range   },
+            'Rocket Launcher':     {'stability': ms_list.stability, 'handling': ms_list.handling, 'blast':     ms_list.blast,     'velocity': ms_list.velocity},
+            'Scout Rifle':         {'stability': ms_list.stability, 'handling': ms_list.handling, 'reload':    ms_list.reload,    'range':    ms_list.range   },
+            'Shotgun':             {'stability': ms_list.stability, 'handling': ms_list.handling, 'reload':    ms_list.reload,    'range':    ms_list.range   },
+            'Sidearm':             {'stability': ms_list.stability, 'handling': ms_list.handling, 'reload':    ms_list.reload,    'range':    ms_list.range   },
+            'Sniper Rifle':        {'stability': ms_list.stability, 'handling': ms_list.handling, 'reload':    ms_list.reload,    'range':    ms_list.range   },
+            'Submachine Gun':      {'stability': ms_list.stability, 'handling': ms_list.handling, 'reload':    ms_list.reload,    'range':    ms_list.range   },
+            'Sword':               {'impact': ms_list.impact}
         }
         function ammo_type() {
             switch (item.equippingBlock.ammoType) {
@@ -176,40 +316,46 @@ function get_basic_info(user_data, manifest) {
         }
         const masterwork = {
             active() {
-                if(item.inventory.tierTypeName == 'Exotic') {
-                    return user_data.itemComponents.sockets.data[unique_id].sockets.find(masterwork =>
-                        manifest.inventory_item[masterwork.plugHash]?.plug.uiPlugLabel == 'masterwork'
-                    )?.plugHash
-                }
-                else {
-
-                }
+                return user_data.itemComponents.sockets.data[unique_id].sockets.find(masterwork => {
+                    let x = manifest.inventory_item[masterwork.plugHash]?.plug.plugCategoryIdentifier
+                    if(!x) return false
+                    return (x.includes('masterwork') && !x.includes('tracker'))
+                })?.plugHash
             },
             all() {
                 if(item.inventory.tierTypeName == 'Exotic') {
                     return socket_indexes.mods.flatMap(index => {
                         const socket_entry = item.sockets.socketEntries[index]
                         if(socket_entry.singleInitialItemHash == 1498917124) return socket_entry.reusablePlugItems[0].plugItemHash // if empty catalyst socked
-                        if(socket_entry.reusablePlugItems.some(e => // if its older exotic look for upgrade masterwork
-                            manifest.inventory_item[e.plugItemHash].displayProperties.name == 'Upgrade Masterwork'
-                        )) return socket_entry.singleInitialItemHash
-                        return []
+                        return socket_entry.reusablePlugItems.flatMap(catalyst => {
+                            if(manifest.inventory_item[catalyst.plugItemHash].displayProperties.name == 'Upgrade Masterwork') return catalyst.plugItemHash
+                            return []
+                        })
                     })
                 }
                 else {
-
+                    if(item.inventory.tierTypeName == 'Legendary') return weapon_masterworks[item.itemTypeDisplayName]
                 }
             }
         }
         const stats = {
             investment() {
-
+                return item.investmentStats.reduce((acc, val) => {
+                    if(/1480404414|1935470627|1885944937|3291498656/.test(val.statTypeHash)) return acc// ignore these stat id's
+                    return ({ ...acc, [val.statTypeHash]: val.value})
+                }, {})
             },
             stats() {
-
+                let stats = item.stats.stats
+                return Object.keys(stats).reduce((acc, val) => {
+                    if(/1480404414|1935470627|1885944937|3291498656/.test(val)) return acc// ignore these stat id's
+                    return ({ ...acc, [val]: stats[val].value})
+                }, {})
             },
             stat_group() {
-
+                return manifest.stat_group[item.stats.statGroupHash].scaledStats.reduce((acc, val) =>
+                    ({ ...acc, [val.statHash]: val.displayInterpolation}), {}
+                )
             }
         }
         return {
@@ -260,7 +406,6 @@ function get_basic_info(user_data, manifest) {
     console.timeEnd('timer')
     console.log(JSON.parse(JSON.stringify(new_item_list)))
 }
-
 
 
 //! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
