@@ -18,13 +18,11 @@
                 "main_data_handling/auth.js",
                 "main_data_handling/handle_data.js",
 
-                "d2_gunsmith.js",
                 "clarity_menu.js",
                 "stuff.js"
             ],
             "css": [
                 "styles/css/style.css",
-                "styles/css/d2_gunsmith.css",
                 "styles/css/clarity_menu.css",
                 "styles/css/weapon_perks.css",
                 "styles/css/weapons.css"

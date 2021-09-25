@@ -11,6 +11,7 @@ function work_on_item_info() {
         indexed_DB('keyval-store', 'keyval', 'd2-manifest')
     ])
     .then(json_data => {
+        local_storage('clarity_data', {'wep_formulas': json_data[0], 'community_data': json_data[1]})
         let wep_formulas = json_data[0]
         let community_data = {
             exotic_armor:   json_data[1].exotic_armor,
@@ -31,11 +32,10 @@ function work_on_item_info() {
             plug_sets:      json_data[3].DestinyPlugSetDefinition,
             socket_type:    json_data[3].DestinySocketTypeDefinition,
         }
-        // filter_inventory_item(user_data, manifest, /**/ wep_formulas, community_data) //-!- old
-        get_basic_info(user_data, manifest)
+        sort_data(user_data, manifest)
     })
 }
-function get_basic_info(user_data, manifest) {
+function sort_data(user_data, manifest) {
     console.time('timer')
     function find_item_ids() {
         let item_ids = []
@@ -404,6 +404,7 @@ function get_basic_info(user_data, manifest) {
         }
     }
     console.timeEnd('timer')
+    local_storage('clarity_inventory', new_item_list)
     console.log(JSON.parse(JSON.stringify(new_item_list)))
 }
 
