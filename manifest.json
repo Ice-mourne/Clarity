@@ -19,6 +19,7 @@
                 "main_data_handling/handle_data.js",
 
                 "clarity_menu.js",
+                "adding_data/weapon_perks.js",
                 "stuff.js"
             ],
             "css": [

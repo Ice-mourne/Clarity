@@ -55,12 +55,12 @@ function sort_data(user_data, manifest) {
         return item_ids
     }
     let item_ids = find_item_ids()
-    let new_item_list = {}
+    let item_list = {}
     for (let i = 0; i < item_ids.length; i++) {
         const unique_id = item_ids[i][0]
         const item = manifest.inventory_item[item_ids[i][1]]
-        if (item.itemType == 3                                           ) new_item_list[unique_id] = weapon(unique_id, item)
-        if (item.itemType == 2 && item.inventory.tierTypeName == 'Exotic') new_item_list[unique_id] = armor(unique_id, item)
+        if (item.itemType == 3                                           ) item_list[unique_id] = weapon(unique_id, item)
+        if (item.itemType == 2 && item.inventory.tierTypeName == 'Exotic') item_list[unique_id] = armor(unique_id, item)
     }
     function weapon(unique_id, item) {
         function check_type(id, use_manifest) {
@@ -404,10 +404,16 @@ function sort_data(user_data, manifest) {
         }
     }
     console.timeEnd('timer')
-    local_storage('clarity_inventory', new_item_list)
-    console.log(JSON.parse(JSON.stringify(new_item_list)))
+    add_more_info(item_list)
+    local_storage('clarity_inventory', item_list)
+    // console.log(JSON.parse(JSON.stringify(item_list)))
 }
-
+function add_more_info(item_list) {
+    for (var key in item_list) {
+        let x
+        let z
+    }
+}
 
 //! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //? - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

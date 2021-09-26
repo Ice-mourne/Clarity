@@ -47,7 +47,7 @@ function create_element(p) {
     }
 }
 /**
-** Creates HTML elements
+** Creates HTML element
 ** Example ('div', {'className': myClassName, 'textContent': 'some text'},)
 * @param {string} type - HTML object (div, span, a, img)
 *
@@ -63,3 +63,66 @@ function element_creator(type, properties, extra) {
     if(extra?.img) element.src = chrome.runtime.getURL(extra.img)
     return element
 }
+
+/**
+ ** Creates HTML fragment
+ * @param {array} properties Array of objects with properties
+ * @returns {HTMLElement} HTML Fragment containing HTML Elements
+ */
+function fragment_creator(properties) {
+    let fragment = document.createDocumentFragment()
+    create_element(properties, fragment)
+    function create_element(properties, fragment) {
+        properties.forEach(obj => {
+            let element = document.createElement(obj.type)
+            Object.entries(obj).forEach(property => {
+                if(property[0] == 'local_img') element.src = chrome.runtime.getURL(property[1])
+                if(property[0] == 'event_listener') element.addEventListener(property[1])
+                if(property[0] == 'append') create_element(property[1], element)
+                if(property[0] == 'type' || property[0] == 'append' || property[0] == 'event_listener') return
+                element[property[0]] = property[1]
+            })
+            fragment.appendChild(element)
+        })
+    }
+    return fragment
+}
+
+fragment_creator([
+    {
+        type: 'div',
+        textContent: 'text-1',
+        className: 'class-1',
+        // event_listener: {},
+        append: [
+            {
+                type: 'div',
+                textContent: 'text-1-1',
+                className: 'class-1-1'
+            },
+            {
+                type: 'div',
+                textContent: 'text-1-2',
+                className: 'class-1-2',
+                append: [
+                    {
+                        type: 'div',
+                        textContent: 'text-1-1',
+                        className: 'class-1-1'
+                    },
+                    {
+                        type: 'div',
+                        textContent: 'text-1-2',
+                        className: 'class-1-2'
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        type: 'div',
+        textContent: 'text-2',
+        className: 'class-2'
+    }
+])
+

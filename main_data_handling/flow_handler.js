@@ -25,7 +25,7 @@
 // everything hare runs after div names are fetched
 // stuff in hare is used to control order on startup mostly
 //? update_item_info
-// used for parsing data from bungie
+//--- after auth complete look if database need refreshing
 // called after auth is complete and refresh button pressed, r button pressed or window gets in focus
 //? inventory_ready
 // called then items like weapons and armor are loaded in inventory also inventory screen has to be open
@@ -37,9 +37,9 @@
 
 function start() {
     const jd = local_storage('clarity_locations').flow_handler
-    ;( () => { //--- looks then everything need is ready then starts data parser
+    ;( () => { //--- after auth complete look if database need refreshing
         window.addEventListener('auth_complete', () => {
-            document.querySelector(jd.refresh_button).addEventListener('click', () => { // TODO add jd for app version
+            document.querySelector(jd.refresh_button).addEventListener('click', () => {
                 window.dispatchEvent(new Event('update_item_info'))
             })
             window.addEventListener('page_visible', () => {
@@ -87,7 +87,30 @@ function start() {
         })
     }) ()
 
-    ;( () => { //--- empty
+    ;( () => { //--- looks for item clicks
+        window.addEventListener('inventory_ready', () => {
+            let database = local_storage('clarity_inventory')
+            document.getElementById('app').addEventListener('click', event => {
+                console.time('timer 222')
+                let unique_id
+                function get_unique_id(target, x) {
+                    if (target.classList.contains('item') && target.id) unique_id = target.id
+                    if (x < 3) get_unique_id(target.parentElement, x + 1)
+                }
+                get_unique_id(event.target, 0)
 
+                let item_type = database[unique_id]?.item_type
+                switch (item_type) {
+                    case 'weapon':
+                        window.dispatchEvent(new CustomEvent('weapon_pressed', {detail: database[unique_id]}))
+                        console.timeEnd('timer 222');
+                        break
+                    case 'armor':
+                        window.dispatchEvent(new Event('armor_pressed'))
+                        break
+                }
+            })
+        }, {once: true})
     }) ()
 }
+window.addEventListener('weapon_pressed', e => console.log(e.detail))

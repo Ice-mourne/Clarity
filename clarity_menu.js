@@ -7,9 +7,9 @@ function info_button() {
 
     let new_menu       = element_creator('div',{'className':'Clarity_new_menu'})
     let sheet_img      = element_creator('img',{}, {'img': 'images/spreadsheet.png'})
-    let range_calc_img = element_creator('img',{}, {'img': 'images/range_calc.png'})
-    let pip1n_img      = element_creator('img',{}, {'img': 'images/pip1n.png'})
-    let court_img      = element_creator('img',{}, {'img': 'images/court.png'})
+    // let range_calc_img = element_creator('img',{}, {'img': 'images/range_calc.png'})
+    // let pip1n_img      = element_creator('img',{}, {'img': 'images/pip1n.png'})
+    // let court_img      = element_creator('img',{}, {'img': 'images/court.png'})
     let gunsmith_img   = element_creator('img',{}, {'img': 'images/gunsmith.png'})
     function create_top_text() {
         let top_text_box = element_creator('div', {'className': 'Clarity_menu_top_text'})
@@ -20,19 +20,61 @@ function info_button() {
         top_text_box.append(top_text)
         return top_text_box
     }
-    function create_sources_box() {
-        let sources_box = element_creator('div', {'className': 'Clarity_links_box'})
 
-        let sources_box_text = element_creator('div', {'textContent': 'Links to Sources used creating this extension', 'className': 'Clarity_menu_box_name'})
+    let sources_box = fragment_creator([
+        {
+            type: 'div',
+            className: 'Clarity_links_box',
+            append: [
+                { // sources_box_text
+                    type: 'div',
+                    textContent: 'Links to Sources used creating this extension',
+                    className: 'Clarity_menu_box_name'
+                },
+                { // Pip1n img
+                    type: 'img',
+                    local_img: 'images/pip1n.png',
+                },
+                { // Pip1n
+                    type: 'a',
+                    textContent: 'Mods, Abilities, and More by Pip1n',
+                    target: '_blank',
+                    href: 'https://docs.google.com/spreadsheets/d/1WaxvbLx7UoSZaBqdFr1u32F2uWVLo-CJunJB4nlGUE4/'
+                },
+                { // Court img
+                    type: 'img',
+                    local_img: 'images/court.png',
+                },
+                { // Court
+                    type: 'a',
+                    textContent: 'Damage Buffs, Debuffs, and Modifiers by Court',
+                    target: '_blank',
+                    href: 'https://docs.google.com/spreadsheets/d/1i1KUwgVkd8qhwYj481gkV9sZNJQCE-C3Q-dpQutPCi4/'
+                },
+                { // Van_Holden & sereni img
+                    type: 'img',
+                    local_img: 'images/sereni.png',
+                },
+                { // Van_Holden & sereni
+                    type: 'a',
+                    textContent: 'Reload Speed started by Van Holden',
+                    target: '_blank',
+                    href: 'https://docs.google.com/spreadsheets/d/13heG_rKRB9UU5DpvRbl1q11WGFs8QPPzpFA60uIOT8w/'
+                },
+                { // Mmonx img
+                    type: 'img',
+                    local_img: 'images/range_calc.png',
+                },
+                { // Mmonx
+                    type: 'a',
+                    textContent: 'Weapon Range Calculator by Mmonx',
+                    target: '_blank',
+                    href: 'https://destinyindepth.com/range_calculator/'
+                },
+            ]
+        }
+    ])
 
-        let Pip1n      = element_creator('a', {'textContent': 'Mods, Abilities, and More by Pip1n',            'target': '_blank', 'href': 'https://docs.google.com/spreadsheets/d/1WaxvbLx7UoSZaBqdFr1u32F2uWVLo-CJunJB4nlGUE4/'})
-        let Court      = element_creator('a', {'textContent': 'Damage Buffs, Debuffs, and Modifiers by Court', 'target': '_blank', 'href': 'https://docs.google.com/spreadsheets/d/1i1KUwgVkd8qhwYj481gkV9sZNJQCE-C3Q-dpQutPCi4/'})
-        let Van_Holden = element_creator('a', {'textContent': 'Reload Speed started by Van Holden',            'target': '_blank', 'href': 'https://docs.google.com/spreadsheets/d/13heG_rKRB9UU5DpvRbl1q11WGFs8QPPzpFA60uIOT8w/'})
-        let Mmonx      = element_creator('a', {'textContent': 'Weapon Range Calculator by Mmonx',              'target': '_blank', 'href': 'https://destinyindepth.com/range_calculator/'})
-
-        sources_box.append(sources_box_text, pip1n_img, Pip1n, court_img, Court, sheet_img.cloneNode(), Van_Holden, range_calc_img, Mmonx)
-        return sources_box
-    }
     function create_useful_links_box() {
         let useful_links_box = element_creator('div', {'className': 'Clarity_links_box'})
 
@@ -92,7 +134,7 @@ function info_button() {
         return button
     }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    new_menu.append(create_top_text(), create_sources_box(), create_useful_links_box(), create_settings_box(), create_dark_mode_settings_box())
+    new_menu.append(create_top_text(), sources_box, create_useful_links_box(), create_settings_box(), create_dark_mode_settings_box())
     clarity_menu.append(new_menu)
     document.querySelector(jd.dim_header).prepend(clarity_menu)
 
