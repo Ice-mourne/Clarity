@@ -91,7 +91,6 @@ function start() {
         window.addEventListener('inventory_ready', () => {
             let database = local_storage('clarity_inventory')
             document.getElementById('app').addEventListener('click', event => {
-                console.time('timer 222')
                 let unique_id
                 function get_unique_id(target, x) {
                     if (target.classList.contains('item') && target.id) unique_id = target.id
@@ -103,7 +102,6 @@ function start() {
                 switch (item_type) {
                     case 'weapon':
                         window.dispatchEvent(new CustomEvent('weapon_pressed', {detail: database[unique_id]}))
-                        console.timeEnd('timer 222');
                         break
                     case 'armor':
                         window.dispatchEvent(new Event('armor_pressed'))

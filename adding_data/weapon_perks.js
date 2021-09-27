@@ -4,9 +4,9 @@ function _add_info_to_weapon(item) {
 
 
 
-    console.time('perks')
-    let manifest = indexed_DB('keyval-store', 'keyval', 'd2-manifest')
-    .then(x=> {console.timeEnd('perks')})
+    // console.time('perks')
+    // let manifest = indexed_DB('keyval-store', 'keyval', 'd2-manifest')
+    // .then(x=> {console.timeEnd('perks')})
     //item.perks.active.forEach(x => manifest.DestinyInventoryItemDefinition[x].investmentStats.forEach(z => z.value))
 
 
