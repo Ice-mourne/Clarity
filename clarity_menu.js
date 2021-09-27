@@ -125,7 +125,7 @@ function open_close() {
         menu_window.classList.remove('Clarity_show_menu')
     })
 }
-if (local_storage('clarity_locations').clarity_menu) dark_mode()
+if (local_storage('clarity_locations').clarity_menu && local_storage('clarity_settings').dark_mode) dark_mode()
 function dark_mode(){
     const jd = local_storage('clarity_locations').clarity_menu
     const colors = local_storage('clarity_settings').dark_mode_colors
