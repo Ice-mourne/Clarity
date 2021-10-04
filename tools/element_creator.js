@@ -88,41 +88,41 @@ function fragment_creator(properties) {
     return fragment
 }
 
-fragment_creator([
-    {
-        type: 'div',
-        textContent: 'text-1',
-        className: 'class-1',
-        // event_listener: {},
-        append: [
-            {
-                type: 'div',
-                textContent: 'text-1-1',
-                className: 'class-1-1'
-            },
-            {
-                type: 'div',
-                textContent: 'text-1-2',
-                className: 'class-1-2',
-                append: [
-                    {
-                        type: 'div',
-                        textContent: 'text-1-1',
-                        className: 'class-1-1'
-                    },
-                    {
-                        type: 'div',
-                        textContent: 'text-1-2',
-                        className: 'class-1-2'
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        type: 'div',
-        textContent: 'text-2',
-        className: 'class-2'
-    }
-])
+// fragment_creator([
+//     {
+//         type: 'div',
+//         textContent: 'text-1',
+//         className: 'class-1',
+//         // event_listener: {},
+//         append: [
+//             {
+//                 type: 'div',
+//                 textContent: 'text-1-1',
+//                 className: 'class-1-1'
+//             },
+//             {
+//                 type: 'div',
+//                 textContent: 'text-1-2',
+//                 className: 'class-1-2',
+//                 append: [
+//                     {
+//                         type: 'div',
+//                         textContent: 'text-1-1',
+//                         className: 'class-1-1'
+//                     },
+//                     {
+//                         type: 'div',
+//                         textContent: 'text-1-2',
+//                         className: 'class-1-2'
+//                     }
+//                 ]
+//             }
+//         ]
+//     },
+//     {
+//         type: 'div',
+//         textContent: 'text-2',
+//         className: 'class-2'
+//     }
+// ])
 

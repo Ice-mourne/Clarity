@@ -132,15 +132,3 @@ async function fetch_bungie(auth_type, code) {
 		console.error(`%c End of error logs for => ${auth_type}`, 'font-size: large;')
 	}
 }
-// const auth = JSON.parse(localStorage.getItem('clarity_authorization'))
-// const user = JSON.parse(localStorage.getItem('clarity_user'))
-// fetch(`https://www.bungie.net/Platform/Destiny2/${user?.platform}/Profile/${user?.id}/?components=102,201,205,304,305,310`, {
-// 	method: 'GET',
-// 	mode: 'cors',
-// 	headers: {
-// 		'X-API-Key': atob('Y2RhN2I2ZTRmYzlmNDlhZGE0ZmVkNjE4ZTExODQxYWI='),
-// 		'authorization': `Bearer ${auth?.access_token}`,
-// 	}
-// })
-// .then(resp => resp.json())
-// .then(resp => console.log(resp.Response))

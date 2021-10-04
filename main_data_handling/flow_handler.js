@@ -89,26 +89,25 @@ function start() {
 
     ;( () => { //--- looks for item clicks
         window.addEventListener('inventory_ready', () => {
-            let database = local_storage('clarity_inventory')
             document.getElementById('app').addEventListener('click', event => {
                 let unique_id
                 function get_unique_id(target, x) {
+                    if (!target) return
                     if (target.classList.contains('item') && target.id) unique_id = target.id
                     if (x < 3) get_unique_id(target.parentElement, x + 1)
                 }
                 get_unique_id(event.target, 0)
 
-                let item_type = database[unique_id]?.item_type
+                let item_type = clarity_user_data[unique_id]?.item_type
                 switch (item_type) {
                     case 'weapon':
-                        window.dispatchEvent(new CustomEvent('weapon_pressed', {detail: database[unique_id]}))
+                        window.dispatchEvent(new CustomEvent('weapon_pressed', {detail: unique_id}))
                         break
                     case 'armor':
-                        window.dispatchEvent(new Event('armor_pressed'))
+                        window.dispatchEvent(new CustomEvent('armor_pressed', {detail: unique_id}))
                         break
                 }
             })
         }, {once: true})
     }) ()
 }
-window.addEventListener('weapon_pressed', e => console.log(e.detail))

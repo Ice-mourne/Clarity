@@ -18,6 +18,8 @@
                 "main_data_handling/auth.js",
                 "main_data_handling/handle_data.js",
 
+                "main_data_handling/work_space.js",
+
                 "clarity_menu.js",
                 "adding_data/weapon_perks.js",
                 "stuff.js"

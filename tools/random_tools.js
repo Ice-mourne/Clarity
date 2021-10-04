@@ -9,9 +9,9 @@
     let settings = {
         'dark_mode': false,
         'dark_mode_colors': {
-            'background_color_1': 'hsl(240, 21%, 16%)',
-            'background_color_2': 'hsl(240, 30%, 4%)',
-            'masterwork_item': 'hsl(50, 90%, 65%)',
+            'background_color_1': 'hsl(240, 22%, 12%)',
+            'background_color_2': 'hsl(240, 29%, 10%)',
+            'masterwork_item': 'hsl(50, 60%, 65%)',
             'masterwork_item_text': 'hsl(0, 0%, 0%)'
         },
         'settings_version': 2,
