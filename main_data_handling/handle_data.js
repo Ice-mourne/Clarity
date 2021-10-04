@@ -71,7 +71,7 @@ function filter_inventory_item(user_data, inventory_item, stat_group, stat_names
     }
     function armor_perks(item) {
         if(item.inventory.tierTypeName == 'Exotic') {
-            let perk_id = item.sockets.socketEntries.find(x => x.socketTypeHash == 1486702312 || x.socketTypeHash == 965959289).singleInitialItemHash
+            let perk_id = item.sockets.socketEntries.find(x => x.socketTypeHash == 1486702312 || x.socketTypeHash == 965959289 || x.socketTypeHash == 3497077129).singleInitialItemHash
             let info = {
                 'description': get_description(),
                 'name': inventory_item[perk_id].displayProperties.name,
