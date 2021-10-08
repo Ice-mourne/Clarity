@@ -71,20 +71,22 @@ function filter_inventory_item(user_data, inventory_item, stat_group, stat_names
     }
     function armor_perks(item) {
         if(item.inventory.tierTypeName == 'Exotic') {
-            let perk_id = item.sockets.socketEntries.find(x => x.socketTypeHash == 1486702312 || x.socketTypeHash == 965959289 || x.socketTypeHash == 3497077129).singleInitialItemHash
-            let info = {
-                'description': get_description(),
-                'name': inventory_item[perk_id].displayProperties.name,
-                'icon': inventory_item[perk_id].displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
-            }
-            function get_description() {
-                if(exotic_armor_perks[inventory_item[perk_id].displayProperties.name]) {
-                    return exotic_armor_perks[inventory_item[perk_id].displayProperties.name]
-                } else {
-                    return `<div class="new_pd">${inventory_item[perk_id].displayProperties.description}</div>`
+            let perk_id = item.sockets.socketEntries.find(x => x.socketTypeHash == 1486702312 || x.socketTypeHash == 965959289)?.singleInitialItemHash
+            if(perk_id) {
+                let info = {
+                    'description': get_description(),
+                    'name': inventory_item[perk_id].displayProperties.name,
+                    'icon': inventory_item[perk_id].displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
                 }
+                function get_description() {
+                    if(exotic_armor_perks[inventory_item[perk_id].displayProperties.name]) {
+                        return exotic_armor_perks[inventory_item[perk_id].displayProperties.name]
+                    } else {
+                        return `<div class="new_pd">${inventory_item[perk_id].displayProperties.description}</div>`
+                    }
+                }
+                return info
             }
-            return info
         }
     }
     function ammo(data) { // ammo type
@@ -112,7 +114,7 @@ function filter_inventory_item(user_data, inventory_item, stat_group, stat_names
         function all_perks() {
             let all_perks = []
             let random_perks = user_data.Response.itemComponents.reusablePlugs.data[unique_id]
-            item.sockets.socketCategories.find(x => x.socketCategoryHash == 4241085061).socketIndexes
+            item.sockets.socketCategories.find(x => x.socketCategoryHash == 4241085061)?.socketIndexes
                 .filter(x => x < 6)
                 .forEach(get_perk_ids) // possible indexes 1,2,3,4, 8,9 only 1-4 used
             return all_perks
