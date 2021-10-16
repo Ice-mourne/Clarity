@@ -2,7 +2,7 @@ window.addEventListener('header_ready', () => info_button())
 //  (っ◔◡◔)っ
 document.querySelector('html').append(element_creator('style', {'id': 'clarity_dark_mode'})) // create place for dark mode css
 function info_button() {
-    const jd = local_storage('clarity_locations').clarity_menu
+    const jd = local_storage('clarity_settings').class_names.locations
     let clarity_menu = element_creator('div', {'textContent': 'Clarity menu', 'className': 'Clarity_menu_button'}) // create button 'Clarity menu'
 
     let new_menu       = element_creator('div',{'className':'Clarity_new_menu'})
@@ -151,10 +151,9 @@ function open_close() {
         menu_window.classList.remove('Clarity_show_menu')
     })
 }
-if (local_storage('clarity_locations').clarity_menu) dark_mode()
+// if (local_storage('clarity_locations').clarity_menu) dark_mode()
 function dark_mode(){
-    const jd = local_storage('clarity_locations').clarity_menu
-    const colors = local_storage('clarity_settings').dark_mode_colors
+    const settings = local_storage('clarity_settings')
 
     document.documentElement.style.setProperty('--clarity_background_1', colors.background_color_1);
     document.documentElement.style.setProperty('--clarity_background_2', colors.background_color_2);
@@ -163,7 +162,6 @@ function dark_mode(){
 
     document.getElementById('clarity_dark_mode').textContent = `
     ${jd.main_background}                  {background: radial-gradient(circle at 50% 70px, var(--clarity_background_1) 0%, var(--clarity_background_2) 100%); background-position: center top; background-repeat: no-repeat; background-size: 100vw 100vh;}
-    ${jd.farming_mode_background}          {background: radial-gradient(circle at calc(50% - 305px) 70px, var(--clarity_background_1) 0%, var(--clarity_background_2) 100%); background-size: 100vw 100vh;}
     ${jd.organizer_background}             {background-color: hsl(0deg, 0%, 0%, 0.3);}
     ${jd.background_under_item}            {background-color: hsla(0, 0%, 0%, 0); color: hsl(0, 0%, 85%);}
     ${jd.background_under_masterwork_item} {background-color: var(--clarity_masterwork_item); color: var(--clarity_masterwork_item_text);}

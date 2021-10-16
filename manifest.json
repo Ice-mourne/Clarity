@@ -10,11 +10,11 @@
         {
             "matches": ["https://app.destinyitemmanager.com/*", "https://beta.destinyitemmanager.com/*"],
             "js": [
-                "tools/element_creator.js",
-                "tools/new_random_functions.js",
+                "tools/storage.js",
+                "tools/random.js",
 
+                "main_data_handling/find_classNames.js",
                 "main_data_handling/flow_handler.js",
-                "main_data_handling/random_functions.js",
                 "main_data_handling/auth.js",
                 "main_data_handling/handle_data.js",
 

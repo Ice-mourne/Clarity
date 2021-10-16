@@ -1,15 +1,18 @@
-window.addEventListener('weapon_pressed', e => _add_info_to_weapon(e.detail))
-function _add_info_to_weapon(unique_id) {
+window.addEventListener('weapon_pressed', e => info_about_weapon(e.detail))
+function info_about_weapon(unique_id) {
     let parser_start = Date.now()
 
     const unique_item = clarity_user_data[unique_id]
     const static_item = clarity_manifest[unique_item.id]
-    const stats = get_item_stats(unique_item.sockets.perks.active)
 
-    console.log(unique_item);
-    console.log(static_item);
+    const perks = unique_item.sockets.perks.active // todo for testing this is fine but this has to be upgraded to support selected perks // also include frame mods ect
 
-    function get_item_stats(perks) {
+    const stats = get_item_stats()
+
+    console.log(unique_item); //----------------------------------------------------------------
+    console.log(static_item); //----------------------------------------------------------------
+
+    function get_item_stats() {
         let inv = {...static_item.stats.investment}
         perks.forEach(perk => { // go over perks in list and add stats from each perk to inv
             Object.entries(clarity_manifest[perk].investment)
@@ -51,65 +54,112 @@ function _add_info_to_weapon(unique_id) {
         return stats
     }
 
-    function reload_calculator(/*stat, magazine, formulaa, multiplayer, active_perks*/) {
+    function reload_calculator(extra_stat, extra_multiplier) {
+        //--- step 1 check if reload can be calculated
         const formula = static_item.formula_numbers?.reload
-        if (!formula) return // if item doesn't have formula just return
-        const mag_multiplayer = (formula.mag_multiplayer) ? stats[3871231066] : 1
-        const stat = stats[4188031367]
-        const empty_multi = (formula.conditional == 'empty magazine') ? stats[3871231066] : 1
+        if (!formula) return
 
+        //--- step 2 define base stats
+        let stat = stats[4188031367] // id reload speed
+        let multiplier = 1
+        let mag_multiplier = (formula.mag_multiplier) ? stats[3871231066] : 1 // id magazine
+        let empty_multiplier = 1
 
-        // stat = Math.min(Math.max(stat, 10), 100)
-        // multiplayer = (multiplayer) ? multiplayer : 1
+        //--- step 3 update base values
+        let dual_loader = false
+        perks.forEach(perk => {
+            let perk_info = clarity_manifest[perk].stats.reload
+            if(!perk_info) return
 
-        // let shotgun_multiplayer = 1
-        // if(formula.use_multiplayer) {
-        //     let check = active_perks.findIndex(x => x.plugHash == 25606670) // check if dual loader is active perk
-        //     shotgun_multiplayer = (check != -1) ? Math.ceil(magazine / 2) : magazine
-        // }
-        let normal = ((formula.a * stat * stat + formula.b * stat + formula.c) / mag_multiplayer).toFixed(2)
+            // perk stat
+            stat += (perk_info.always_active?.stat) ? perk_info.always_active.stat : 0
 
-        // let list = [806997698, 878286503, 996573084, 2353477480, 3364911712, 3920852688] // list of all rapid fire frame id's
-        // let empty_multi = (active_perks.findIndex(x => list.findIndex(z => z == x.plugHash ) != -1) == -1) ? 1 : 0.8 // multiplayer for rapid fire frames then mag is empty
-        // let empty = normal * empty_multi
+            // static multiplier
+            multiplier *= (perk_info.always_active?.multiplier) ? perk_info.always_active.multiplier : 1
+
+            // empty multiplier
+            if(clarity_manifest[perk].stats.activation_condition == 'empty_magazine') {
+                empty_multiplier *= perk_info.conditional[0] // [0] because you can't have magazine more empty then empty and because of that it will be only one number
+            }
+
+            // dual loader
+            if(perk == 25606670) dual_loader = true
+        })
+        if(dual_loader) mag_multiplier = Math.ceil(mag_multiplier / 2 )
+
+        //--- step 4 handle conditional perk stats
+        extra_stat = extra_stat || []
+        extra_multiplier = extra_multiplier || []
+
+        stat = extra_stat.reduce((acc, val) => acc + val, stat)
+        stat = Math.min(Math.max(stat, 10), 100)
+
+        multiplier = extra_multiplier.reduce((acc, val) => acc * val, multiplier)
+
+        //--- step 5 use data to calculate reload
+        let normal = ((formula.a * stat * stat + formula.b * stat + formula.c) * mag_multiplier / multiplier).toFixed(2)
         return {
             'default': normal * 1,
-            // 'empty': empty * 1,
-            // 'difference': (normal - empty) * 1 // difference between normal reload and reload them mag is empty
+            'empty'  : normal * empty_multiplier,
         }
     }
+    console.log(reload_calculator()) //----------------------------------------------------------------
 
-    console.log(reload_calculator());
+    function range_calculator(extra_stat, extra_multiplier) {
+        //--- step 1 check if reload can be calculated
+        const formula = static_item.formula_numbers?.range
+        if (!formula) return
 
+        //--- step 2 define base stats
+        let stat_range = stats[1240592695] // id range
+        let stat_zoom  = stats[3555269338] // id zoom
+        let multiplier = 1
 
+        //--- step 3 update base values
+        perks.forEach(perk => {
+            let perk_info = clarity_manifest[perk].stats.range
+            if(!perk_info) return
 
+            // perk stat
+            stat_range += (perk_info.always_active?.stat) ? perk_info.always_active.stat : 0
 
+            // static multiplier
+            multiplier *= (perk_info.always_active?.multiplier) ? perk_info.always_active.multiplier : 1
+        })
+        //--- step 4 handle conditional perk stats
+        extra_stat = extra_stat || []
+        extra_multiplier = extra_multiplier || []
 
+        stat_range = extra_stat.reduce((acc, val) => acc + val, stat_range)
+        stat_range = Math.min(Math.max(stat_range, 10), 100)
 
-    // let manifest = indexed_DB('keyval-store', 'keyval', 'd2-manifest')
-    // .then(x=> {console.timeEnd('perks')})
-    //item.perks.active.forEach(x => manifest.DestinyInventoryItemDefinition[x].investmentStats.forEach(z => z.value))
+        multiplier = extra_multiplier.reduce((acc, val) => acc * val, multiplier)
 
+        //--- step 5 use data to calculate range
+        let new_zoom = (stat_zoom - formula.zrm_tier) / 10 + formula.zrm
+        let HIP_min = stat_range * formula.vpp + formula.base_min
+        let HIP_max = (formula.scale) ? stat_range * formula.vpp + formula.base_max : formula.base_max
+        return {
+            'ADS_min': HIP_min * new_zoom * multiplier,
+            'ADS_max': HIP_max * new_zoom * multiplier,
+            'HIP_min': HIP_min * 1,
+            'HIP_max': HIP_max * 1,
+        }
+    }
+    console.log(range_calculator()) //----------------------------------------------------------------
 
+    function handling_calculator(stat, formula, multiplayer) {
+        formula = formula.handling
+        stat = Math.min(Math.max(stat, 10), 100)
+        multiplayer = (multiplayer) ? multiplayer : 1
 
-
-
-
-    // function inv_stats_w_perks() {
-    //     let stats = item.stats.investment
-    //     item.perks.active.map(perk => {
-
-    //     })
-    // }
-
-
-
-    // const stats = {
-    //     inv_stats_w_perks: inv_stats_w_perks()
-    // }
-
-
-
+        let stow_numbers  = formula.handling.stow
+        let ready_numbers = formula.handling.ready
+        return {
+            "stow":  (stow_numbers.vpp  * stat + stow_numbers.number)  * multiplayer,
+            "ready": (ready_numbers.vpp * stat + ready_numbers.number) * multiplayer,
+        }
+    }
 
 
 

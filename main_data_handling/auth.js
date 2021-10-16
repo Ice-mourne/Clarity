@@ -126,9 +126,9 @@ async function fetch_bungie(auth_type, code) {
 				window.location.href = `https://www.bungie.net/en/OAuth/Authorize?client_id=${nr.i}&response_type=code`
 				break
 		}
-		console.error(`%c Something then wrong with auth => ${auth_type}`, 'font-size: large;')
+		console.log(`%c Something then wrong with auth => ${auth_type}`, 'font-size: large;')
 		console.log(err.status)
 		console.log(err)
-		console.error(`%c End of error logs for => ${auth_type}`, 'font-size: large;')
+		console.log(`%c End of error logs for => ${auth_type}`, 'font-size: large;')
 	}
 }
