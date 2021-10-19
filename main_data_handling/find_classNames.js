@@ -58,12 +58,13 @@ function get_class_names(start_flow_handler) {
                 let insanity_1 = window.getComputedStyle(node, '::before')
                 let insanity_2 = window.getComputedStyle(node)
 
+                // background before
+                if(insanity_1.background.includes(old_background_color)) {
+                    background_color.push(`.${[...node.classList].join('.')}::before`)
+                    update_clarity_settings('class_names.styles.background_color', background_color)
+                }
                 // background
-                if(
-                    insanity_1.background.includes(old_background_color)
-                    ||
-                    insanity_2.background.includes(old_background_color)
-                ) {
+                if(insanity_2.background.includes(old_background_color)) {
                     background_color.push(`.${[...node.classList].join('.')}`)
                     update_clarity_settings('class_names.styles.background_color', background_color)
                 }
@@ -109,21 +110,19 @@ function get_class_names(start_flow_handler) {
 
             window.removeEventListener('weapon_pressed', update_classNames_2)
         } catch {
-            setTimeout(() => { // in some cases it fails
-                update_clarity_settings(
-                    'class_names.locations.item_info.perks',
-                    `.${[...document.querySelector('.item-details.sockets > :nth-child(2)').classList].join('.')}`
-                )
-                update_clarity_settings(
-                    'class_names.locations.item_info.stats',
-                    `.${[...document.querySelector('.item-details > :nth-child(1)').classList].join('.')}`
-                )
-                update_clarity_settings(
-                    'class_names.locations.item_info.compare',
-                    '.app-icon.no-pointer-events.fas.fa-balance-scale-left'
-                )
-                find(document.querySelector('.item-popup'))
-            }, 100)
+            update_clarity_settings(
+                'class_names.locations.item_info.perks',
+                `.${[...document.querySelector('.item-details.sockets > :nth-child(2)').classList].join('.')}`
+            )
+            update_clarity_settings(
+                'class_names.locations.item_info.stats',
+                `.${[...document.querySelector('.item-details > :nth-child(1)').classList].join('.')}`
+            )
+            update_clarity_settings(
+                'class_names.locations.item_info.compare',
+                '.app-icon.no-pointer-events.fas.fa-balance-scale-left'
+            )
+            find(document.querySelector('.item-popup'))
         }
 
         function find(elm) {

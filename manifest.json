@@ -21,14 +21,23 @@
                 "main_data_handling/work_space.js",
 
                 "clarity_menu.js",
-                "adding_data/weapon_perks.js",
-                "stuff.js"
+                "stuff.js",
+
+                "adding_data/armor/description.js",
+
+                "adding_data/weapon/description.js",
+                "adding_data/weapon/numbers.js"
             ],
             "css": [
-                "styles/css/style.css",
                 "styles/css/clarity_menu.css",
+                "styles/css/auth.css",
+
+                "styles/css/descriptions.css",
+
                 "styles/css/weapon_perks.css",
-                "styles/css/weapons.css"
+
+                "styles/css/weapons.css",
+                "styles/css/armor.css"
             ]
         }
     ],

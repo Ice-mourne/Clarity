@@ -17,20 +17,28 @@ function fragment_creator(properties) {
     create_element(properties, fragment)
     function create_element(properties, fragment) {
         properties.forEach(obj => {
-            let element = document.createElement(obj.type)
-            Object.entries(obj).forEach(property => {
-                if(property[0] == 'local_img') element.src = chrome.runtime.getURL(property[1])
-                if(property[0] == 'event_listener') element.addEventListener(property[1])
-                if(property[0] == 'append') create_element(property[1], element)
-                if(property[0] == 'type' || property[0] == 'append' || property[0] == 'event_listener') return
-                element[property[0]] = property[1]
+            let element = document.createElement(obj.node_type)
+            Object.entries(obj).forEach(([property, value]) => {
+                if(property == 'node_type') return
+                if(property == 'append') {
+                    create_element(value, element)
+                    return
+                }
+                if(property == 'local_img') {
+                    element.src = chrome.runtime.getURL(value)
+                    return
+                }
+                if(property == 'event_listener') {
+                    element.addEventListener(value.type, value.fn)
+                    return
+                }
+                element[property] = value
             })
             fragment.appendChild(element)
         })
     }
     return fragment
 }
-
 
 ;( () => { //--- create settings on first launch or incase local storage was cleared
     const current_settings = local_storage('clarity_settings')
@@ -65,6 +73,14 @@ function element_creator(type, properties, extra) {
         element[property[0]] = property[1]
     })
     if(extra?.img) element.src = chrome.runtime.getURL(extra.img)
+    return element
+}
+
+function element_creator_desc(type, properties) {
+    let element = document.createElement(type)
+    Object.entries(properties).forEach(property => {
+        if(property[1]) element[property[0]] = property[1]
+    })
     return element
 }
 

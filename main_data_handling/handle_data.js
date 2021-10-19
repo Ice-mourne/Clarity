@@ -2,7 +2,8 @@
     Promise.all([
         fetch(`https://ice-mourne.github.io/Database-for-Clarity/Database/weapon_formulas.json?${Math.random()}`)
         .then(resp => resp.json()),
-        fetch(`https://ice-mourne.github.io/Database-for-Clarity/Database/D2_community_data.json?${Math.random()}`)
+        // fetch(`https://ice-mourne.github.io/Database-for-Clarity/Database/D2_community_data.json?${Math.random()}`)
+        fetch(`https://raw.githubusercontent.com/Clovis-Breh/Icemournes-D2-database/data_holder/D2_community_data.json?${Math.random()}`)
         .then(resp => resp.json()),
 
         indexed_DB('keyval-store', 'keyval', 'd2-manifest')
@@ -29,7 +30,8 @@
         }
 
         let items = Object.entries(manifest.inventory_item)
-        clarity_manifest = {}
+        let dirty_clarity_manifest = {}
+
         for (let i = 0; i < items.length; i++) {
             const id   = items[i][0]
             const item = items[i][1]
@@ -54,11 +56,24 @@
             }
 
             if (blacklist.id()) continue
-            if (item.itemType == 3)                       {clarity_manifest[id] = weapon  (item, manifest, wep_formulas); continue}
-            if (item.itemType == 2  && blacklist.armor()) {clarity_manifest[id] = armor   (item, manifest              ); continue} // at the moment i have no use for non exotic armor
-            if (item.itemType == 19 && blacklist.mods())  {clarity_manifest[id] = mod_perk(item, community_data        ); continue}
-            if (id == '712324018') /* pain */             {clarity_manifest[id] = mod_perk(item, community_data        ); continue}
+            if (item.itemType == 3)                       {dirty_clarity_manifest[id] = weapon  (item, manifest, wep_formulas); continue}
+            if (item.itemType == 2  && blacklist.armor()) {dirty_clarity_manifest[id] = armor   (item, manifest              ); continue} // at the moment i have no use for non exotic armor
+            if (item.itemType == 19 && blacklist.mods())  {dirty_clarity_manifest[id] = mod_perk(item, community_data        ); continue}
+            if (id == '712324018') /* pain */             {dirty_clarity_manifest[id] = mod_perk(item, community_data        ); continue}
         }
+
+        function removeEmptyValues(obj) {
+            for (var propName in obj) {
+                if (!obj[propName] || obj[propName].length === 0) {
+                    delete obj[propName];
+                } else if (typeof obj[propName] === 'object') {
+                    removeEmptyValues(obj[propName]);
+                }
+            }
+            return obj;
+        }
+        clarity_manifest = removeEmptyValues(dirty_clarity_manifest)
+
         console.log(`%c Manifest parsed in: ${Date.now() - parser_start} ms`, 'border: 3px solid green; padding: 2px')
     })
     .then(() => {
@@ -121,6 +136,42 @@
         'Sniper Rifle':        {'stability': custom_info.masterworks.stability, 'handling': custom_info.masterworks.handling, 'reload':    custom_info.masterworks.reload,    'range':    custom_info.masterworks.range   },
         'Submachine Gun':      {'stability': custom_info.masterworks.stability, 'handling': custom_info.masterworks.handling, 'reload':    custom_info.masterworks.reload,    'range':    custom_info.masterworks.range   },
         'Sword':               {'impact'   : custom_info.masterworks.impact}
+    }
+    function covert_description(description_array) {
+        return description_array.map(line => {
+            if(!line.table) { // if normal line
+                return {
+                    node_type: 'div',
+                    className: line.lineClass,
+                    append: line.lineText?.map(stuff => {
+                        return {
+                            node_type: 'span',
+                            className: stuff.textClass,
+                            textContent: stuff.text
+                        }
+                    })
+                }
+            }
+            if(line.table) { // if table
+                return {
+                    node_type: 'div',
+                    className: 'CDB-table',
+                    append: line.table.map(line_in_table => {
+                        return {
+                            node_type: 'div',
+                            className: line_in_table.lineClass,
+                            append: line_in_table.lineText.map(stuff => {
+                                return {
+                                    node_type: 'div',
+                                    className: stuff.textClass,
+                                    textContent: stuff.text
+                                }
+                            })
+                        }
+                    })
+                }
+            }
+        })
     }
     function weapon(item, manifest, wep_formulas) {
         const socket_indexes = {
@@ -258,13 +309,11 @@
     function mod_perk(item, community_data) {
         function description() {
             let community_description = community_data[item.hash]?.description
-            return community_description || [
+
+            return (community_description) ? covert_description(community_description) : [
                 {
-                    "lineText": [
-                        {
-                            "text": item.displayProperties.description
-                        }
-                    ]
+                    node_type: 'div',
+                    textContent: item.displayProperties.description
                 }
             ]
         }
