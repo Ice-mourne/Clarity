@@ -17,24 +17,29 @@ function fragment_creator(properties) {
     create_element(properties, fragment)
     function create_element(properties, fragment) {
         properties.forEach(obj => {
-            let element = document.createElement(obj.node_type)
-            Object.entries(obj).forEach(([property, value]) => {
-                if(property == 'node_type') return
-                if(property == 'append') {
-                    create_element(value, element)
-                    return
-                }
-                if(property == 'local_img') {
-                    element.src = chrome.runtime.getURL(value)
-                    return
-                }
-                if(property == 'event_listener') {
-                    element.addEventListener(value.type, value.fn)
-                    return
-                }
+            // node_type is always specified internally
+            let element
+            if(obj.ele_type) {
+                element = document.createElement(obj.ele_type)
+            } else if(obj.ele_ns) {
+                element = document.createElementNS(obj.ele_ns.ns, obj.ele_ns.type)
+            } else {
+                element = document.createElement('div')
+            }
+
+            if(obj.local_img) element.src = chrome.runtime.getURL(obj.local_img)
+
+            let {ele_type, ele_ns_type, local_img, ...clean_obj} = obj // deleting to avoid pointlessly trying to add them
+
+            Object.entries(clean_obj).forEach(([property, value]) => {
+                if(property == 'event_listener') value.forEach(obj => element.addEventListener(obj.type, obj.fn))
+                if(property == 'set_attribute')  value.forEach(obj => element.setAttribute(obj.name, obj.value))
+                if(property == 'append') create_element(value, element)
+
+                // property is always specified internally
                 element[property] = value
             })
-            fragment.appendChild(element)
+            fragment.append(element)
         })
     }
     return fragment

@@ -112,7 +112,7 @@ function get_class_names(start_flow_handler) {
         } catch {
             update_clarity_settings(
                 'class_names.locations.item_info.perks',
-                `.${[...document.querySelector('.item-details.sockets > :nth-child(2)').classList].join('.')}`
+                `.${[...document.querySelector('.item-details-body > .sockets > :nth-child(2)').classList].join('.')}`
             )
             update_clarity_settings(
                 'class_names.locations.item_info.stats',

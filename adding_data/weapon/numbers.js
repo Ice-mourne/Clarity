@@ -221,3 +221,4 @@ function info_about_weapon(unique_id) {
     // all_perks_mods.append(main_box)
     console.log(`%c Info added in: ${Date.now() - parser_start} ms`, 'border: 3px solid yellow; padding: 2px')
 }
+document.inner

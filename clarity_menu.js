@@ -23,50 +23,50 @@ function info_button() {
 
     let sources_box = fragment_creator([
         {
-            type: 'div',
+            // ele_type: 'div',
             className: 'Clarity_links_box',
             append: [
                 { // sources_box_text
-                    type: 'div',
+                    // ele_type: 'div',
                     textContent: 'Links to Sources used creating this extension',
                     className: 'Clarity_menu_box_name'
                 },
                 { // Pip1n img
-                    type: 'img',
+                    ele_type: 'img',
                     local_img: 'images/pip1n.png',
                 },
                 { // Pip1n
-                    type: 'a',
+                    ele_type: 'a',
                     textContent: 'Mods, Abilities, and More by Pip1n',
                     target: '_blank',
                     href: 'https://docs.google.com/spreadsheets/d/1WaxvbLx7UoSZaBqdFr1u32F2uWVLo-CJunJB4nlGUE4/'
                 },
                 { // Court img
-                    type: 'img',
+                    ele_type: 'img',
                     local_img: 'images/court.png',
                 },
                 { // Court
-                    type: 'a',
+                    ele_type: 'a',
                     textContent: 'Damage Buffs, Debuffs, and Modifiers by Court',
                     target: '_blank',
                     href: 'https://docs.google.com/spreadsheets/d/1i1KUwgVkd8qhwYj481gkV9sZNJQCE-C3Q-dpQutPCi4/'
                 },
                 { // Van_Holden & sereni img
-                    type: 'img',
+                    ele_type: 'img',
                     local_img: 'images/sereni.png',
                 },
                 { // Van_Holden & sereni
-                    type: 'a',
+                    ele_type: 'a',
                     textContent: 'Reload Speed started by Van Holden',
                     target: '_blank',
                     href: 'https://docs.google.com/spreadsheets/d/13heG_rKRB9UU5DpvRbl1q11WGFs8QPPzpFA60uIOT8w/'
                 },
                 { // Mmonx img
-                    type: 'img',
+                    ele_type: 'img',
                     local_img: 'images/range_calc.png',
                 },
                 { // Mmonx
-                    type: 'a',
+                    ele_type: 'a',
                     textContent: 'Weapon Range Calculator by Mmonx',
                     target: '_blank',
                     href: 'https://destinyindepth.com/range_calculator/'

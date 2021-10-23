@@ -1,7 +1,6 @@
 .Clarity_weapon_perks_box {
   display: flex;
   flex-direction: column;
-  margin: -12px -10px;
   border-top: 1px solid #333333;
 }
 
@@ -81,6 +80,33 @@
   order: 999;
   width: 100%;
   margin-top: 3px;
+}
+
+.ItemStats-m_stats-yaOm5 .clarity_stat_name {
+  grid-column: 1;
+  text-align: right;
+  margin-right: 8px;
+}
+
+.ItemStats-m_stats-yaOm5 .clarity_stat_value {
+  grid-column: 2;
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.ItemStats-m_stats-yaOm5 .clarity_stat_bar {
+  margin-left: 8px;
+  grid-column: -2 / -1;
+  background-color: #333;
+  display: flex;
+}
+
+.ItemStats-m_stats-yaOm5 .clarity_stat_bar .clarity_stat_bar_base {
+  background-color: white;
+}
+
+.ItemStats-m_stats-yaOm5 svg {
+  margin-left: 8px;
 }
 
 .Clarity_weapon_stat_name {

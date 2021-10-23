@@ -1,7 +1,6 @@
 .Clarity_weapon_perks_box {
     display: flex;
     flex-direction: column;
-    margin: -12px -10px;
     border-top: 1px solid hsl(0, 0%, 20%);
 
     .Clarity_perk_list {
@@ -82,6 +81,30 @@
     }
 }
 
+.ItemStats-m_stats-yaOm5 {
+    .clarity_stat_name {
+        grid-column: 1;
+        text-align: right;
+        margin-right: 8px;
+    }
+    .clarity_stat_value {
+        grid-column: 2;
+        text-align: right !important;
+        font-variant-numeric: tabular-nums;
+    }
+    .clarity_stat_bar {
+        margin-left: 8px;
+        grid-column: -2 / -1;
+        background-color: #333;
+        display: flex;
+        .clarity_stat_bar_base {
+            background-color: white;
+        }
+    }
+    svg {
+        margin-left: 8px;
+    }
+}
 
 
 .Clarity_weapon_stat_name{

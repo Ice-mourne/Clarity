@@ -1,4 +1,4 @@
-window.addEventListener('weapon_pressed', e => add_weapon_perks(e.detail))
+window.addEventListener('weapon_pressed', e => console.log(e)) // add_weapon_perks(e.detail)
 function add_weapon_perks(unique_id) {
 
     const unique_item = clarity_user_data[unique_id]
