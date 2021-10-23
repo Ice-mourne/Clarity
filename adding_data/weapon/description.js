@@ -1,4 +1,4 @@
-window.addEventListener('weapon_pressed', e => console.log(e)) // add_weapon_perks(e.detail)
+window.addEventListener('weapon_pressed', e => add_weapon_perks(e.detail)) // add_weapon_perks(e.detail)
 function add_weapon_perks(unique_id) {
 
     const unique_item = clarity_user_data[unique_id]
@@ -37,27 +37,25 @@ function add_weapon_perks(unique_id) {
 
     let all_perks = rolled_perks.map(perk_list => {
         return {
-            node_type: 'div',
             className: 'Clarity_perk_list',
             append: perk_list.map(perk => {
                 return {
-                    node_type: 'div',
                     className: `Clarity_perk ${(active_perks.includes(perk)) ? 'Clarity_active' : ''}`,
                     id: perk,
-                    event_listener: {type: 'click', fn: perk_event_listener},
+                    event_listener: [
+                        {type: 'click', fn: perk_event_listener}
+                    ],
                     append: [
                         {
-                            node_type: 'div',
                             className: 'Clarity_icon_container',
                             append: [
                                 {
-                                    node_type: 'img',
+                                    ele_type: 'img',
                                     src: `https://www.bungie.net/common/destiny2_content/icons/${clarity_manifest[perk].icon}`
                                 }
                             ]
                         },
                         {
-                            node_type: 'div',
                             className: 'Clarity_perk_name',
                             textContent: clarity_manifest[perk].name
                         }
@@ -68,9 +66,10 @@ function add_weapon_perks(unique_id) {
     })
     all_perks.forEach(perk_list => perk_list.append.unshift(
         {
-            node_type: 'div',
             className: 'Clarity_description',
-            event_listener: {type: 'click', fn: description_close_event_listener},
+            event_listener: [
+                {type: 'click', fn: description_close_event_listener}
+            ],
         }
     ))
     let new_perks = fragment_creator(all_perks)

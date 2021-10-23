@@ -39,7 +39,7 @@ function clarity_test() {
     })
 }
 
-window.addEventListener('weapon_pressed', e => add_stats())
+// window.addEventListener('weapon_pressed', e => add_stats())
 function add_stats() {
     let stat_order = [
         [4284893193, {name: 'Rounds Per Minute', bar_type: null         }],
@@ -120,9 +120,11 @@ function add_stats() {
         //     className: 'clarity_stat_bar',
         // },
         if(type == 'stat_svg') {
-            let x = Math.sin((100 + 5) * 2 * Math.PI / 20) * (100 - 100)
+            let stat = 10
+
+            let x = Math.sin((5 + stat) * 2 * Math.PI / 20) * (100 - stat)
             if(x <= 0) 'change direction'
-            let rotate = Math.max(Math.abs(x) / 400, 0.008) //(100 - Math.abs(x)) / 400
+            let rotate = Math.max(Math.abs(x) / 300, 0.008) //(100 - Math.abs(x)) / 400
 
             return {
                 ele_ns: {ns: 'http://www.w3.org/2000/svg', type: 'svg'},
@@ -139,6 +141,17 @@ function add_stats() {
                             {name: 'cy',   value: '10'},
                             {name: 'r',    value: '10'},
                             {name: 'fill', value: '#333333'},
+                        ],
+                    },
+                    {
+                        ele_ns: {ns: 'http://www.w3.org/2000/svg', type: 'line'},
+                        set_attribute: [
+                            {name: 'x1', value: '10'},
+                            {name: 'y1', value: '10'},
+                            {name: 'x2', value: '10'},
+                            {name: 'y2', value: '0'},
+                            {name: 'r',  value: '5.7'},
+                            {name: 'stroke', value: '#fff'},
                         ],
                     },
                     {
@@ -180,8 +193,6 @@ function add_stats() {
     )
 
     document.querySelector('.ItemStats-m_stats-yaOm5').append(frag)
-
-
 }
 
 

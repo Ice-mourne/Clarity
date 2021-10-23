@@ -7,21 +7,18 @@ function add_armor_perks(unique_id) {
 
     let description_box = [
         {
-            node_type: 'div',
             className: 'Clarity_armor_perk_box',
             append: [
                 {
-                    node_type: 'img',
+                    ele_type: 'img',
                     className: 'Clarity_perk_icon',
                     src: `https://www.bungie.net/common/destiny2_content/icons/${clarity_manifest[active_perk].icon}`
                 },
                 {
-                    node_type: 'div',
                     className: 'Clarity_perk_name',
                     textContent: clarity_manifest[active_perk].name
                 },
                 {
-                    node_type: 'div',
                     className: 'Clarity_perk_description',
                     append: clarity_manifest[active_perk].description
                 }
