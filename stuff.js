@@ -87,6 +87,8 @@ function add_item_info(unique_id, jd) {
         let all_perks_mods = document.getElementsByClassName('item-details-body')[0] //--- fixed
         document.querySelector(jd.all_weapon_perks).remove()
         all_perks_mods.append(main_box)
+
+        document.querySelector('.ItemSocketsWeapons-m_perks-EeOP2').remove()
     }
     function add_info_to_armor() {
         if(data_base[unique_id].tier != 'Exotic') return

@@ -177,7 +177,7 @@ function filter_inventory_item(user_data, inventory_item, stat_group, stat_names
                     let reload_stat = stat_calculator(investment_stats[4188031367], weapon_stat_group[4188031367], 4188031367)
                     let reload_time_default = reload_calculator(formula, reload_stat, 1) * 1
                     let reload_time_mod = reload_calculator(formula, min_max(reload_stat + perk_info_json.reload_stat[i]), 1) * 1
-    
+
                     description = description.replace(`relo_t_${i}`, `${reload_time_mod.toFixed(2)}s`)
                     description = description.replace(`relo_r_${i}`, `${(reload_time_mod - reload_time_default).toFixed(2)}s`)
                 }

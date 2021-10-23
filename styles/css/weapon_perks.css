@@ -1,7 +1,6 @@
 .Clarity_main_box{
     display: flex;
     flex-direction: column;
-    margin: -22px 0 0 0;  /* -12px -10px; */ /* 10px -10px; */
 
     border-top: 1px solid hsl(0, 0%, 20%);
 }

@@ -46,8 +46,8 @@
 			fetch_bungie('current_user')
 			.then(data => {
 				let user_info = {
-					'platform': data.Response.destinyMemberships[0].LastSeenDisplayNameType,
-					'id': data.Response.destinyMemberships[0].membershipId
+					'platform': data.Response.profiles[0].membershipType,
+					'id': data.Response.profiles[0].membershipId
 				}
 				local_storage('clarity_user', user_info)
 			})
@@ -92,9 +92,9 @@ async function fetch_bungie(auth_type, code) {
 			'body': `grant_type=refresh_token&refresh_token=${auth?.refresh_token}`
 		},
 		current_user: {
-			'link': 'User/GetMembershipsForCurrentUser/',
+			'link': `Destiny2/254/Profile/${auth?.membership_id}/LinkedProfiles/?getAllMemberships=true`,
 			'method': 'GET',
-			'authorization': `Bearer ${auth?.access_token}`
+			// 'authorization': `Bearer ${auth?.access_token}`
 		},
 		user_info: {
 			'link': `Destiny2/${user?.platform}/Profile/${user?.id}/?components=102,201,205,304,305,310`,
@@ -120,12 +120,12 @@ async function fetch_bungie(auth_type, code) {
 		.then(resp => resolve(resp))
 	})
 	function handle_errors(err, auth_type) {                                                                                   // todo better error handling
-		switch (err.status) {
-			case 500: // internal bungie error // simulate auth pressing to try again
-				local_storage('clarity_temp', true)
-				window.location.href = `https://www.bungie.net/en/OAuth/Authorize?client_id=${nr.i}&response_type=code`
-				break
-		}
+		// switch (err.status) {
+		// 	case 500: // internal bungie error // simulate auth pressing to try again
+		// 		local_storage('clarity_temp', true)
+		// 		window.location.href = `https://www.bungie.net/en/OAuth/Authorize?client_id=${nr.i}&response_type=code`
+		// 		break
+		// }
 		console.error(`%c Something then wrong with auth => ${auth_type}`, 'font-size: large;')
 		console.log(err.status)
 		console.log(err)
