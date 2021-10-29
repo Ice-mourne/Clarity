@@ -80,5 +80,5 @@ function add_weapon_perks(unique_id) {
     clarity_main_box.className = 'Clarity_weapon_perks_box'
     clarity_main_box.append(new_perks)
 
-    document.querySelector(perk_location).replaceWith(clarity_main_box)
+    document.querySelector(perk_location)?.replaceWith(clarity_main_box)
 }

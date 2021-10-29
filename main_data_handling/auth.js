@@ -46,8 +46,8 @@
 			fetch_bungie('current_user')
 			.then(data => {
 				let user_info = {
-					'platform': data.Response.destinyMemberships[0].LastSeenDisplayNameType,
-					'id': data.Response.destinyMemberships[0].membershipId
+					'platform': data.Response.profiles[0].membershipType,
+					'id': data.Response.profiles[0].membershipId
 				}
 				local_storage('clarity_user', user_info)
 			})
@@ -92,7 +92,7 @@ async function fetch_bungie(auth_type, code) {
 			'body': `grant_type=refresh_token&refresh_token=${auth?.refresh_token}`
 		},
 		current_user: {
-			'link': `Destiny2/254/Profile/${user?.id}/LinkedProfiles/?getAllMemberships=true`,
+			'link': `Destiny2/254/Profile/${auth?.membership_id}/LinkedProfiles/?getAllMemberships=true`,
 			'method': 'GET',
 			// 'authorization': `Bearer ${auth?.access_token}`
 		},
@@ -120,22 +120,15 @@ async function fetch_bungie(auth_type, code) {
 		.then(resp => resolve(resp))
 	})
 	function handle_errors(err, auth_type) {                                                                            // todo better error handling
-		switch (auth_type) {
-			case 'authorization':
-				refresh_page()
+		switch (err.status) {
+			case 500: // internal bungie error // simulate auth pressing to try again
+				local_storage('clarity_temp', true)
+				window.location.href = `https://www.bungie.net/en/OAuth/Authorize?client_id=${nr.i}&response_type=code`
 				break
 		}
-		function refresh_page() {
-			switch (err.status) {
-				case 500: // internal bungie error // simulate auth pressing to try again
-					local_storage('clarity_temp', true)
-					window.location.href = `https://www.bungie.net/en/OAuth/Authorize?client_id=${nr.i}&response_type=code`
-					break
-			}
-		}
-		console.log(`%c Something then wrong with auth => ${auth_type}`, 'font-size: large;')
+		console.error(`%c Something then wrong with auth => ${auth_type}`, 'font-size: large;')
 		console.log(err.status)
 		console.log(err)
-		console.log(`%c End of error logs for => ${auth_type}`, 'font-size: large;')
+		console.error(`%c End of error logs for => ${auth_type}`, 'font-size: large;')
 	}
 }

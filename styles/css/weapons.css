@@ -82,30 +82,56 @@
   margin-top: 3px;
 }
 
-.ItemStats-m_stats-yaOm5 .clarity_stat_name {
+.Clarity_weapon_stats {
+  margin: 10px;
+  display: grid;
+  grid-auto-rows: minmax(12px, auto);
+  grid-template-columns: repeat(2, min-content) 1fr;
+  gap: 4px 0;
+}
+
+.Clarity_weapon_stats * {
+  line-height: 12px;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.Clarity_weapon_stats .clarity_stat_name {
   grid-column: 1;
   text-align: right;
   margin-right: 8px;
 }
 
-.ItemStats-m_stats-yaOm5 .clarity_stat_value {
+.Clarity_weapon_stats .clarity_stat_value {
   grid-column: 2;
   text-align: right !important;
   font-variant-numeric: tabular-nums;
 }
 
-.ItemStats-m_stats-yaOm5 .clarity_stat_bar {
+.Clarity_weapon_stats .Clarity_masterwork {
+  color: #e9a735;
+}
+
+.Clarity_weapon_stats .clarity_stat_bar {
   margin-left: 8px;
   grid-column: -2 / -1;
   background-color: #333;
   display: flex;
 }
 
-.ItemStats-m_stats-yaOm5 .clarity_stat_bar .clarity_stat_bar_base {
+.Clarity_weapon_stats .clarity_stat_bar .clarity_stat_bar_mod {
+  background-color: #68a0b6;
+}
+
+.Clarity_weapon_stats .clarity_stat_bar .clarity_stat_bar_masterwork {
+  background-color: #e9a735;
+}
+
+.Clarity_weapon_stats .clarity_stat_bar .clarity_stat_bar_perks {
   background-color: white;
 }
 
-.ItemStats-m_stats-yaOm5 svg {
+.Clarity_weapon_stats svg {
   margin-left: 8px;
 }
 

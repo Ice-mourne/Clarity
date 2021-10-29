@@ -12,6 +12,7 @@
             "js": [
                 "tools/storage.js",
                 "tools/random.js",
+                "tools/random_data.js",
 
                 "main_data_handling/find_classNames.js",
                 "main_data_handling/flow_handler.js",
@@ -25,6 +26,7 @@
 
                 "adding_data/armor/description.js",
 
+                "adding_data/weapon/stats.js",
                 "adding_data/weapon/description.js",
                 "adding_data/weapon/numbers.js"
             ],

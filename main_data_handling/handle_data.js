@@ -80,62 +80,22 @@
         window.addEventListener('update_item_info', user_data)
         user_data()
     })
-    const custom_info = {
-        ammo: {
-            1: 'primary',
-            2: 'special',
-            3: 'heavy'
-        },
-        masterworks: { // all masterwork id's from 1 to 10
-            "stability":   [1590375901, 1590375902, 1590375903, 1590375896, 1590375897, 1590375898, 1590375899, 1590375892, 1590375893, 384158423 ],
-            "range":       [150943607,  150943604,  150943605,  150943602,  150943603,  150943600,  150943601,  150943614,  150943615,  2697220197],
-            "handling":    [518224747,  518224744,  518224745,  518224750,  518224751,  518224748,  518224749,  518224738,  518224739,  186337601 ],
-            "impact":      [1486919755, 1486919752, 1486919753, 1486919758, 1486919759, 1486919756, 1486919757, 1486919746, 1486919747, 3486498337],
-            "reload":      [4283235143, 4283235140, 4283235141, 4283235138, 4283235139, 4283235136, 4283235137, 4283235150, 4283235151, 758092021 ],
-            "blast":       [3928770367, 3928770364, 3928770365, 3928770362, 3928770363, 3928770360, 3928770361, 3928770358, 3928770359, 3803457565],
-            "velocity":    [4105787909, 4105787910, 4105787911, 4105787904, 4105787905, 4105787906, 4105787907, 4105787916, 4105787917, 1154004463],
-            "charge_time": [3353797898, 3353797897, 3353797896, 3353797903, 3353797902, 3353797901, 3353797900, 3353797891, 3353797890, 3128594062],
-            "draw_time":   [2203506848, 2203506851, 2203506850, 2203506853, 2203506852, 2203506855, 2203506854, 2203506857, 2203506856, 1639384016],
-            "accuracy":    [892374263,  892374260,  892374261,  892374258,  892374259,  892374256,  892374257,  892374270,  892374271,  2993547493]
-        },
-        perk_types: {
-            1257608559: 'Arrow',
-            2833605196: 'Barrel',
-            1757026848: 'Battery',
-            1041766312: 'Blade',
-            3809303875: 'Bowstring',
-            3962145884: 'Grip',
-            683359327:  'Guard',
-            1202604782: 'Launcher Barrel',
-            1806783418: 'Magazine',
-            2619833294: 'Scope',
-            577918720:  'Stock',
-            7906839:    'Trait', // named frame in API
-            2718120384: 'Magazine gl'
-        },
-        stat_blacklist: {
-            1480404414: 'Attack',
-            1935470627: 'Power',
-            1885944937: 'No name',
-            3291498656: 'No name'
-        }
-    }
     const weapon_masterworks = { // all masterworks weapon type can get
-        'Auto Rifle':          {'stability': custom_info.masterworks.stability, 'handling': custom_info.masterworks.handling, 'reload':    custom_info.masterworks.reload,    'range':    custom_info.masterworks.range   },
-        'Combat Bow':          {'stability': custom_info.masterworks.stability, 'handling': custom_info.masterworks.handling, 'draw_time': custom_info.masterworks.draw_time, 'accuracy': custom_info.masterworks.accuracy},
-        'Fusion Rifle':        {'stability': custom_info.masterworks.stability, 'handling': custom_info.masterworks.handling, 'reload':    custom_info.masterworks.reload,    'range':    custom_info.masterworks.range,	'charge_time': custom_info.masterworks.charge_time},
-        'Grenade Launcher':    {'stability': custom_info.masterworks.stability, 'handling': custom_info.masterworks.handling, 'blast':     custom_info.masterworks.blast,     'velocity': custom_info.masterworks.velocity},
-        'Hand Cannon':         {'stability': custom_info.masterworks.stability, 'handling': custom_info.masterworks.handling, 'reload':    custom_info.masterworks.reload,    'range':    custom_info.masterworks.range   },
-        'Linear Fusion Rifle': {'stability': custom_info.masterworks.stability, 'handling': custom_info.masterworks.handling, 'reload':    custom_info.masterworks.reload,    'range':    custom_info.masterworks.range,	'charge_time': custom_info.masterworks.charge_time},
-        'Machine Gun':         {'stability': custom_info.masterworks.stability, 'handling': custom_info.masterworks.handling, 'reload':    custom_info.masterworks.reload,    'range':    custom_info.masterworks.range   },
-        'Pulse Rifle':         {'stability': custom_info.masterworks.stability, 'handling': custom_info.masterworks.handling, 'reload':    custom_info.masterworks.reload,    'range':    custom_info.masterworks.range   },
-        'Rocket Launcher':     {'stability': custom_info.masterworks.stability, 'handling': custom_info.masterworks.handling, 'blast':     custom_info.masterworks.blast,     'velocity': custom_info.masterworks.velocity},
-        'Scout Rifle':         {'stability': custom_info.masterworks.stability, 'handling': custom_info.masterworks.handling, 'reload':    custom_info.masterworks.reload,    'range':    custom_info.masterworks.range   },
-        'Shotgun':             {'stability': custom_info.masterworks.stability, 'handling': custom_info.masterworks.handling, 'reload':    custom_info.masterworks.reload,    'range':    custom_info.masterworks.range   },
-        'Sidearm':             {'stability': custom_info.masterworks.stability, 'handling': custom_info.masterworks.handling, 'reload':    custom_info.masterworks.reload,    'range':    custom_info.masterworks.range   },
-        'Sniper Rifle':        {'stability': custom_info.masterworks.stability, 'handling': custom_info.masterworks.handling, 'reload':    custom_info.masterworks.reload,    'range':    custom_info.masterworks.range   },
-        'Submachine Gun':      {'stability': custom_info.masterworks.stability, 'handling': custom_info.masterworks.handling, 'reload':    custom_info.masterworks.reload,    'range':    custom_info.masterworks.range   },
-        'Sword':               {'impact'   : custom_info.masterworks.impact}
+        'Auto Rifle':          {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Combat Bow':          {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'draw_time': clarity_random_data.masterworks.draw_time, 'accuracy': clarity_random_data.masterworks.accuracy},
+        'Fusion Rifle':        {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range,	'charge_time': clarity_random_data.masterworks.charge_time},
+        'Grenade Launcher':    {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'blast':     clarity_random_data.masterworks.blast,     'velocity': clarity_random_data.masterworks.velocity},
+        'Hand Cannon':         {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Linear Fusion Rifle': {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range,	'charge_time': clarity_random_data.masterworks.charge_time},
+        'Machine Gun':         {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Pulse Rifle':         {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Rocket Launcher':     {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'blast':     clarity_random_data.masterworks.blast,     'velocity': clarity_random_data.masterworks.velocity},
+        'Scout Rifle':         {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Shotgun':             {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Sidearm':             {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Sniper Rifle':        {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Submachine Gun':      {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Sword':               {'impact'   : clarity_random_data.masterworks.impact}
     }
     function covert_description(description_array) {
         return description_array.map(line => {
@@ -186,7 +146,7 @@
                     const socket_entry = item.sockets.socketEntries[index]
                     const socket_type_id = manifest.socket_type[socket_entry.socketTypeHash]
 
-                    if(!custom_info.perk_types[socket_type_id.plugWhitelist[0].categoryHash]) return [] // check if perk type is actually perk // kill tracker is "perk" because bongo
+                    if(!clarity_random_data.perk_types[socket_type_id.plugWhitelist[0].categoryHash]) return [] // check if perk type is actually perk // kill tracker is "perk" because bongo
 
                     const perks = manifest.plug_sets[socket_entry[type]]?.reusablePlugItems
                     const look_in = (type == 'randomizedPlugSetHash') // if on random perks
@@ -241,14 +201,14 @@
         const stats = {
             investment() {
                 return item.investmentStats.reduce((acc, val) => {
-                    if(custom_info.stat_blacklist[val.statTypeHash]) return acc// ignore these stat id's
+                    if(clarity_random_data.stat_blacklist[val.statTypeHash]) return acc// ignore these stat id's
                     return ({ ...acc, [val.statTypeHash]: val.value})
                 }, {})
             },
             stats() {
                 let stats = item.stats.stats
                 return Object.keys(stats).reduce((acc, val) => {
-                    if(custom_info.stat_blacklist[val]) return acc// ignore these stat id's
+                    if(clarity_random_data.stat_blacklist[val]) return acc// ignore these stat id's
                     return ({ ...acc, [val]: stats[val].value})
                 }, {})
             },
@@ -270,7 +230,7 @@
             'name': item.displayProperties.name,
             'icon': item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
             'type': item.itemTypeDisplayName, // hand cannon, sniper, shotgun...
-            'ammo': custom_info.ammo[item.equippingBlock.ammoType], // primary, special, heavy...
+            'ammo': clarity_random_data.ammo[item.equippingBlock.ammoType], // primary, special, heavy...
             'slot': manifest.item_category[item.itemCategoryHashes[0]].shortTitle, // kinetic, energy, power...
             'damage_type': manifest.damage_type[item.defaultDamageTypeHash].displayProperties.name, // arch, solar, void...
             'item_type': 'weapon',
@@ -319,7 +279,7 @@
         }
         function investment() {
             return item.investmentStats?.reduce((acc, stat) => {
-                if(custom_info.stat_blacklist[stat.statTypeHash]) return acc// ignore these stat id's
+                if(clarity_random_data.stat_blacklist[stat.statTypeHash]) return acc// ignore these stat id's
                 return ({ ...acc, [stat.statTypeHash]: stat.value})
             }, {})
         }
@@ -357,6 +317,7 @@ function user_data() {
             plug_sets:      data[1].DestinyPlugSetDefinition,
             socket_type:    data[1].DestinySocketTypeDefinition,
         }
+
         let all_items = user_data.profileInventory.data.items
         Object.values(user_data.characterInventories.data).forEach(x => all_items = all_items.concat(x.items))
         Object.values(user_data.characterEquipment  .data).forEach(x => all_items = all_items.concat(x.items))
@@ -376,21 +337,7 @@ function user_data() {
     })
     function get_unique_items(unique_id, user_data, manifest, id, type) {
         function check_type(id) {
-            let perk_types = {
-                1257608559: 'Arrow',
-                2833605196: 'Barrel',
-                1757026848: 'Battery',
-                1041766312: 'Blade',
-                3809303875: 'Bowstring',
-                3962145884: 'Grip',
-                683359327:  'Guard',
-                1202604782: 'Launcher Barrel',
-                1806783418: 'Magazine',
-                2619833294: 'Scope',
-                577918720:  'Stock',
-                7906839:    'Trait', // named frame in API
-                2718120384: 'Magazine gl'
-            }
+            let perk_types = clarity_random_data.perk_types
             if (perk_types[manifest.inventory_item[id].plug.plugCategoryHash]) return true
             return false
         }

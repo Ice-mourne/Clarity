@@ -81,7 +81,18 @@
     }
 }
 
-.ItemStats-m_stats-yaOm5 {
+.Clarity_weapon_stats {
+    margin: 10px;
+    display: grid;
+    grid-auto-rows: minmax(12px, auto);
+    grid-template-columns: repeat(2, min-content) 1fr;
+    gap: 4px 0;
+    * {
+        line-height: 12px;
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+
     .clarity_stat_name {
         grid-column: 1;
         text-align: right;
@@ -92,12 +103,21 @@
         text-align: right !important;
         font-variant-numeric: tabular-nums;
     }
+    .Clarity_masterwork {
+        color: hsl(38, 80%, 56%);
+    }
     .clarity_stat_bar {
         margin-left: 8px;
         grid-column: -2 / -1;
         background-color: #333;
         display: flex;
-        .clarity_stat_bar_base {
+        .clarity_stat_bar_mod {
+            background-color: hsl(197deg, 35%, 56%);
+        }
+        .clarity_stat_bar_masterwork {
+            background-color: hsl(38deg, 80%, 56%);
+        }
+        .clarity_stat_bar_perks {
             background-color: white;
         }
     }
