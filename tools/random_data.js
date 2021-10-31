@@ -22,6 +22,7 @@ const clarity_random_data = {
         [3871231066, {bar_type: null         }],
         [1931675084, {bar_type: null         }],
         [925767036,  {bar_type: null         }],
+
         ['range',    {bar_type: 'stat_letter', letter: 'm'}],
         ['reload',   {bar_type: 'stat_letter', letter: 's'}],
     ],
@@ -47,7 +48,10 @@ const clarity_random_data = {
         3736848092: 'Guard Endurance',
         3871231066: 'Magazine',
         1931675084: 'Inventory Size',
-        925767036:  'Ammo Capacity'
+        925767036:  'Ammo Capacity',
+
+        'range': 'In-Game Range',
+        'reload': 'In-Game Reload'
     },
     ammo: {
         1: 'primary',

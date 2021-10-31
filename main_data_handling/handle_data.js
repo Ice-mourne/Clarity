@@ -97,8 +97,8 @@
         'Submachine Gun':      {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
         'Sword':               {'impact'   : clarity_random_data.masterworks.impact}
     }
-    function covert_description(description_array) {
-        return description_array.map(line => {
+    function covert_description(description_array, item) {
+        let custom_description = description_array?.map(line => {
             if(!line.table) { // if normal line
                 return {
                     node_type: 'div',
@@ -131,7 +131,30 @@
                     })
                 }
             }
+        }) || []
+
+        let stat_ids = clarity_random_data.stat_order.map(stat_order => {
+            if(item.investmentStats?.find(stat => stat.statTypeHash == stat_order[0])) return stat_order[0]
         })
+        .filter(x => x)
+
+        let stats_description = stat_ids.map(stat_id => {
+            return {
+                node_type: 'div',
+                className: 'Clarity_stat',
+                append: [
+                    {
+                        node_type: 'div',
+                        textContent: `{stat-id=${stat_id}} `
+                    },
+                    {
+                        node_type: 'div',
+                        textContent: clarity_random_data.stat_names[stat_id]
+                    }
+                ]
+            }
+        }) || []
+        return [...stats_description, ...custom_description]
     }
     function weapon(item, manifest, wep_formulas) {
         const socket_indexes = {
@@ -270,12 +293,33 @@
         function description() {
             let community_description = community_data[item.hash]?.description
 
-            return (community_description) ? covert_description(community_description) : [
-                {
+            if(community_description || item.investmentStats.length != 0) {
+                return covert_description(community_description, item)
+            } else {
+                return [{
                     node_type: 'div',
                     textContent: item.displayProperties.description
-                }
-            ]
+                }]
+            }
+            //else if(item.investmentStats.length != 0) {
+            //     return item.investmentStats.map(stat => {
+            //         return {
+            //             node_type: 'div',
+            //             className: 'Clarity_stat',
+            //             append: [
+            //                 {
+            //                     node_type: 'div',
+            //                     textContent: `{stat-id=${stat.statTypeHash}} `
+            //                 },
+            //                 {
+            //                     node_type: 'div',
+            //                     textContent: clarity_random_data.stat_names[stat.statTypeHash]
+            //                 }
+            //             ]
+            //         }
+            //     })
+            // }
+            // return (community_description) ? covert_description(community_description) :
         }
         function investment() {
             return item.investmentStats?.reduce((acc, stat) => {
@@ -291,9 +335,9 @@
             'description': description(),
             'investment': investment(),
             'stats': {
-                'reload': community_data[item.hash]?.reload,
-                'range': community_data[item.hash]?.range,
-                'handling': community_data[item.hash]?.handling,
+                'reload': community_data[item.hash]?.stats?.reload,
+                'range': community_data[item.hash]?.stats?.range,
+                'handling': community_data[item.hash]?.stats?.handling,
             }
         }
     }

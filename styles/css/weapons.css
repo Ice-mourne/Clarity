@@ -82,6 +82,11 @@
   margin-top: 3px;
 }
 
+.Clarity_weapon_perks_box .Clarity_description .Clarity_stat {
+  display: flex;
+  white-space: break-spaces;
+}
+
 .Clarity_weapon_stats {
   margin: 10px;
   display: grid;

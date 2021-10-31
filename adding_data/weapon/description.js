@@ -1,5 +1,7 @@
 window.addEventListener('weapon_pressed', e => add_weapon_perks(e.detail)) // add_weapon_perks(e.detail)
 function add_weapon_perks(unique_id) {
+    console.time('speed test 9000')
+    add_stats(unique_id, 'active')
 
     const unique_item = clarity_user_data[unique_id]
     const static_item = clarity_manifest[unique_item.id]
@@ -14,7 +16,8 @@ function add_weapon_perks(unique_id) {
         const selected_perk = event.currentTarget,
               selected_perk_class_list = selected_perk.classList,
               perk_list = selected_perk.parentElement,
-              description = perk_list.firstChild
+              description = perk_list.firstChild,
+              item_info = add_stats(unique_id, 'selected')
 
         if (selected_perk_class_list.contains('Clarity_selected')) {
             description.textContent = ''
@@ -23,7 +26,11 @@ function add_weapon_perks(unique_id) {
         } else {
             perk_list.querySelectorAll('.Clarity_perk').forEach(p => p.classList.remove('Clarity_selected', 'Clarity_disable'))
             description.textContent = ''
-            description.append(fragment_creator(clarity_manifest[selected_perk.id].description) || 'empty')
+            description.append(
+                fragment_creator(
+                    update_perk_description(selected_perk.id, item_info)
+                ) || 'empty'
+            )
             if (!selected_perk_class_list.contains('Clarity_active')) {
                 selected_perk_class_list.add('Clarity_selected')
                 perk_list.querySelector('.Clarity_active').classList.add('Clarity_disable')
@@ -33,6 +40,61 @@ function add_weapon_perks(unique_id) {
     let description_close_event_listener = event => { // remove description on description press
         event.currentTarget.textContent = ''
         event.currentTarget.parentElement.querySelectorAll('.Clarity_perk').forEach(p => p.classList.remove('Clarity_selected', 'Clarity_disable'))
+    }
+
+    function update_perk_description(id, wep_stats) {
+        const perk = clarity_manifest[id]
+        let description = JSON.stringify(perk.description)
+
+        if(perk.stats.reload?.conditional || perk.stats.range?.conditional || perk.stats.handling?.conditional) { // return clarity_manifest[id].description
+            if(perk.stats.range) {
+                let stat = perk.stats.range.conditional.stat
+                let multi = perk.stats.range.conditional.multiplier
+                let length = (stat.length > multi.length) ? stat : multi
+
+                for (let i = 0; i < length.length; i++) {
+                    description = description.replace(
+                        `{rang_${i}}`,
+                        range_calculator(static_item, wep_stats.stats, wep_stats.perk_list, stat[i], multi[i]).ADS_max// - item_info.range_reload.range
+                    )
+                }
+            }
+
+            if(perk.stats.reload) {
+                let stat = perk.stats.reload.conditional.stat
+                let multi = perk.stats.reload.conditional.multiplier
+                let length = (stat.length > multi.length) ? stat : multi
+
+                for (let i = 0; i < length.length; i++) {
+                    description = description.replace(
+                        `{relo_${i}}`,
+                        reload_calculator(static_item, wep_stats.stats, wep_stats.perk_list, stat[i], multi[i]).default
+                    )
+                }
+            }
+
+            if(perk.stats.handling) {
+                let stat = perk.stats.handling.conditional.stat
+                let multi = perk.stats.handling.conditional.multiplier
+                let length = (stat.length > multi.length) ? stat : multi
+    
+                for (let i = 0; i < length.length; i++) {
+                    let stats = reload_calculator(static_item, wep_stats.stats, wep_stats.perks, stat[i], multi[i])
+                    description = description.replace(
+                        `{hand_s_${i}}`,
+                        stats.stow
+                    )
+                    description = description.replace(
+                        `{hand_r_${i}}`,
+                        stats.ready
+                    )
+                }
+            }
+        }
+        if(perk.investment) {
+            get_item_stats(static_item, wep_stats.perk_list)
+        }
+        return JSON.parse(description)
     }
 
     let all_perks = rolled_perks.map(perk_list => {
@@ -81,4 +143,5 @@ function add_weapon_perks(unique_id) {
     clarity_main_box.append(new_perks)
 
     document.querySelector(perk_location)?.replaceWith(clarity_main_box)
+    console.timeEnd('speed test 9000')
 }
