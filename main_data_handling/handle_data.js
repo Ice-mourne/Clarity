@@ -324,7 +324,7 @@
         function investment() {
             return item.investmentStats?.reduce((acc, stat) => {
                 if(clarity_random_data.stat_blacklist[stat.statTypeHash]) return acc// ignore these stat id's
-                return ({ ...acc, [stat.statTypeHash]: stat.value})
+                return ({ ...acc, [stat.statTypeHash]: {value: stat.value, conditional: stat.isConditionallyActive}})
             }, {})
         }
 

@@ -1,76 +1,115 @@
 // window.addEventListener('weapon_pressed', e => add_stats(e.detail))
-function add_stats(unique_id, perks_from) {
-    class Wep_stats {
-        #unique_item = clarity_user_data[unique_id]
-        #static_item = clarity_manifest[this.#unique_item.id]
-        stats = {}
-        subtracted_stats = {}
-        perk_list = []
-        range_reload = {}
-
-        add_perk_id(type_list) {
-            let perk_list = []
-            type_list.forEach(type => {
-                switch (type) {
-                    case 'active':
-                        perk_list = [...perk_list, ...this.#unique_item.sockets.perks.active]
-                    break
-                    case 'selected':
-                        document.querySelector('.Clarity_weapon_perks_box')
-                        .querySelectorAll('.Clarity_active:not(.Clarity_disable), .Clarity_selected')
-                        .forEach(perk => perk_list.push(Number(perk.id)))
-                    break
-                    case 'frame':
-                        perk_list.push(
-                            this.#static_item.sockets.frame
-                        )
-                    break
-                    default:
-                        perk_list.push(
-                            this.#unique_item.sockets[type]
-                        )
-                }
-            })
-            this.perk_list = perk_list.filter(perk => perk != 3511092054) // remove elemental cap
-            return perk_list.filter(perk => perk != 3511092054) // remove elemental cap
-        }
-        round_stats(x) {
-            return Object.entries(this[x])
-            .reduce((acc, [id, value]) =>
-                ({
-                    ...acc, [id]: parseFloat(value.toFixed(0))
-                }), {}
-            )
-        }
-        calculate_stats(type_list, subtract) {
-            let perk_list = this.add_perk_id(type_list)
-
-            if(subtract) return get_item_stats(this.#static_item, perk_list)
-
-            this.stats = get_item_stats(this.#static_item, perk_list)
-            return this
-        }
-        subtract_stats(type_list) {
-            this.subtracted_stats = Object.entries(
-                this.calculate_stats(type_list, true)
-            )
-            .reduce(
-                (acc, [id, value]) => ({ ...acc, [id]: acc[id] -= value}), {...this.stats}
-            )
-            return this
-        }
-        add_range_reload() {
-            this.range_reload = {
-                range: parseFloat(
-                    range_calculator(this.#static_item, this.stats, this.perk_list)?.ADS_max.toFixed(1)
-                ),
-                reload: parseFloat(
-                    reload_calculator(this.#static_item, this.stats, this.perk_list)?.default.toFixed(1)
-                )
-            }
-            return this.range_reload
-        }
+class Wep_stats {
+    constructor (unique_id) {
+        this.#unique_item = clarity_user_data[unique_id]
+        this.#static_item = clarity_manifest[this.#unique_item.id]
     }
+
+    all_perk_ids = []
+    perk_ids = []
+
+    stats = {}
+    subtracted_stats = {}
+
+    range_reload = {}
+    /**
+     ** Creates perk list for given location
+     * @param {string} list_type Options Active, selected, preview, compare
+     */
+    create_perk_list(list_type) {
+        if(list_type == 'active') {
+            this.all_perk_ids = [
+                ...this.#unique_item.sockets.perks.active.map(perk_id => {
+                    return ['perk', perk_id]
+                }),
+                ['frame', this.#static_item.sockets.frame],
+                ['mod', this.#unique_item.sockets.mod],
+                ['masterwork', this.#unique_item.sockets.masterwork]
+            ]
+        }
+        if(list_type == 'selected') {
+            this.all_perk_ids = [
+                ...document.querySelector('.Clarity_weapon_perks_box')
+                ?.querySelectorAll('.Clarity_active:not(.Clarity_disable), .Clarity_selected')
+                .map(perk_id => {
+                    return ['perk', perk_id]
+                }) || [],
+
+                ['frame', this.#static_item.sockets.frame],
+                ['mod', this.#unique_item.sockets.mod],
+                ['masterwork', this.#unique_item.sockets.masterwork]
+            ]
+        }
+        // if(list_type == 'preview') {
+        // }
+        // if(list_type == 'compare') {
+        // }
+        return this
+    }
+    /**
+     ** Removes selected perks from list created using 'create_perk_list' function
+     * @param {array} list Options [perk id, frame, mod, masterwork]
+     */
+    remove_perks(list) {
+        this.perk_ids = all_perk_ids.filter(([type, id]) =>
+            list.find(val => val != type || val != id) // true then not in list
+        )
+        .map(([type, id]) => id) // remove type its no longer needed
+        return this
+    }
+    calculate_stats(list_type) {
+        // let perk_list = this.create_perk_list(type_list)
+
+        // if(subtract) return get_item_stats(this.#static_item, perk_list)
+
+        this.stats = get_item_stats(this.#static_item, this[list_type])
+        return this
+    }
+
+    /**
+     * Rounds stats
+     * @param {string} option stats, subtracted_stats
+     * @returns Rounded stats
+     */
+    round_stats(option) {
+        return Object.entries(this[option])
+        .reduce((acc, [id, value]) =>
+            ({
+                ...acc, [id]: parseFloat(value.toFixed(0))
+            }), {}
+        )
+    }
+    // calculate_stats(type_list, subtract) {
+    //     let perk_list = this.create_perk_list(type_list)
+
+    //     if(subtract) return get_item_stats(this.#static_item, perk_list)
+
+    //     this.stats = get_item_stats(this.#static_item, perk_list)
+    //     return this
+    // }
+    subtract_stats(type_list) {
+        this.subtracted_stats = Object.entries(
+            this.calculate_stats(type_list, true)
+        )
+        .reduce(
+            (acc, [id, value]) => ({ ...acc, [id]: acc[id] -= value}), {...this.stats}
+        )
+        return this
+    }
+    add_range_reload() {
+        this.range_reload = {
+            range: parseFloat(
+                range_calculator(this.#static_item, this.stats, this.all_perk_ids)?.ADS_max.toFixed(1)
+            ),
+            reload: parseFloat(
+                reload_calculator(this.#static_item, this.stats, this.all_perk_ids)?.default.toFixed(1)
+            )
+        }
+        return this.range_reload
+    }
+}
+function add_stats(unique_id) {
+
 
     function stat_bar_place(id, data, stats) {
         if(data.bar_type == 'stat_bar') return {
@@ -145,8 +184,20 @@ function add_stats(unique_id, perks_from) {
 
     let wep_stats = new Wep_stats()
     const stats = {
-        all:    {...wep_stats.calculate_stats(['frame', perks_from, 'mod', 'masterwork']).round_stats('stats'), ...wep_stats.add_range_reload()},
+        all:        {...wep_stats.calculate_stats(['frame', perks_from, 'mod', 'masterwork']).round_stats('stats'), ...wep_stats.add_range_reload()},
         mod:        wep_stats.subtract_stats( ['frame', perks_from,        'masterwork']).subtracted_stats,
+        masterwork: wep_stats.subtract_stats( ['frame', perks_from, 'mod',             ]).subtracted_stats,
+        perks:      wep_stats.calculate_stats(['frame', perks_from                     ]).stats,
+    }
+    const stats = {
+        all: {
+            ...wep_stats.create_perk_list('active')
+            .calculate_stats('all_perk_ids')
+            .round_stats('stats'),
+            ...wep_stats.add_range_reload()
+        },
+        mod: wep_stats.remove_perks('mod')
+        .calculate_stats('all_perk_ids'),
         masterwork: wep_stats.subtract_stats( ['frame', perks_from, 'mod',             ]).subtracted_stats,
         perks:      wep_stats.calculate_stats(['frame', perks_from                     ]).stats,
     }
