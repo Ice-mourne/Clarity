@@ -138,7 +138,10 @@ function get_item_stats(static_item, perks) {
     let inv = {...static_item.stats.investment}
     perks.forEach(perk => { // go over perks in list and add stats from each perk to inv
         if(perk) Object.entries(clarity_manifest[perk].investment)
-        .forEach(([stat_id, stat_val]) => inv[stat_id] = inv[stat_id] + stat_val || stat_val) // try adding numbers if NaN add value //todo do i have to set stat val if it has no investment?
+        .forEach(([stat_id, stat_val]) => {
+            if(stat_val.conditional) return
+            inv[stat_id] = inv[stat_id] + stat_val.value || stat_val.value // try adding numbers if NaN add value
+        })
     })
 
     let stats = {}
@@ -197,7 +200,7 @@ function reload_calculator(static_item, stats, perks, extra_stat, extra_multipli
 
     //--- step 3 update base values
     let dual_loader = null
-    perks.forEach(perk => {
+    perks.forEach(([type, perk]) => {
         // dual loader
         if(perk == 25606670) dual_loader = true
 

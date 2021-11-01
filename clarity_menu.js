@@ -151,24 +151,31 @@ function open_close() {
         menu_window.classList.remove('Clarity_show_menu')
     })
 }
-// if (local_storage('clarity_locations').clarity_menu) dark_mode()
+if (local_storage('clarity_settings').dark_mode) dark_mode()
 function dark_mode(){
     const settings = local_storage('clarity_settings')
+    const colors = settings.dark_mode_colors
+    const jd = settings.class_names.styles
 
     document.documentElement.style.setProperty('--clarity_background_1', colors.background_color_1);
     document.documentElement.style.setProperty('--clarity_background_2', colors.background_color_2);
     document.documentElement.style.setProperty('--clarity_masterwork_item', colors.masterwork_item);
     document.documentElement.style.setProperty('--clarity_masterwork_item_text', colors.masterwork_item_text);
 
+    const background_color = `{background: radial-gradient(circle at 50% 70px, var(--clarity_background_1) 0%, var(--clarity_background_2) 100%); background-position: center top; background-repeat: no-repeat; background-size: 100vw 100vh;}`
     document.getElementById('clarity_dark_mode').textContent = `
-    ${jd.main_background}                  {background: radial-gradient(circle at 50% 70px, var(--clarity_background_1) 0%, var(--clarity_background_2) 100%); background-position: center top; background-repeat: no-repeat; background-size: 100vw 100vh;}
-    ${jd.organizer_background}             {background-color: hsl(0deg, 0%, 0%, 0.3);}
-    ${jd.background_under_item}            {background-color: hsla(0, 0%, 0%, 0); color: hsl(0, 0%, 85%);}
-    ${jd.background_under_masterwork_item} {background-color: var(--clarity_masterwork_item); color: var(--clarity_masterwork_item_text);}
-    ${jd.item_image}                       {border: 1px solid hsla(0, 0%, 0%, 0);;}
-    ${jd.masterwork_item_image}            {border: 1px solid var(--clarity_masterwork_item);}
-    ${jd.thumbs_up_icon}                   {color: hsl(202, 81%, 39%);}
+    ${jd.background_color[0]} ${background_color}
+    ${jd.background_color[1]} ${background_color}
+    ${jd.background_color[2]} ${background_color}
+    ${jd.background_color[3]} ${background_color}
+
+    ${jd.items.background}            {background-color: hsla(0, 0%, 0%, 0); color: hsl(0, 0%, 85%);}
+    ${jd.items.masterwork_background} {background-color: var(--clarity_masterwork_item); color: var(--clarity_masterwork_item_text);}
+    ${jd.items.item_image_border}     {border: 1px solid hsla(0, 0%, 0%, 0);}
+    ${jd.items.thumbs_up_icon}        {color: hsl(202, 81%, 39%);}
     `
+    // ${jd.organizer_background}    {background-color: hsl(0deg, 0%, 0%, 0.3);}
+    // ${jd.masterwork_item_image}   {border: 1px solid var(--clarity_masterwork_item);}
 }
 function dark_mode_toggle() {
     let dark_mode_button = document.getElementById('dark_mode_toggle')

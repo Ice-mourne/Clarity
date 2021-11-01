@@ -134,7 +134,7 @@
         }) || []
 
         let stat_ids = clarity_random_data.stat_order.map(stat_order => {
-            if(item.investmentStats?.find(stat => stat.statTypeHash == stat_order[0])) return stat_order[0]
+            if(item.investmentStats?.find(stat => stat.statTypeHash == stat_order[0] && stat.value != 0)) return stat_order[0]
         })
         .filter(x => x)
 

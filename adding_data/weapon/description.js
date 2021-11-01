@@ -25,21 +25,24 @@ function add_weapon_perks(unique_id) {
             perk_list.querySelector('.Clarity_active').classList.remove('Clarity_disable')
         } else {
             perk_list.querySelectorAll('.Clarity_perk').forEach(p => p.classList.remove('Clarity_selected', 'Clarity_disable'))
+            if (!selected_perk_class_list.contains('Clarity_active')) {
+                selected_perk_class_list.add('Clarity_selected')
+                perk_list.querySelector('.Clarity_active').classList.add('Clarity_disable')
+            } else {selected_perk_class_list.add('Clarity_selected')}
+
             description.textContent = ''
             description.append(
                 fragment_creator(
                     update_perk_description(selected_perk.id, item_info)
                 ) || 'empty'
             )
-            if (!selected_perk_class_list.contains('Clarity_active')) {
-                selected_perk_class_list.add('Clarity_selected')
-                perk_list.querySelector('.Clarity_active').classList.add('Clarity_disable')
-            } else {selected_perk_class_list.add('Clarity_selected')}
         }
+        add_stats(unique_id, 'selected')
     }
     let description_close_event_listener = event => { // remove description on description press
         event.currentTarget.textContent = ''
         event.currentTarget.parentElement.querySelectorAll('.Clarity_perk').forEach(p => p.classList.remove('Clarity_selected', 'Clarity_disable'))
+        add_stats(unique_id, 'selected')
     }
 
     function update_perk_description(id, wep_stats) {
@@ -55,7 +58,7 @@ function add_weapon_perks(unique_id) {
                 for (let i = 0; i < length.length; i++) {
                     description = description.replace(
                         `{rang_${i}}`,
-                        range_calculator(static_item, wep_stats.stats, wep_stats.perk_list, stat[i], multi[i]).ADS_max// - item_info.range_reload.range
+                        range_calculator(static_item, wep_stats.stats, wep_stats.perk_list, stat[i], multi[i]).ADS_min// - item_info.range_reload.range
                     )
                 }
             }
@@ -68,7 +71,7 @@ function add_weapon_perks(unique_id) {
                 for (let i = 0; i < length.length; i++) {
                     description = description.replace(
                         `{relo_${i}}`,
-                        reload_calculator(static_item, wep_stats.stats, wep_stats.perk_list, stat[i], multi[i]).default
+                        reload_calculator(static_item, wep_stats.stats, wep_stats.all_perk_ids, stat[i], multi[i]).default
                     )
                 }
             }
@@ -77,9 +80,9 @@ function add_weapon_perks(unique_id) {
                 let stat = perk.stats.handling.conditional.stat
                 let multi = perk.stats.handling.conditional.multiplier
                 let length = (stat.length > multi.length) ? stat : multi
-    
+
                 for (let i = 0; i < length.length; i++) {
-                    let stats = reload_calculator(static_item, wep_stats.stats, wep_stats.perks, stat[i], multi[i])
+                    let stats = reload_calculator(static_item, wep_stats.stats, wep_stats.all_perk_ids, stat[i], multi[i])
                     description = description.replace(
                         `{hand_s_${i}}`,
                         stats.stow
@@ -91,8 +94,20 @@ function add_weapon_perks(unique_id) {
                 }
             }
         }
-        if(perk.investment) {
-            get_item_stats(static_item, wep_stats.perk_list)
+        if(Object.keys(perk.investment).length) {
+            let perk_stats = new Wep_stats(unique_id)
+            let test = perk_stats.create_perk_list('selected').calculate_stats('normal')
+
+            let stats = perk_stats.remove_perks([id]).calculate_stats().subtract_stats().subtracted_stats
+            Object.keys(perk.investment).forEach(id => {
+                if(!stats[id]) return
+
+                description = description.replace(
+                    `{stat-id=${id}}`,
+                    parseFloat(stats[id].toFixed(1))
+                )
+            })
+
         }
         return JSON.parse(description)
     }
