@@ -248,15 +248,24 @@ function range_calculator(static_item, stats, perks, extra_stat, extra_multiplie
     let multiplier = 1
 
     //--- step 3 update base values
-    perks.forEach(perk => {
-        let perk_info = clarity_manifest[perk]?.stats.range
-        if(!perk_info) return
+    perks.forEach(([type, perk]) => {
+        let range_info = clarity_manifest[perk]?.stats.range
+        if(range_info) {
+            // perk stat
+            stat_range += (range_info.always_active?.stat) ? range_info.always_active.stat : 0
 
-        // perk stat
-        stat_range += (perk_info.always_active?.stat) ? perk_info.always_active.stat : 0
+            // static multiplier
+            multiplier *= (range_info.always_active?.multiplier) ? range_info.always_active.multiplier : 1
+        }
 
-        // static multiplier
-        multiplier *= (perk_info.always_active?.multiplier) ? perk_info.always_active.multiplier : 1
+        let zoom_info = clarity_manifest[perk]?.stats.zoom
+        if(zoom_info) {
+            // perk stat
+            stat_zoom += (zoom_info.always_active?.stat) ? zoom_info.always_active.stat : 0
+
+            // static multiplier
+            multiplier *= (zoom_info.always_active?.multiplier) ? zoom_info.always_active.multiplier : 1
+        }
     })
     //--- step 4 handle conditional perk stats
     // extra_stat = extra_stat || []

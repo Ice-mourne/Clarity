@@ -150,7 +150,7 @@ function get_class_names(start_flow_handler) {
         } catch {
             update_clarity_settings(
                 'class_names.locations.item_info.description',
-                `.${[...document.querySelector('.item-details.sockets > :nth-child(1)').classList].join('.')}`
+                `.${[...document.querySelector('.item-details-body > .sockets > :nth-child(1)').classList].join('.')}`
             )
         }
     }

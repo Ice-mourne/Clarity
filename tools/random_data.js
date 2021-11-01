@@ -53,6 +53,17 @@ const clarity_random_data = {
         'range': 'In-Game Range',
         'reload': 'In-Game Reload'
     },
+    stat_order_by_wep_type: {
+        sword: [
+            2837207746, // Swing Speed
+            4043523819, // Impact
+            2762071195, // Guard Efficiency
+            209426660,  // Guard Resistance
+            3022301683, // Charge Rate
+            3736848092, // Guard Endurance
+            925767036,  // Ammo Capacity
+        ],
+    },
     ammo: {
         1: 'primary',
         2: 'special',

@@ -77,7 +77,7 @@ function start() {
 
     ;( () => { //--- after auth complete look if database need refreshing
         window.addEventListener('auth_complete', () => {
-            document.querySelector(refresh_button).addEventListener('click', () => {
+            document.querySelector(refresh_button).parentElement.addEventListener('click', () => {
                 window.dispatchEvent(new Event('update_item_info'))
             })
             window.addEventListener('page_visible', () => {

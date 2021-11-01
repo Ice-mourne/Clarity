@@ -65,12 +65,12 @@
         function removeEmptyValues(obj) {
             for (var propName in obj) {
                 if ((!obj[propName] || obj[propName].length === 0) && obj[propName] != 0) {
-                    delete obj[propName];
+                    delete obj[propName]
                 } else if (typeof obj[propName] === 'object') {
-                    removeEmptyValues(obj[propName]);
+                    removeEmptyValues(obj[propName])
                 }
             }
-            return obj;
+            return obj
         }
         clarity_manifest = removeEmptyValues(dirty_clarity_manifest)
 
@@ -134,7 +134,11 @@
         }) || []
 
         let stat_ids = clarity_random_data.stat_order.map(stat_order => {
-            if(item.investmentStats?.find(stat => stat.statTypeHash == stat_order[0] && stat.value != 0)) return stat_order[0]
+            if(item.investmentStats?.find(stat =>
+                stat.statTypeHash == stat_order[0]
+                &&
+                stat.value != 0
+            )) return stat_order[0]
         })
         .filter(x => x)
 
@@ -338,6 +342,7 @@
                 'reload': community_data[item.hash]?.stats?.reload,
                 'range': community_data[item.hash]?.stats?.range,
                 'handling': community_data[item.hash]?.stats?.handling,
+                'zoom': community_data[item.hash]?.stats?.zoom,
             }
         }
     }
