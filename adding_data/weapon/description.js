@@ -1,6 +1,9 @@
 window.addEventListener('weapon_pressed', e => add_weapon_perks(e.detail)) // add_weapon_perks(e.detail)
 function add_weapon_perks(unique_id) {
     console.time('speed test 9000')
+    let perk_location = local_storage('clarity_settings').class_names.locations.item_info.perks
+    document.querySelector(perk_location).style.cssText = 'pointer-events: none'
+
     add_stats(unique_id, 'active')
 
     const unique_item = clarity_user_data[unique_id]
@@ -154,8 +157,6 @@ function add_weapon_perks(unique_id) {
         }
     ))
     let new_perks = fragment_creator(all_perks)
-
-    let perk_location = local_storage('clarity_settings').class_names.locations.item_info.perks
 
     let clarity_main_box = document.createElement('div')
     clarity_main_box.className = 'Clarity_weapon_perks_box'
