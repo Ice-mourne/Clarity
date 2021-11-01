@@ -1,138 +1,138 @@
-window.addEventListener('weapon_pressed', e => info_about_weapon(e.detail))
-function info_about_weapon(unique_id) {
-    let parser_start = Date.now()
+// window.addEventListener('weapon_pressed', e => info_about_weapon(e.detail))
+// function info_about_weapon(unique_id) {
+//     let parser_start = Date.now()
 
-    const unique_item = clarity_user_data[unique_id]
-    const static_item = clarity_manifest[unique_item.id]
+//     const unique_item = clarity_user_data[unique_id]
+//     const static_item = clarity_manifest[unique_item.id]
 
-    const perks = unique_item.sockets.perks.active // todo for testing this is fine but this has to be upgraded to support selected perks // also include frame mods ect
+//     const perks = unique_item.sockets.perks.active // todo for testing this is fine but this has to be upgraded to support selected perks // also include frame mods ect
 
-    // const stats = get_item_stats()
+//     // const stats = get_item_stats()
 
-    console.log(unique_item); //----------------------------------------------------------------
-    console.log(static_item); //----------------------------------------------------------------
-
-
-
-    function reload_calculator(extra_stat, extra_multiplier) {
-        //--- step 1 check if reload can be calculated
-        const formula = static_item.formula_numbers?.reload
-        if (!formula) return
-
-        //--- step 2 define base stats
-        let stat = stats[4188031367] // id reload speed
-        let multiplier = 1
-        let mag_multiplier = (formula.mag_multiplier) ? stats[3871231066] : 1 // id magazine
-        let empty_multiplier = 1
-
-        //--- step 3 update base values
-        let dual_loader = false
-        perks.forEach(perk => {
-            let perk_info = clarity_manifest[perk].stats.reload
-            if(!perk_info) return
-
-            // perk stat
-            stat += (perk_info.always_active?.stat) ? perk_info.always_active.stat : 0
-
-            // static multiplier
-            multiplier *= (perk_info.always_active?.multiplier) ? perk_info.always_active.multiplier : 1
-
-            // empty multiplier
-            if(clarity_manifest[perk].stats.activation_condition == 'empty_magazine') {
-                empty_multiplier *= perk_info.conditional[0] // [0] you can't have magazine more empty then empty and because of that it will be only one number
-            }
-
-            // dual loader
-            if(perk == 25606670) dual_loader = true
-        })
-        if(dual_loader) mag_multiplier = Math.ceil(mag_multiplier / 2 )
-
-        //--- step 4 handle conditional perk stats
-        extra_stat = extra_stat || []
-        extra_multiplier = extra_multiplier || []
-
-        stat = extra_stat.reduce((acc, val) => acc + val, stat)
-        stat = Math.min(Math.max(stat, 10), 100)
-
-        multiplier = extra_multiplier.reduce((acc, val) => acc * val, multiplier)
-
-        //--- step 5 use data to calculate reload
-        let normal = ((formula.a * stat * stat + formula.b * stat + formula.c) * mag_multiplier / multiplier).toFixed(2)
-        return {
-            'default': normal * 1,
-            'empty'  : normal * empty_multiplier,
-        }
-    }
-    // console.log(reload_calculator()) //----------------------------------------------------------------
-
-    function range_calculator(extra_stat, extra_multiplier) {
-        //--- step 1 check if reload can be calculated
-        const formula = static_item.formula_numbers?.range
-        if (!formula) return
-
-        //--- step 2 define base stats
-        let stat_range = stats[1240592695] // id range
-        let stat_zoom  = stats[3555269338] // id zoom
-        let multiplier = 1
-
-        //--- step 3 update base values
-        perks.forEach(perk => {
-            let perk_info = clarity_manifest[perk].stats.range
-            if(!perk_info) return
-
-            // perk stat
-            stat_range += (perk_info.always_active?.stat) ? perk_info.always_active.stat : 0
-
-            // static multiplier
-            multiplier *= (perk_info.always_active?.multiplier) ? perk_info.always_active.multiplier : 1
-        })
-        //--- step 4 handle conditional perk stats
-        extra_stat = extra_stat || []
-        extra_multiplier = extra_multiplier || []
-
-        stat_range = extra_stat.reduce((acc, val) => acc + val, stat_range)
-        stat_range = Math.min(Math.max(stat_range, 10), 100)
-
-        multiplier = extra_multiplier.reduce((acc, val) => acc * val, multiplier)
-
-        //--- step 5 use data to calculate range
-        let new_zoom = (stat_zoom - formula.zrm_tier) / 10 + formula.zrm
-        let HIP_min = stat_range * formula.vpp + formula.base_min
-        let HIP_max = (formula.scale) ? stat_range * formula.vpp + formula.base_max : formula.base_max
-        return {
-            'ADS_min': HIP_min * new_zoom * multiplier,
-            'ADS_max': HIP_max * new_zoom * multiplier,
-            'HIP_min': HIP_min * 1,
-            'HIP_max': HIP_max * 1,
-        }
-    }
-    // console.log(range_calculator()) //----------------------------------------------------------------
-
-    function handling_calculator(stat, formula, multiplier) {
-        formula = formula.handling
-        stat = Math.min(Math.max(stat, 10), 100)
-        multiplier = (multiplier) ? multiplier : 1
-
-        let stow_numbers  = formula.handling.stow
-        let ready_numbers = formula.handling.ready
-        return {
-            "stow":  (stow_numbers.vpp  * stat + stow_numbers.number)  * multiplier,
-            "ready": (ready_numbers.vpp * stat + ready_numbers.number) * multiplier,
-        }
-    }
-
-
-    // let weapon_stats = {
-    //     base: static_item.stats.base,
-    //     mod: get_item_stats(),
-    //     masterwork: get_item_stats(),
-    //     reduction: get_item_stats()
-    // }
+//     console.log(unique_item); //----------------------------------------------------------------
+//     console.log(static_item); //----------------------------------------------------------------
 
 
 
-    console.log(`%c Info added in: ${Date.now() - parser_start} ms`, 'border: 3px solid yellow; padding: 2px')
-}
+//     function reload_calculator(extra_stat, extra_multiplier) {
+//         //--- step 1 check if reload can be calculated
+//         const formula = static_item.formula_numbers?.reload
+//         if (!formula) return
+
+//         //--- step 2 define base stats
+//         let stat = stats[4188031367] // id reload speed
+//         let multiplier = 1
+//         let mag_multiplier = (formula.mag_multiplier) ? stats[3871231066] : 1 // id magazine
+//         let empty_multiplier = 1
+
+//         //--- step 3 update base values
+//         let dual_loader = false
+//         perks.forEach(perk => {
+//             let perk_info = clarity_manifest[perk].stats.reload
+//             if(!perk_info) return
+
+//             // perk stat
+//             stat += (perk_info.always_active?.stat) ? perk_info.always_active.stat : 0
+
+//             // static multiplier
+//             multiplier *= (perk_info.always_active?.multiplier) ? perk_info.always_active.multiplier : 1
+
+//             // empty multiplier
+//             if(clarity_manifest[perk].stats.activation_condition == 'empty_magazine') {
+//                 empty_multiplier *= perk_info.conditional[0] // [0] you can't have magazine more empty then empty and because of that it will be only one number
+//             }
+
+//             // dual loader
+//             if(perk == 25606670) dual_loader = true
+//         })
+//         if(dual_loader) mag_multiplier = Math.ceil(mag_multiplier / 2 )
+
+//         //--- step 4 handle conditional perk stats
+//         extra_stat = extra_stat || []
+//         extra_multiplier = extra_multiplier || []
+
+//         stat = extra_stat.reduce((acc, val) => acc + val, stat)
+//         stat = Math.min(Math.max(stat, 10), 100)
+
+//         multiplier = extra_multiplier.reduce((acc, val) => acc * val, multiplier)
+
+//         //--- step 5 use data to calculate reload
+//         let normal = ((formula.a * stat * stat + formula.b * stat + formula.c) * mag_multiplier / multiplier).toFixed(2)
+//         return {
+//             'default': normal * 1,
+//             'empty'  : normal * empty_multiplier,
+//         }
+//     }
+//     // console.log(reload_calculator()) //----------------------------------------------------------------
+
+//     function range_calculator(extra_stat, extra_multiplier) {
+//         //--- step 1 check if reload can be calculated
+//         const formula = static_item.formula_numbers?.range
+//         if (!formula) return
+
+//         //--- step 2 define base stats
+//         let stat_range = stats[1240592695] // id range
+//         let stat_zoom  = stats[3555269338] // id zoom
+//         let multiplier = 1
+
+//         //--- step 3 update base values
+//         perks.forEach(perk => {
+//             let perk_info = clarity_manifest[perk].stats.range
+//             if(!perk_info) return
+
+//             // perk stat
+//             stat_range += (perk_info.always_active?.stat) ? perk_info.always_active.stat : 0
+
+//             // static multiplier
+//             multiplier *= (perk_info.always_active?.multiplier) ? perk_info.always_active.multiplier : 1
+//         })
+//         //--- step 4 handle conditional perk stats
+//         extra_stat = extra_stat || []
+//         extra_multiplier = extra_multiplier || []
+
+//         stat_range = extra_stat.reduce((acc, val) => acc + val, stat_range)
+//         stat_range = Math.min(Math.max(stat_range, 10), 100)
+
+//         multiplier = extra_multiplier.reduce((acc, val) => acc * val, multiplier)
+
+//         //--- step 5 use data to calculate range
+//         let new_zoom = (stat_zoom - formula.zrm_tier) / 10 + formula.zrm
+//         let HIP_min = stat_range * formula.vpp + formula.base_min
+//         let HIP_max = (formula.scale) ? stat_range * formula.vpp + formula.base_max : formula.base_max
+//         return {
+//             'ADS_min': HIP_min * new_zoom * multiplier,
+//             'ADS_max': HIP_max * new_zoom * multiplier,
+//             'HIP_min': HIP_min * 1,
+//             'HIP_max': HIP_max * 1,
+//         }
+//     }
+//     // console.log(range_calculator()) //----------------------------------------------------------------
+
+//     function handling_calculator(stat, formula, multiplier) {
+//         formula = formula.handling
+//         stat = Math.min(Math.max(stat, 10), 100)
+//         multiplier = (multiplier) ? multiplier : 1
+
+//         let stow_numbers  = formula.handling.stow
+//         let ready_numbers = formula.handling.ready
+//         return {
+//             "stow":  (stow_numbers.vpp  * stat + stow_numbers.number)  * multiplier,
+//             "ready": (ready_numbers.vpp * stat + ready_numbers.number) * multiplier,
+//         }
+//     }
+
+
+//     // let weapon_stats = {
+//     //     base: static_item.stats.base,
+//     //     mod: get_item_stats(),
+//     //     masterwork: get_item_stats(),
+//     //     reduction: get_item_stats()
+//     // }
+
+
+
+//     console.log(`%c Info added in: ${Date.now() - parser_start} ms`, 'border: 3px solid yellow; padding: 2px')
+// }
 
 function get_item_stats(static_item, perks) {
     let inv = {...static_item.stats.investment}
@@ -290,7 +290,7 @@ function range_calculator(static_item, stats, perks, extra_stat, extra_multiplie
 
 function handling_calculator(static_item, stats, extra_stat, extra_multiplier) {
     //--- step 1 check if handling can be calculated
-    const formula = static_item.formula_numbers?.range
+    const formula = static_item.formula_numbers?.handling
     if (!formula) return
 
     //--- step 2 define base stats
@@ -304,10 +304,10 @@ function handling_calculator(static_item, stats, extra_stat, extra_multiplier) {
     multiplier *= extra_multiplier || 1
 
     //--- step 4 use data to calculate handling
-    let stow_numbers  = formula.handling.stow
-    let ready_numbers = formula.handling.ready
+    let stow_numbers  = formula.stow
+    let ready_numbers = formula.ready
     return {
-        "stow":  ((stow_numbers.vpp  * stat + stow_numbers.number)  * multiplier).toFixed(2) * 1,
-        "ready": ((ready_numbers.vpp * stat + ready_numbers.number) * multiplier).toFixed(2) * 1,
+        "stow":  ((stow_numbers.vpp  * stat + stow_numbers.number)  * multiplier / 60).toFixed(2) * 1,
+        "ready": ((ready_numbers.vpp * stat + ready_numbers.number) * multiplier / 60).toFixed(2) * 1,
     }
 }

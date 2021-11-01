@@ -103,6 +103,9 @@ class Wep_stats {
             ),
             reload: parseFloat(
                 reload_calculator(this.static_item, this.stats, this.all_perk_ids)?.default.toFixed(1)
+            ),
+            handling: parseFloat(
+                handling_calculator(this.static_item, this.stats)
             )
         }
         return this.range_reload

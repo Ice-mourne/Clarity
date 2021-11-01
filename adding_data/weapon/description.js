@@ -82,7 +82,7 @@ function add_weapon_perks(unique_id) {
                 let length = (stat.length > multi.length) ? stat : multi
 
                 for (let i = 0; i < length.length; i++) {
-                    let stats = reload_calculator(static_item, wep_stats.stats, wep_stats.all_perk_ids, stat[i], multi[i])
+                    let stats = handling_calculator(static_item, wep_stats.stats, stat[i], multi[i])
                     description = description.replace(
                         `{hand_s_${i}}`,
                         stats.stow

@@ -101,11 +101,11 @@
         let custom_description = description_array?.map(line => {
             if(!line.table) { // if normal line
                 return {
-                    node_type: 'div',
+                    ele_type: 'div',
                     className: line.lineClass,
                     append: line.lineText?.map(stuff => {
                         return {
-                            node_type: 'span',
+                            ele_type: 'span',
                             className: stuff.textClass,
                             textContent: stuff.text
                         }
@@ -114,15 +114,15 @@
             }
             if(line.table) { // if table
                 return {
-                    node_type: 'div',
+                    ele_type: 'div',
                     className: 'CDB-table',
                     append: line.table.map(line_in_table => {
                         return {
-                            node_type: 'div',
+                            ele_type: 'div',
                             className: line_in_table.lineClass,
                             append: line_in_table.lineText.map(stuff => {
                                 return {
-                                    node_type: 'div',
+                                    ele_type: 'div',
                                     className: stuff.textClass,
                                     textContent: stuff.text
                                 }
@@ -144,15 +144,15 @@
 
         let stats_description = stat_ids.map(stat_id => {
             return {
-                node_type: 'div',
+                ele_type: 'div',
                 className: 'Clarity_stat',
                 append: [
                     {
-                        node_type: 'div',
+                        ele_type: 'div',
                         textContent: `{stat-id=${stat_id}} `
                     },
                     {
-                        node_type: 'div',
+                        ele_type: 'div',
                         textContent: clarity_random_data.stat_names[stat_id]
                     }
                 ]
@@ -301,22 +301,22 @@
                 return covert_description(community_description, item)
             } else {
                 return [{
-                    node_type: 'div',
+                    ele_type: 'div',
                     textContent: item.displayProperties.description
                 }]
             }
             //else if(item.investmentStats.length != 0) {
             //     return item.investmentStats.map(stat => {
             //         return {
-            //             node_type: 'div',
+            //             ele_type: 'div',
             //             className: 'Clarity_stat',
             //             append: [
             //                 {
-            //                     node_type: 'div',
+            //                     ele_type: 'div',
             //                     textContent: `{stat-id=${stat.statTypeHash}} `
             //                 },
             //                 {
-            //                     node_type: 'div',
+            //                     ele_type: 'div',
             //                     textContent: clarity_random_data.stat_names[stat.statTypeHash]
             //                 }
             //             ]
