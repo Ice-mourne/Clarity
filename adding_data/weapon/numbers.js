@@ -139,7 +139,7 @@ function get_item_stats(static_item, perks) {
     perks.forEach(perk => { // go over perks in list and add stats from each perk to inv
         if(perk) Object.entries(clarity_manifest[perk]?.investment || {})
         .forEach(([stat_id, stat_val]) => {
-            if(stat_val.conditional) return
+            if(!(static_item.adept && clarity_manifest[perk].type == 'masterwork') && stat_val.conditional) return
             inv[stat_id] = inv[stat_id] + stat_val.value || stat_val.value // try adding numbers if NaN add value
         })
     })
@@ -180,9 +180,9 @@ function get_item_stats(static_item, perks) {
         }
     })
 
-    let stat_names = clarity_random_data.stat_names
-    let named_stats = {}
-    Object.entries(stats).forEach(([id, name]) => named_stats[stat_names[id]] = name)
+    // let stat_names = clarity_random_data.stat_names
+    // let named_stats = {}
+    // Object.entries(stats).forEach(([id, name]) => named_stats[stat_names[id]] = name)
     // console.log(named_stats)
     return stats
 }

@@ -101,5 +101,11 @@ const clarity_random_data = {
         1935470627: 'Power',
         1885944937: 'No name',
         3291498656: 'No name'
+    },
+    socket_category_names: {
+        3956125808: 'intrinsic',
+        4241085061: 'perks',
+        2685412949: 'mods',
+        2048875504: 'cosmetics'
     }
 }

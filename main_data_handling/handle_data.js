@@ -261,6 +261,7 @@
             'slot': manifest.item_category[item.itemCategoryHashes[0]].shortTitle, // kinetic, energy, power...
             'damage_type': manifest.damage_type[item.defaultDamageTypeHash].displayProperties.name, // arch, solar, void...
             'item_type': 'weapon',
+            'adept': (item.displayProperties.name.match(/ \(Timelost\)| \(Adept\)/)) ? true : false,
             'tier': item.inventory.tierTypeName, // legendary, exotic...
             'formula_numbers': formula_numbers(),
             'sockets': {
@@ -335,7 +336,7 @@
         return {
             'name': item.displayProperties.name,
             'icon': item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
-            'item_type': 'mod_perk',
+            'item_type': (item.displayProperties.name.match(/^Tier [1-9] Weapon$|^Masterwork$/)) ? 'masterwork' : 'mod_perk',
             'description': description(),
             'investment': investment(),
             'stats': {

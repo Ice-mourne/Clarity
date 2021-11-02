@@ -46,7 +46,10 @@
             let unique_id
             function get_unique_id(target, x) {
                 if (!target) return
-                if (target.classList.contains('item') && target.id) unique_id = target.id
+                if (target.classList.contains('item') && target.id) {
+                    if(!target.parentElement.classList.contains('item-drag-container')) return // this will prevent adding descriptions to wrong place
+                    unique_id = target.id
+                }
                 if (x < 3) get_unique_id(target.parentElement, x + 1)
             }
             get_unique_id(event.target, 0)

@@ -2,6 +2,7 @@ window.addEventListener('weapon_pressed', e => add_weapon_perks(e.detail)) // ad
 function add_weapon_perks(unique_id) {
     console.time('speed test 9000')
     let perk_location = local_storage('clarity_settings').class_names.locations.item_info.perks
+
     document.querySelector(perk_location).style.cssText = 'display: none;'
 
     add_stats(unique_id, 'active')
