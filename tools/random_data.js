@@ -54,7 +54,7 @@ const clarity_random_data = {
         'reload': 'In-Game Reload'
     },
     stat_order_by_wep_type: {
-        sword: [
+        Sword: [
             2837207746, // Swing Speed
             4043523819, // Impact
             2762071195, // Guard Efficiency

@@ -2,7 +2,7 @@ window.addEventListener('weapon_pressed', e => add_weapon_perks(e.detail)) // ad
 function add_weapon_perks(unique_id) {
     console.time('speed test 9000')
     let perk_location = local_storage('clarity_settings').class_names.locations.item_info.perks
-    document.querySelector(perk_location).style.cssText = 'pointer-events: none'
+    document.querySelector(perk_location).style.cssText = 'display: none;'
 
     add_stats(unique_id, 'active')
 
@@ -99,13 +99,21 @@ function add_weapon_perks(unique_id) {
         }
         if(Object.keys(perk.investment).length) {
             let perk_stats = new Wep_stats(unique_id)
-            let test = perk_stats.create_perk_list('selected').calculate_stats('normal')
+            perk_stats.create_perk_list('selected').calculate_stats('normal')
 
             let stats = perk_stats.remove_perks([id]).calculate_stats().subtract_stats().subtracted_stats
             Object.keys(perk.investment).forEach(id => {
-                if(!stats[id]) {
-                    let reg_exp = new RegExp(`{"node_type":"div","className":"Clarity_stat","append":\\[{"node_type":"div","textContent":"{stat\\-id=${id}.*?]},`)
-                    description = description.replace(reg_exp, '').replace(/\[,{/, '[{').replace(/},]/, '}]')
+                if(
+                    (
+                        clarity_random_data.stat_order_by_wep_type[static_item.type]
+                        &&
+                        !clarity_random_data.stat_order_by_wep_type[static_item.type].find(list => list == id)
+                    )
+                    ||
+                    !stats[id]
+                ) {
+                    let reg_exp = new RegExp(`{"ele_type":"div","className":"Clarity_stat","append":\\[{"ele_type":"div","textContent":"{stat\\-id=${id}.*?]}`)
+                    description = description.replace(reg_exp, '').replace(/\[,{/g, '[{').replace(/},]/g, '}]').replace(/,,/g, ',')
                     return
                 }
 

@@ -137,7 +137,7 @@
 function get_item_stats(static_item, perks) {
     let inv = {...static_item.stats.investment}
     perks.forEach(perk => { // go over perks in list and add stats from each perk to inv
-        if(perk) Object.entries(clarity_manifest[perk].investment)
+        if(perk) Object.entries(clarity_manifest[perk]?.investment || {})
         .forEach(([stat_id, stat_val]) => {
             if(stat_val.conditional) return
             inv[stat_id] = inv[stat_id] + stat_val.value || stat_val.value // try adding numbers if NaN add value
