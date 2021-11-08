@@ -54,9 +54,12 @@ function fragment_creator(properties) {
             let {ele_type, ele_ns_type, local_img, ...clean_obj} = obj // deleting to avoid pointlessly trying to add them
 
             Object.entries(clean_obj).forEach(([property, value]) => {
-                if(property == 'event_listener') value.forEach(obj => element.addEventListener(obj.type, obj.fn))
-                if(property == 'set_attribute')  value.forEach(obj => element.setAttribute(obj.name, obj.value))
+                if(property == 'event_listener') {value.forEach(obj => element.addEventListener(obj.type, obj.fn)); return}
+                if(property == 'set_attribute')  {value.forEach(obj => element.setAttribute(obj.name, obj.value)); return}
+
+                if(property == 'css_text') {element.style.cssText = value; return}
                 if(property == 'append') create_element(value, element)
+                if(property == 'append_element') element.appendChild(value)
 
                 // property is always specified internally
                 element[property] = value
@@ -130,3 +133,4 @@ function handling_calculator(stat, formula, multiplayer) {
         "ready": (ready_numbers.vpp * stat + ready_numbers.number) * multiplayer,
     }
 }
+

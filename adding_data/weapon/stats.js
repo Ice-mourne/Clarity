@@ -28,8 +28,8 @@ class Wep_stats {
             ]
         }
         if(list_type == 'selected') {
-            let selected_perks = document.querySelector('.Clarity_weapon_perks_box')
-            ?.querySelectorAll('.Clarity_active:not(.Clarity_disable), .Clarity_selected')
+            let selected_perks = document.querySelector('.weapon_perk_box_new')
+            ?.querySelectorAll('.active:not(.disable), .selected')
 
             this.all_perk_ids = [
                 ...Array.from(selected_perks)
@@ -54,7 +54,8 @@ class Wep_stats {
      */
     remove_perks(list) {
         this.perk_ids = this.all_perk_ids.filter(([type, id]) =>
-            list.find(val => val != type && val != id) // true then not in list
+            !list.some(val => val == type || val == id) // true then not in list
+            // list.find(val => val != type && val != id) // true then not in list
         )
         .map(([type, id]) => id) // remove type its no longer needed
         return this
@@ -189,8 +190,9 @@ function add_stats(unique_id, perk_list_type) {
 
     const stats = {
         perks: wep_stats.create_perk_list(perk_list_type || 'active')
-        .calculate_stats('normal')
-        .stats,
+        .remove_perks(['mod', 'masterwork'])
+        .calculate_stats()
+        .subtracted_stats,
 
         all: {
             ...wep_stats.create_perk_list(perk_list_type || 'active')
@@ -233,7 +235,7 @@ function add_stats(unique_id, perk_list_type) {
 
     )
     let stats_location = local_storage('clarity_settings').class_names.locations.item_info.stats
-    let location = document.querySelector(stats_location)?.parentElement || document.querySelector('.Clarity_weapon_stats')
+    let location = document.querySelector(stats_location)?.parentElement || document.querySelector('.weapon_stats')
     location?.replaceWith(weapon_stats)
 
     return wep_stats

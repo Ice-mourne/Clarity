@@ -336,7 +336,7 @@
         return {
             'name': item.displayProperties.name,
             'icon': item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
-            'item_type': (item.displayProperties.name.match(/^Tier [1-9] Weapon$|^Masterwork$/)) ? 'masterwork' : 'mod_perk',
+            'item_type': (item.displayProperties.name.match(/^Tier [1-9] Weapon$|^Masterwork$| Catalyst$/)) ? 'masterwork' : 'mod_perk',
             'description': description(),
             'investment': investment(),
             'stats': {
@@ -377,7 +377,7 @@ function user_data() {
             if(!unique_id) continue // check if it has instanced (unique) id
             let item = manifest.inventory_item[all_items[i].itemHash]
             if (item.itemType == 3) {
-                clarity_user_data[unique_id] = get_unique_items(unique_id, user_data, manifest, all_items[i].itemHash, 'weapon')
+                clarity_user_data[unique_id] = get_unique_items(unique_id, user_data, manifest, all_items[i].itemHash, 'weapon'/*, all_items[i].state*/)
             }
             if (item.itemType == 2  && item.inventory.tierTypeName == 'Exotic') {
                 clarity_user_data[unique_id] = get_unique_items(unique_id, user_data, manifest, all_items[i].itemHash, 'armor')
@@ -385,7 +385,7 @@ function user_data() {
         }
         console.log(`%c User data parsed in: ${Date.now() - parser_start} ms`, 'border: 3px solid green; padding: 2px')
     })
-    function get_unique_items(unique_id, user_data, manifest, id, type) {
+    function get_unique_items(unique_id, user_data, manifest, id, type, state) {
         function check_type(id) {
             let perk_types = clarity_random_data.perk_types
             if (perk_types[manifest.inventory_item[id].plug.plugCategoryHash]) return true
@@ -444,6 +444,7 @@ function user_data() {
             'name': clarity_manifest[id].name,
             'id': id,
             'item_type': type,
+            // 'exotic_masterwork': (state == 5 || state == 4) ? true : false,
             'sockets': {
                 'perks': {
                     'active': sockets.perks.active(),

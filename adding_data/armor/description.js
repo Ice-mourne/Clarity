@@ -1,5 +1,8 @@
 window.addEventListener('armor_pressed', e => add_armor_perks(e.detail))
 function add_armor_perks(unique_id) {
+    if(document.querySelector('.sheet-container > .sheet-header')) return
+
+
     const unique_item = clarity_user_data[unique_id]
     // const static_item = clarity_manifest[unique_item.id]
 

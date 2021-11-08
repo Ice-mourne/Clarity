@@ -27,45 +27,45 @@
 // called then header is loaded
 
 
-;( () => { //--- looks looks for items like weapons and armor
-    let inventory_observer = new MutationObserver((_, quit) => {
-        if (document.getElementsByClassName('item')[0]) {
-            window.dispatchEvent(new Event('inventory_ready'))
-            quit.disconnect()
-        }
-    })
-    inventory_observer.observe(document, {
-        childList: true,
-        subtree: true
-    })
-}) ()
+// ;( () => { //--- looks looks for items like weapons and armor
+//     let inventory_observer = new MutationObserver((_, quit) => {
+//         if (document.getElementsByClassName('item')[0]) {
+//             window.dispatchEvent(new Event('inventory_ready'))
+//             quit.disconnect()
+//         }
+//     })
+//     inventory_observer.observe(document, {
+//         childList: true,
+//         subtree: true
+//     })
+// }) ()
 
-;( () => { //--- looks for item clicks
-    window.addEventListener('inventory_ready', () => {
-        document.getElementById('app').addEventListener('click', event => {
-            let unique_id
-            function get_unique_id(target, x) {
-                if (!target) return
-                if (target.classList.contains('item') && target.id) {
-                    if(!target.parentElement.classList.contains('item-drag-container')) return // this will prevent adding descriptions to wrong place
-                    unique_id = target.id
-                }
-                if (x < 3) get_unique_id(target.parentElement, x + 1)
-            }
-            get_unique_id(event.target, 0)
+// ;( () => { //--- looks for item clicks
+//     window.addEventListener('inventory_ready', () => {
+//         document.getElementById('app').addEventListener('click', event => {
+//             let unique_id
+//             function get_unique_id(target, x) {
+//                 if (!target) return
+//                 if (target.classList.contains('item') && target.id) {
+//                     if(!target.parentElement.classList.contains('item-drag-container')) return // this will prevent adding descriptions to wrong place
+//                     unique_id = target.id
+//                 }
+//                 if (x < 3) get_unique_id(target.parentElement, x + 1)
+//             }
+//             get_unique_id(event.target, 0)
 
-            let item_type = clarity_user_data[unique_id]?.item_type
-            switch (item_type) {
-                case 'weapon':
-                    window.dispatchEvent(new CustomEvent('weapon_pressed', {detail: unique_id}))
-                    break
-                case 'armor':
-                    window.dispatchEvent(new CustomEvent('armor_pressed', {detail: unique_id}))
-                    break
-            }
-        })
-    }, {once: true})
-}) ()
+//             let item_type = clarity_user_data[unique_id]?.item_type
+//             switch (item_type) {
+//                 case 'weapon':
+//                     window.dispatchEvent(new CustomEvent('weapon_pressed', {detail: unique_id}))
+//                     break
+//                 case 'armor':
+//                     window.dispatchEvent(new CustomEvent('armor_pressed', {detail: unique_id}))
+//                     break
+//             }
+//         })
+//     }, {once: true})
+// }) ()
 
 ;( () => { //--- used for auth and bungie / my database data parser refresh
     document.addEventListener('visibilitychange', () => {
@@ -108,3 +108,74 @@ function start() {
         })
     }) ()
 }
+
+
+
+
+
+
+
+(() => {
+    document.querySelector('#app').addEventListener('click', click_listener, {passive: true})
+    function click_listener(event) {
+        if(!event) return
+        const target = event.path.find(element =>
+            element.id == 'app' ||
+            element.className == 'item' && element.id // weapon or armor
+        )
+        if(target.id == 'app') return // this is just to stop looking then #app was reached
+
+        async function check_element(dim_selector) {
+            while (document.querySelector(dim_selector) == undefined) {
+                await new Promise(resolve => requestAnimationFrame(resolve))
+            }
+            return
+        }
+        check_element('.item-popup .item-details')
+        .then(() => {
+            let item_type = clarity_user_data[target.id]?.item_type
+            switch (item_type) {
+                case 'weapon':
+                    window.dispatchEvent(new CustomEvent('weapon_pressed', {detail: target.id}))
+                    break
+                case 'armor':
+                    window.dispatchEvent(new CustomEvent('armor_pressed', {detail: target.id}))
+                    break
+            }
+        })
+    }
+
+    document.querySelector('#app').addEventListener('mouseover', mouse_listener, {passive: true})
+    function mouse_listener(event) {
+        if(!event) return
+        // const target = event.path.find(element =>
+        //     element.id == 'app' ||
+        //     element.className == 'icon_container' && element.parentElement.attributes.perk_id // weapon or armor
+        // )
+        // console.log(event.target)
+
+        if(event.target.parentElement.attributes.perk_id) {
+
+            const target = document.querySelector('#app')
+            window.dispatchEvent(new CustomEvent('perk_hover'), {detail: target})
+            return
+        }
+        // if(target.id == 'app') {
+            window.dispatchEvent(new CustomEvent('mouse_out'))
+        //     return
+        // }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+}) ()

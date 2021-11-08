@@ -1,10 +1,10 @@
-.Clarity_weapon_perks_box {
+.weapon_perk_box_new {
   display: flex;
   flex-direction: column;
   border-top: 1px solid #333333;
 }
 
-.Clarity_weapon_perks_box .Clarity_perk_list {
+.weapon_perk_box_new .perk_list {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -13,18 +13,18 @@
   padding: 6px 10px;
 }
 
-.Clarity_weapon_perks_box .Clarity_perk_list :nth-last-child(1) {
+.weapon_perk_box_new .perk_list :nth-last-child(1) {
   margin-right: 0px;
 }
 
-.Clarity_weapon_perks_box .Clarity_perk {
+.weapon_perk_box_new .perk {
   display: flex;
   flex-direction: row;
   cursor: pointer;
   margin-right: 1em;
 }
 
-.Clarity_weapon_perks_box .Clarity_icon_container {
+.weapon_perk_box_new .icon_container {
   width: calc(24 / 50 * var(--item-size));
   height: calc(24 / 50 * var(--item-size));
   border: 1px solid white;
@@ -33,58 +33,76 @@
   padding: 1px;
 }
 
-.Clarity_weapon_perks_box .Clarity_icon_container img {
+.weapon_perk_box_new .icon_container img {
   height: 100%;
   width: 100%;
 }
 
-.Clarity_weapon_perks_box .Clarity_perk_name {
+.weapon_perk_box_new .perk_name {
   align-self: center;
   margin-left: 5px;
   display: none;
 }
 
-.Clarity_weapon_perks_box .Clarity_selected {
+.weapon_perk_box_new .selected {
   flex: 1;
 }
 
-.Clarity_weapon_perks_box .Clarity_selected .Clarity_icon_container {
+.weapon_perk_box_new .selected .icon_container {
   background-color: #e9a735;
 }
 
-.Clarity_weapon_perks_box .Clarity_selected .Clarity_perk_name {
+.weapon_perk_box_new .selected .perk_name {
   display: block;
 }
 
-.Clarity_weapon_perks_box .Clarity_active {
+.weapon_perk_box_new .active {
   flex: 1;
 }
 
-.Clarity_weapon_perks_box .Clarity_active .Clarity_icon_container {
+.weapon_perk_box_new .active .icon_container {
   background-color: #4a88ba;
 }
 
-.Clarity_weapon_perks_box .Clarity_active .Clarity_perk_name {
+.weapon_perk_box_new .active .perk_name {
   display: block;
 }
 
-.Clarity_weapon_perks_box .Clarity_disable {
+.weapon_perk_box_new .disable {
   flex: none;
 }
 
-.Clarity_weapon_perks_box .Clarity_disable .Clarity_perk_name {
+.weapon_perk_box_new .disable .perk_name {
   display: none;
 }
 
-.Clarity_weapon_perks_box .Clarity_description {
+.weapon_perk_box_new .description {
   order: 999;
   width: 100%;
   margin-top: 3px;
 }
 
-.Clarity_weapon_perks_box .Clarity_description .Clarity_stat {
+.weapon_perk_box_new .description .stat {
   display: flex;
   white-space: break-spaces;
+}
+
+#hover_description {
+  position: absolute;
+  background-color: #262626;
+  z-index: 69;
+  transform: translate(-50%, -100%);
+  top: 0px;
+  max-width: 300px;
+  padding: 10px;
+}
+
+#hover_description .perk_name {
+  font-size: 1.2em;
+  font-weight: bold;
+  border-bottom: 5px solid #4d4d4d;
+  padding-bottom: 3px;
+  margin-bottom: 3px;
 }
 
 .Clarity_weapon_stats {

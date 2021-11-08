@@ -1,9 +1,9 @@
-.Clarity_weapon_perks_box {
+.weapon_perk_box_new {
     display: flex;
     flex-direction: column;
     border-top: 1px solid hsl(0, 0%, 20%);
 
-    .Clarity_perk_list {
+    .perk_list {
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
@@ -12,18 +12,18 @@
         padding: 6px 10px;
     }
 
-    .Clarity_perk_list :nth-last-child(1){
+    .perk_list :nth-last-child(1){
         margin-right: 0px;
     }
 
-    .Clarity_perk {
+    .perk {
         display: flex;
         flex-direction: row;
         cursor: pointer;
         margin-right: 1em;
     }
 
-    .Clarity_icon_container {
+    .icon_container {
         width: calc(24 / 50 * var(--item-size));
         height: calc(24 / 50 * var(--item-size));
         border: 1px solid hsl(0, 0%, 100%);
@@ -37,51 +37,67 @@
         }
     }
 
-    .Clarity_perk_name {
+    .perk_name {
         align-self: center;
         margin-left: 5px;
         display: none;
     }
 
-    .Clarity_selected {
+    .selected {
         flex: 1;
 
-        .Clarity_icon_container {
+        .icon_container {
             background-color: hsl(38, 80%, 56%);
         }
 
-        .Clarity_perk_name {
+        .perk_name {
             display: block;
         }
     }
 
-    .Clarity_active {
+    .active {
         flex: 1;
 
-        .Clarity_icon_container {
+        .icon_container {
             background-color: hsl(207, 45%, 51%);
         }
 
-        .Clarity_perk_name {
+        .perk_name {
             display: block;
         }
     }
 
-    .Clarity_disable {
+    .disable {
         flex: none;
 
-        .Clarity_perk_name{
+        .perk_name{
             display: none;
         }
     }
-    .Clarity_description {
+    .description {
         order: 999;
         width: 100%;
         margin-top: 3px;
-        .Clarity_stat {
+        .stat {
             display: flex;
             white-space: break-spaces;
         }
+    }
+}
+#hover_description {
+    position: absolute;
+    background-color: hsl(0, 0%, 15%);
+    z-index: 69;
+    transform: translate(-50%, -100%);
+    top: 0px;
+    max-width: 300px;
+    padding: 10px;
+    .perk_name {
+        font-size: 1.2em;
+        font-weight: bold;
+        border-bottom: 5px solid hsl(0, 0%, 30%);
+        padding-bottom: 3px;
+        margin-bottom: 3px;
     }
 }
 
