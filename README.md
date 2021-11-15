@@ -1,22 +1,11 @@
-# Suspending all work on this project likely indefinitely (apparently indefinitely is one day)
-- Still looking for help with perks its very easy to do i am just way to picky for me perfect or nothing that is problem if someone else would do it i wouldn't care as much
-- Why? well...
-- Making descriptions for perks is way too much for me I hate doing that and it's a big part of extension without them I don't see the point in continuing
-- I have asked if anyone wants to help me with this many times but no one was willing to do it
-- If people are so lazy they can't even copy paste some text then ....
-- And they care so little why I should spend my time making this for them
-- I made this project because of 2 reasons
-1. I like programming
-2. And I wanted to help people
-- That's it I guess
-
-# DIM Better name pending
+# Clarity, A DIM Companion
 - Bringing the truth to light in their gear management.
 - Extension aimed to improve Destiny item manager.
 
 # Can i get this extension on my browser store: Yes
 ```diff
 - Extension version in browser stores are old AF better look bellow how to manually install new version
+- Update Chrome version is up to date on store page
 ```
 __Extension also works if you use desktop app for DIM installation is same just just make sure DIM app you have is using same browser (its possible DIM will use chrome even if yor default browser is firefox or something else)__
 - Chrome [Clarity, A DIM Companion](https://chrome.google.com/webstore/detail/dim-better-name-pending/mbhfgfjjllobldiodabdmaoimehdkdjc?hl=en)

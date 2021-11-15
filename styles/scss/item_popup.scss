@@ -1,0 +1,31 @@
+#weapon_popup {
+    background-color: hsl(var(--backgroundColor));
+    box-shadow: 0 -1px 24px 4px #161626;
+    width: 320px;
+    display: block;
+    // header
+    .weapon_popup_header {
+        font-size: 15px;
+        line-height: 17px;
+        letter-spacing: -0.02em;
+        padding: 10px;
+        background-color: #555; //todo remove or replace
+        color: #eee;
+        .name {
+            text-transform: uppercase;
+            font-weight: 600;
+            font-family: 'Helvetica', Arial, sans-serif;
+            font-size: 21px;
+            line-height: 24px;
+            text-decoration: none;
+        }
+        .info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4px;
+        }
+    }
+
+
+
+}

@@ -10,10 +10,11 @@
         {
             "matches": ["https://app.destinyitemmanager.com/*", "https://beta.destinyitemmanager.com/*"],
             "js": [
+                "vue/vue.js",
+
                 "tools/storage.js",
                 "tools/random.js",
                 "tools/random_data.js",
-                "tools/purify.min.js",
 
                 "main_data_handling/find_classNames.js",
                 "main_data_handling/flow_handler.js",
@@ -31,25 +32,23 @@
 
                 "adding_data/weapon/numbers.js",
                 "adding_data/weapon/menu_template.js",
-                "adding_data/weapon/worker.js"
+                "adding_data/weapon/worker.js",
+
+                "adding_data/weapon/templates.js",
+                "adding_data/weapon/weapon_popup.js"
             ],
             "css": [
-                "styles/css/clarity_menu.css",
-                "styles/css/auth.css",
-
-                "styles/css/descriptions.css",
-
-                "styles/css/weapon_perks.css",
-
-                "styles/css/weapons.css",
-                "styles/css/armor.css"
+                "styles/css/armor.min.css",
+                "styles/css/auth.min.css",
+                "styles/css/clarity_menu.min.css",
+                "styles/css/descriptions.min.css",
+                "styles/css/weapons.min.css"
             ]
         }
     ],
     "web_accessible_resources": ["/images/*"],
     "permissions": [
         "https://ice-mourne.github.io/Database-for-Clarity/Database/*",
-        "https://www.bungie.net/*",
-        "webRequest"
+        "https://www.bungie.net/*"
     ]
 }

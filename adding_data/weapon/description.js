@@ -162,7 +162,7 @@ function add_weapon_perks(unique_id) {
     const unique_item = clarity_user_data[unique_id]
     const static_item = clarity_manifest[unique_item.id]
 
-    const rolled_perks = unique_item.sockets.perks.rolled || unique_item.sockets.perks.active.map(perk => [perk])
+    const rolled_perks = unique_item.sockets.perks.rolled || static_item.sockets.perks.curated.map(list => list.map(perk => perk.id)) //|| unique_item.sockets.perks.active.map(perk => [perk])
     const active_perks = unique_item.sockets.perks.active
 
 

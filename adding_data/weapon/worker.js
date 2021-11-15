@@ -27,7 +27,7 @@
     function update_weapon_in_inventory(unique_id) {
         const unique_item = clarity_user_data[unique_id],
               static_item = clarity_manifest[unique_item.id],
-              rolled_perks = unique_item.sockets.perks.rolled || unique_item.sockets.perks.active.map(perk => [perk]),
+              rolled_perks = unique_item.sockets.perks.rolled || static_item.sockets.perks.curated.map(list => list.map(perk => perk.id)),
               active_perks = unique_item.sockets.perks.active
 
         let wep_stats = new Wep_stats(unique_id)
