@@ -1,38 +1,24 @@
-# DIM Better name pending
-- Bringing the truth to light in their gear management. 
-- Extension aimed to improve Destiny item manager.
+# Clarity, A DIM Companion
+- Clarity expands upon the capabilities of Destiny Item Manager (DIM) by providing new features and better descriptions.
 
-# Can i get this extension on my browser store: Yes
-- Extension version in stores are old AF better look bellow how to manually install new version only supports beta DIM aka blue one app DIM version orange soon 
-- Chrome [Clarity, A DIM Companion](https://chrome.google.com/webstore/detail/dim-better-name-pending/mbhfgfjjllobldiodabdmaoimehdkdjc?hl=en)
-- FireFox [Clarity, A DIM Companion](https://addons.mozilla.org/en-US/firefox/addon/dim-better-name-pending/)
-- Opera [Clarity, A DIM Companion](https://addons.opera.com/en/extensions/details/dim-better-name-pending/)
-- MS Edge [Clarity, A DIM Companion](https://microsoftedge.microsoft.com/addons/detail/dim-better-name-pending/lapeplimkpcfoapapdjakgnkkabckjjc)
+# Features
+- Extremly detailed Perk and Mod descriptions
+- In-Game Range, Reload Speed, Draw Speed, and Stow speed calculators for weapons
+- DIM Dark Mode with custom color options
+- Improved Recoil Direction Display
+- UI reworks
+- And more upcoming features in the works (Check the [Discord](https://d2clarity.page.link/discord) for more details)
+
+# Can i get this extension on my browser store? - Yes, on the Chrome Web Store
+- Clarity is available for Chrome and other Chromium-Based Browsers like Opera, MS Edge, and Brave here: [Clarity, A DIM Companion](https://d2clarity.page.link/chrome)
 - Big thx to AE×GS from Massive Breakdown discord for paying 5$ fee needed for a Chrome developer account
+- Big thx to Icemourne from the Massive Breakdown discord for making me pay the $5 fee needed for a Chrome developer account
 
-# Does this work on mobile:
-- Short answer: Yes
-- Long answer: Yes it works but you have to use [Firefox nightly app](https://play.google.com/store/apps/details?id=org.mozilla.fenix) as far as I can tell this works only for Android phones sorry iPhone users if you know of another browser with addon support hit me up I will upload to their store to
-- Extension installation on [FireFox nightly app](https://play.google.com/store/apps/details?id=org.mozilla.fenix):
-1. Tap on the main menu (three dots) and select Settings.
-2. Scroll all the way down and select "About Firefox Nightly".
-3. Tap on the Firefox Logo at the top (next to Firefox Browser) five times until the "Debug menu enabled" notification is displayed.
-4. Go back to the main Settings page.
-5. Scroll down to the Advanced section and activate "Custom Add-on Collection".
-6. You are asked to type the User ID of the collection owner and the name of the Collection.
-7. Type 16825313 and DIM
-- Or create your own hare: [Custom Add-on Collection](https://addons.mozilla.org/en-US/firefox/collections/)
+# Does Clarity support mobile? - No
+- Unfortunately it doesn't work on mobile ever since we lost access to our firefox Developer acccount.
+- We would love to support mobile devices but we do not want to mess with the Firefox store again so a dedicated mobile app would be preferred. But we simply don't have the time and resources for that at the moment so don't get your hopes up.
 
 # Manual Installation
-- First of all grab source because I rarely do release Code > Download zip
-- Then extract contents of the folder and depending on browser fallow installation instructions
-
-# Chrome: 
-- Paste this `chrome://extensions/` in the address bar without quotes than on the top right press "Developer mode" and on to left "load unpacked" select folder extracted earlier and you done
-
-# FireFox:
-- First of all, I don't recommend using Firefox because you will need to add an extension every time you open Firefox (basically if you close Firefox you will need to add an extension again)
-- Installation Paste this `about:debugging#/runtime/this-firefox` in the address bar without quotes then press "Load temporary extension" and select file called "manifest" in the extracted folder
-
-# Other browsers:
-- Browsers like Opera, Chromium, Microsoft Edge, and other Chromium-based browsers will be very similar to chrome navigate to extension and enable developer mode
+- Join our [Discord Server](https://d2clarity.page.link/discord)
+- The latest version and the Installation Guide can always be found there.
+- New releases always come out with a delay on the Chrome Web Store so here is where you can grab them the earliest.
