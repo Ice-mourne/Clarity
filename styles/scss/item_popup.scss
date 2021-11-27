@@ -1,16 +1,16 @@
 #weapon_popup {
     background-color: hsl(var(--backgroundColor));
-    box-shadow: 0 -1px 24px 4px #161626;
+    box-shadow: 0 -1px 24px 4px hsl(240, 27%, 12%);
     width: 320px;
     display: block;
+    margin: 0 30px;
+    pointer-events: auto;
     // header
-    .weapon_popup_header {
+    .popup_header {
         font-size: 15px;
         line-height: 17px;
         letter-spacing: -0.02em;
         padding: 10px;
-        background-color: #555; //todo remove or replace
-        color: #eee;
         .name {
             text-transform: uppercase;
             font-weight: 600;
@@ -24,8 +24,49 @@
             justify-content: space-between;
             margin-top: 4px;
         }
+        .left, .right {
+            display: flex;
+        }
+        .type {
+            opacity: 0.7;
+            word-break: break-word;
+        }
+        .ammo { // img
+            height: 18px;
+            width: 23px;
+        }
+        .damage_type {
+            width: 20px;
+            height: 20px;
+        }
+    }
+    // header colors // if i don't add color to each DIM will use its default color
+    .Legendary {
+        background-color: hsl(277, 36%, 29%);
+        color: hsl(0, 0%, 93%);
+    }
+    .Exotic {
+        background-color: hsl(48, 77%, 43%);
+        color: hsl(0, 0%, 13%);
+    }
+    .Rare {
+        background-color: hsl(213, 34%, 48%);
+        color: hsl(0, 0%, 13%);
+    }
+    .Uncommon {
+        background-color: hsl(133, 34%, 32%);
+        color: hsl(0, 0%, 13%);
+    }
+    .Common {
+        background-color: hsl(0, 0%, 86%);
+        color: hsl(0, 0%, 13%);
     }
 
-
-
+    .stats{
+        display: grid;
+        grid-auto-rows: minmax(12px, auto);
+        grid-template-columns: repeat(2, min-content) 1fr;
+        margin: 10px;
+        gap: 4px 0px;
+    }
 }

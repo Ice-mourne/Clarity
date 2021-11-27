@@ -26,18 +26,19 @@ function weapon_click_listener(event) {
 function create_weapon_popup(unique_id) {
    const weapon_popup = Vue.createApp({
       data() {
-         const unique_item  = clarity_user_data[unique_id],
-               static_item  = clarity_manifest[unique_item.id]
-               // rolled_perks = unique_item.sockets.perks.rolled || static_item.sockets.perks.curated.map(list => list.map(perk => perk.id)),
-               // active_perks = unique_item.sockets.perks.active
+         const unique_item = clarity_user_data[unique_id],
+               static_item = clarity_manifest[unique_item.id]
          return {
+            unique_item: unique_item,
+            static_item: static_item,
+
+
+
+
             weapon: {
-               name: static_item.name,
-               type: static_item.type,
-               ammo_img: '', //todo add this
-               power_lvl: '', //todo add this
-               tier: static_item.tier,
-               damage_type_img: '', //todo add this
+               ammo_img: 'https://bungie.net/common/destiny2_content/icons/dc4bb9bcdd4ae8a83fb9007a51d7d711.png', //todo add this
+               power_lvl: '420-69', //todo add this
+               damage_type_img: 'https://bungie.net/common/destiny2_content/icons/91fe40e7d2ed2edbce42aa0b1917fd73.png', //todo add this
                breaker_img: '' //todo add this
             }
          }
@@ -45,14 +46,12 @@ function create_weapon_popup(unique_id) {
       template: vue_weapon_templates.weapon_popup.header,
       methods: {
          update(unique_id) {
-            // if(typeof unique_id != 'string') return
             const unique_item = clarity_user_data[unique_id],
                   static_item = clarity_manifest[unique_item.id]
 
-            this.weapon.name = static_item.name
-            this.weapon.type = static_item.type
-            this.weapon.tier = static_item.tier
-         }
+            this.unique_item = unique_item
+            this.static_item = static_item
+         },
       },
       computed: {
 
@@ -61,9 +60,6 @@ function create_weapon_popup(unique_id) {
    })
    weapon_popup.directive('click-outside', {
       mounted: (el, binding) => {
-         // el.clickOutsideEvent = event => {
-
-         // }
          document.querySelector('#weapon_popup')
             .addEventListener("update", event => binding.value(event.detail))
       }

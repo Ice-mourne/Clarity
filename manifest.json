@@ -3,7 +3,7 @@
     "name": "Clarity, A DIM Companion",
     "version": "1.6.3",
     "author": "Icemourne",
-    "description": "Bringing the truth to light in their gear management. Extension aimed to improve Destiny item manager",
+    "description": "This extension expands upon the capabilities of Destiny Item Manager (DIM) by providing new features. This tool will show you exactly what your perks and exotics do along with numerous other things to help you become the roll expert you want to be.",
     "homepage_url": "https://github.com/Ice-mourne/DIM_Better_name_pending",
     "icons": { "128": "images/icon.png" },
     "content_scripts": [
@@ -30,10 +30,8 @@
 
                 "adding_data/armor/description.js",
 
-                "adding_data/weapon/numbers.js",
-                "adding_data/weapon/menu_template.js",
-                "adding_data/weapon/worker.js",
-
+                "adding_data/weapon/calculators.js",
+                "adding_data/weapon/stats.js",
                 "adding_data/weapon/templates.js",
                 "adding_data/weapon/weapon_popup.js"
             ],
@@ -42,6 +40,7 @@
                 "styles/css/auth.min.css",
                 "styles/css/clarity_menu.min.css",
                 "styles/css/descriptions.min.css",
+                "styles/css/item_popup.min.css",
                 "styles/css/weapons.min.css"
             ]
         }
