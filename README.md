@@ -12,7 +12,9 @@
 # Can i get this extension on my browser store? - Yes, on the Chrome Web Store
 - Clarity is available for Chrome and other Chromium-Based Browsers like Opera, MS Edge, and Brave here: [Clarity, A DIM Companion](https://d2clarity.page.link/chrome)
 - Big thx to AE×GS from Massive Breakdown discord for paying 5$ fee needed for a Chrome developer account
-- Big thx to Icemourne from the Massive Breakdown discord for making me pay the $5 fee needed for a Chrome developer account
+- Big thx to Icemourne from the Massive Breakdown discord for making me pay the $5 fee needed for a Chrome developer account 
+- Readme was updated by my discord moderator Fading Shadow
+- Big thx to Fading Shadow for help with all descriptions and fixing mess i call my discord server
 
 # Does Clarity support mobile? - No
 - Unfortunately it doesn't work on mobile ever since we lost access to our firefox Developer acccount.
