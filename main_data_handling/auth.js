@@ -119,16 +119,19 @@ async function fetch_bungie(auth_type, code) {
 		})
 		.then(resp => resolve(resp))
 	})
-	function handle_errors(err, auth_type) {                                                                                   // todo better error handling
-		// switch (err.status) {
-		// 	case 500: // internal bungie error // simulate auth pressing to try again
-		// 		local_storage('clarity_temp', true)
-		// 		window.location.href = `https://www.bungie.net/en/OAuth/Authorize?client_id=${nr.i}&response_type=code`
-		// 		break
-		// }
-		console.error(`%c Something then wrong with auth => ${auth_type}`, 'font-size: large;')
+	function handle_errors(err, auth_type) {                                                                            // todo better error handling
+		switch (err.status) {
+			case 500: // internal bungie error // simulate auth pressing to try again
+				local_storage('clarity_temp', true)
+				window.location.href = `https://www.bungie.net/en/OAuth/Authorize?client_id=${nr.i}&response_type=code`
+				break
+			case 401:
+				user_data()
+				break
+		}
+		console.log(`%c Something then wrong with auth => ${auth_type}`, 'font-size: large; background-color: red;')
 		console.log(err.status)
 		console.log(err)
-		console.error(`%c End of error logs for => ${auth_type}`, 'font-size: large;')
+		console.log(`%c End of error logs for => ${auth_type}`, 'font-size: large; background-color: red;')
 	}
 }

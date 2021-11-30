@@ -1,281 +1,469 @@
-;( () => {
-    let dim_url = document.querySelector('body').baseURI
-    let version = dim_url.slice(8, dim_url.search('.destiny'))
-    fetch(`https://ice-mourne.github.io/Database-for-Clarity/Database/locations.json?${Math.random()}`)
-    .then(resp => resp.json())
-    .then(data => localStorage.setItem('clarity_locations', JSON.stringify(data[version])))
-}) ()
-if (local_get('clarity_user') && local_get('clarity_authorization')) work_on_item_info() // if data required is present update item info // this runs on startup
-window.addEventListener('update_item_info', _ => work_on_item_info())
-function work_on_item_info() {
-    let nr = local_get('clarity_settings').version
+handle_data()
+function handle_data() {
     Promise.all([
-        fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/weapon_formulas/?${Math.random()}`) // 0
+        fetch(`https://ice-mourne.github.io/Database-for-Clarity/Database/weapon_formulas.json?${Math.random()}`)
         .then(resp => resp.json()),
-        fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/exotic_armor_perks/?${Math.random()}`) // 1
+        // fetch(`https://ice-mourne.github.io/Database-for-Clarity/Database/D2_community_data.json?${Math.random()}`)
+        fetch(`https://raw.githubusercontent.com/Clovis-Breh/Icemournes-D2-database/data_holder/D2_community_data.json?${Math.random()}`)
         .then(resp => resp.json()),
-        fetch(`https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/weapon_perks/?${Math.random()}`) // 2
-        .then(resp => resp.json()),
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        fetch_bungie('user_info'),
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        get_from_indexedDB('keyval-store', 'keyval', 'd2-manifest') // 4 - d2 manifest
-        .then(resp => resp)
+
+        indexed_DB('keyval-store', 'keyval', 'd2-manifest')
     ])
-    .then(json_data => {
-        let wep_formulas       = json_data[0]
-        let exotic_armor_perks = json_data[1]
-        let wep_perks          = json_data[2]
-        let user_data          = json_data[3]
+    .then(data => {
+        let parser_start = Date.now()
+        let wep_formulas = data[0]
+        let community_data = {
+            ...data[1].exotic_armor,
+            ...data[1].armor_mods,
+            ...data[1].weapon_perks,
+            ...data[1].weapon_frames,
+            ...data[1].weapon_mods,
+            // ...data[1].masterwork // todo add this to database
+        }
+        let manifest = {
+            inventory_item: data[2].DestinyInventoryItemDefinition,
+            stat_group:     data[2].DestinyStatGroupDefinition,
+            stat_names:     data[2].DestinyStatDefinition,
+            item_category:  data[2].DestinyItemCategoryDefinition,
+            damage_type:    data[2].DestinyDamageTypeDefinition,
+            plug_sets:      data[2].DestinyPlugSetDefinition,
+            socket_type:    data[2].DestinySocketTypeDefinition,
+        }
 
-        let manifest = [
-            json_data[4].DestinyInventoryItemDefinition,
-            json_data[4].DestinyStatGroupDefinition,
-            json_data[4].DestinyStatDefinition,
-            json_data[4].DestinyItemCategoryDefinition,
-            json_data[4].DestinyDamageTypeDefinition,
-            json_data[4].DestinyPlugSetDefinition
-        ]
-        filter_inventory_item(user_data, ...manifest, /**/ wep_formulas, exotic_armor_perks, wep_perks)
+        let items = Object.entries(manifest.inventory_item)
+        let dirty_clarity_manifest = {}
+
+        for (let i = 0; i < items.length; i++) {
+            const id   = items[i][0]
+            const item = items[i][1]
+
+            let blacklist = {
+                id() {
+                    const blacklist = {
+                        1744115122: 'exotic weapon'
+                    }
+                    if (blacklist[id]) return true
+                    return false
+                },
+                armor() {
+                    return item.inventory.tierTypeName == 'Exotic'
+                },
+                mods() {
+                    let types = 'Ghost | Ornament|Emote|Ship |Legacy Armor Mod|Deprecated Armor Mod|Transmat Effect|Shader'
+                    if (item.itemTypeDisplayName.match(types)) return false
+                    if (!item.displayProperties.icon) return false
+                    return true
+                },
+            }
+
+            if (blacklist.id()) continue
+            if (item.itemType == 3)                       {dirty_clarity_manifest[id] = weapon  (item, manifest, wep_formulas); continue}
+            if (item.itemType == 2  && blacklist.armor()) {dirty_clarity_manifest[id] = armor   (item, manifest              ); continue} // at the moment i have no use for non exotic armor
+            if (item.itemType == 19 && blacklist.mods())  {dirty_clarity_manifest[id] = mod_perk(item, community_data        ); continue}
+            if (id == '712324018') /* pain */             {dirty_clarity_manifest[id] = mod_perk(item, community_data        ); continue}
+        }
+
+        function removeEmptyValues(obj) {
+            for (var propName in obj) {
+                if ((!obj[propName] || obj[propName].length === 0) && obj[propName] != 0) {
+                    delete obj[propName]
+                } else if (typeof obj[propName] === 'object') {
+                    removeEmptyValues(obj[propName])
+                }
+            }
+            return obj
+        }
+        clarity_manifest = removeEmptyValues(dirty_clarity_manifest)
+
+        console.log(`%c Manifest parsed in: ${Date.now() - parser_start} ms`, 'border: 3px solid green; padding: 2px')
     })
-}
-function filter_inventory_item(user_data, inventory_item, stat_group, stat_names, item_category, damage_type_json, plug_set, /**/ wep_formulas, exotic_armor_perks, wep_perks) {
-    console.time('timer')
-    let item_ids = find_item_ids(user_data, inventory_item)
-    let new_item_list = {}
-    for (let i = 0; i < item_ids.length; i++) {
-        const unique_id = item_ids[i][0]
-        const item = inventory_item[item_ids[i][1]]
-        if (item_ids[i][2] == 3) {
-            new_item_list[unique_id] = {
-                // update key on startup not only on window change
-                'name':        item.displayProperties.name,
-                'icon':        item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
-                'type':        item.itemTypeDisplayName, // hand cannon, sniper, shotgun...
-                'ammo':        ammo(item), // primary, special, heavy...
-                'slot':        item_category[ item.itemCategoryHashes[0] ].shortTitle, // kinetic, energy, power...
-                'damage_type': damage_type_json[ item.defaultDamageTypeHash ].displayProperties.name, // arch, solar, void...
-                'item_type':   'weapon',
-                'perks':       perks(item, unique_id, user_data),
-                'stats':       stats(unique_id, item),
-            }
-        } else {
-            new_item_list[unique_id] = {
-                'name': item.displayProperties.name,
-                'icon': item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
-                'perk':armor_perks(item),
-                'item_type': 'armor',
-                'tier': item.inventory.tierTypeName
-            }
-        }
+    .then(() => {
+        window.addEventListener('update_item_info', user_data)
+        user_data()
+    })
+    const weapon_masterworks = { // all masterworks weapon type can get
+        'Auto Rifle':          {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Combat Bow':          {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'draw_time': clarity_random_data.masterworks.draw_time, 'accuracy': clarity_random_data.masterworks.accuracy},
+        'Fusion Rifle':        {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range,	'charge_time': clarity_random_data.masterworks.charge_time},
+        'Grenade Launcher':    {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'blast':     clarity_random_data.masterworks.blast,     'velocity': clarity_random_data.masterworks.velocity},
+        'Hand Cannon':         {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Linear Fusion Rifle': {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range,	'charge_time': clarity_random_data.masterworks.charge_time},
+        'Machine Gun':         {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Pulse Rifle':         {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Rocket Launcher':     {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'blast':     clarity_random_data.masterworks.blast,     'velocity': clarity_random_data.masterworks.velocity},
+        'Scout Rifle':         {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Shotgun':             {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Sidearm':             {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Sniper Rifle':        {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Submachine Gun':      {'stability': clarity_random_data.masterworks.stability, 'handling': clarity_random_data.masterworks.handling, 'reload':    clarity_random_data.masterworks.reload,    'range':    clarity_random_data.masterworks.range   },
+        'Sword':               {'impact'   : clarity_random_data.masterworks.impact}
     }
-    function armor_perks(item) {
-        if(item.inventory.tierTypeName == 'Exotic') {
-            let perk_id = item.sockets.socketEntries.find(x => x.socketTypeHash == 1486702312 || x.socketTypeHash == 965959289)?.singleInitialItemHash
-            if(perk_id) {
-                let info = {
-                    'description': get_description(),
-                    'name': inventory_item[perk_id].displayProperties.name,
-                    'icon': inventory_item[perk_id].displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
-                }
-                function get_description() {
-                    if(exotic_armor_perks[inventory_item[perk_id].displayProperties.name]) {
-                        return exotic_armor_perks[inventory_item[perk_id].displayProperties.name]
-                    } else {
-                        return `<div class="new_pd">${inventory_item[perk_id].displayProperties.description}</div>`
-                    }
-                }
-                return info
-            }
-        }
-    }
-    function ammo(data) { // ammo type
-        switch (data.equippingBlock.ammoType) {
-            case 1:
-                return 'primary'
-            case 2:
-                return 'special'
-            case 3:
-                return 'heavy'
-        }
-    }
-    function perks(item, unique_id, user_data) {
-        return {
-            'active_perks': active_perks(),
-            'perks': all_perks()
-        }
-        function active_perks() {
-            //           Arrow,      Barrel,     Battery,    Blade,      Bowstring,  Grip,       Guard,     Launcher Barrel, Magazine,   Scope,      Stock,     Trait    Magazine gl
-            let perks = [1257608559, 2833605196, 1757026848, 1041766312, 3809303875, 3962145884, 683359327, 1202604782,      1806783418, 2619833294, 577918720, 7906839, 2718120384]
-            return user_data.Response.itemComponents.sockets.data[unique_id].sockets
-                .filter(active_perk => active_perk.plugHash != undefined && perks.indexOf(inventory_item[active_perk.plugHash].plug.plugCategoryHash) > -1)
-                .map(active_perk => active_perk.plugHash)
-        }
-        function all_perks() {
-            let all_perks = []
-            let random_perks = user_data.Response.itemComponents.reusablePlugs.data[unique_id]
-            item.sockets.socketCategories.find(x => x.socketCategoryHash == 4241085061)?.socketIndexes
-                .filter(x => x < 6)
-                .forEach(get_perk_ids) // possible indexes 1,2,3,4, 8,9 only 1-4 used
-            return all_perks
-            function get_perk_ids(index) {
-                let perk_list = []
-                if (random_perks && random_perks.plugs[1]) {
-                    try {
-                        random_perks.plugs[index].forEach(perk => perk_list.push(get_perk_info(perk.plugItemHash, index)))
-                    } catch  { // bungie fuck up and Hawkmoon and Quickfang don't have index 2 this will take perk info from manifest
-                        let reusable_plug_set_id = item.sockets.socketEntries[index].reusablePlugSetHash
-                        plug_set[reusable_plug_set_id].reusablePlugItems.forEach(perk => perk_list.push(get_perk_info(perk.plugItemHash, index)))
-                    }
-                } else {
-                    let reusable_plug_set_id = item.sockets.socketEntries[index].reusablePlugSetHash
-                    let reusable_plug_items  = item.sockets.socketEntries[index].reusablePlugItems
-                    if (reusable_plug_set_id) { // in some cases items socket 4 doesn't have plug set hash example Ticuu's Divination
-                        plug_set[reusable_plug_set_id].reusablePlugItems.forEach(perk => perk_list.push(get_perk_info(perk.plugItemHash, index)))
-                    } else if (reusable_plug_items) {
-                        reusable_plug_items.forEach(perk => perk_list.push(get_perk_info(perk.plugItemHash, index)))
-                    }
-                }
-                if (perk_list.length != 0) all_perks.push(perk_list)
-            }
-            function get_perk_info(perk_id, index) {
-                const perk = inventory_item[perk_id]
+    function covert_description(description_array, item) {
+        let custom_description = description_array?.map(line => {
+            if(!line.table) { // if normal line
                 return {
-                    'id':          perk_id,
-                    'name':        perk.displayProperties.name,
-                    'icon':        perk.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
-                    'description': build_description(perk_id, item, unique_id, user_data, index)
+                    ele_type: 'div',
+                    className: line.lineClass,
+                    append: line.lineText?.map(stuff => {
+                        return {
+                            ele_type: 'span',
+                            className: stuff.textClass,
+                            textContent: stuff.text
+                        }
+                    })
                 }
+            }
+            if(line.table) { // if table
+                return {
+                    ele_type: 'div',
+                    className: 'CDB-table',
+                    append: line.table.map(line_in_table => {
+                        return {
+                            ele_type: 'div',
+                            className: line_in_table.lineClass,
+                            append: line_in_table.lineText.map(stuff => {
+                                return {
+                                    ele_type: 'div',
+                                    className: stuff.textClass,
+                                    textContent: stuff.text
+                                }
+                            })
+                        }
+                    })
+                }
+            }
+        }) || []
+
+        let stat_ids = clarity_random_data.stat_order.map(stat_order => {
+            if(item.investmentStats?.find(stat =>
+                stat.statTypeHash == stat_order[0]
+                &&
+                stat.value != 0
+            )) return stat_order[0]
+        })
+        .filter(x => x)
+
+        let stats_description = stat_ids.map(stat_id => {
+            return {
+                ele_type: 'div',
+                className: 'Clarity_stat',
+                append: [
+                    {
+                        ele_type: 'div',
+                        textContent: `{stat-id=${stat_id}} `
+                    },
+                    {
+                        ele_type: 'div',
+                        textContent: clarity_random_data.stat_names[stat_id]
+                    }
+                ]
+            }
+        }) || []
+        return [...stats_description, ...custom_description]
+    }
+    function weapon(item, manifest, wep_formulas) {
+        const socket_indexes = {
+            'intrinsic': item.sockets.socketCategories.find(socket_category => socket_category.socketCategoryHash == 3956125808).socketIndexes[0],
+            'perks': item.sockets.socketCategories.find(socket_category => socket_category.socketCategoryHash == 4241085061)?.socketIndexes,
+            'mods': item.sockets.socketCategories.find(socket_category => socket_category.socketCategoryHash == 2685412949)?.socketIndexes
+        }
+        const sockets = {
+            curated_random(type) {
+                if(!socket_indexes.perks) return null // some white weapons don't have perks
+                let perk_array = socket_indexes.perks.flatMap(index => {
+                    const socket_entry = item.sockets.socketEntries[index]
+                    const socket_type_id = manifest.socket_type[socket_entry.socketTypeHash]
+
+                    if(!clarity_random_data.perk_types[socket_type_id.plugWhitelist[0].categoryHash]) return [] // check if perk type is actually perk // kill tracker is "perk" because bongo
+
+                    const perks = manifest.plug_sets[socket_entry[type]]?.reusablePlugItems
+                    const look_in = (type == 'randomizedPlugSetHash') // if on random perks
+                    ? perks                                           // just look for random perks
+                    : perks                                           // if not look if there are any curated perks
+                    || socket_entry.reusablePlugItems                 // if where are no curated perks look in hare for curated perks
+
+                    return [look_in?.map(perk => {
+                        return {
+                            'can_roll': perk.currentlyCanRoll,
+                            'id': perk.plugItemHash
+                        }
+                    })]
+                })
+                .filter(perk => perk) // removes pesky undefined values
+
+                return (perk_array.length != 0) ? perk_array : null
+            },
+            mods() {
+                if(!socket_indexes.mods) return null
+                let wep_adept = (item.displayProperties.name.match(/ \(Timelost\)| \(Adept\)/)) ? true : false
+                let mod_array = socket_indexes.mods.flatMap(index => {
+                    const socket_entry = item.sockets.socketEntries[index]
+                    if(socket_entry.singleInitialItemHash != 2323986101) return [] // check if its empty mod socket
+
+                    return manifest.plug_sets[socket_entry.reusablePlugSetHash]?.reusablePlugItems.flatMap(mod => {
+                        if(mod.plugHash == 2323986101) return [] // ignore empty mod socket
+                        if(wep_adept) return mod.plugItemHash // return all mods
+                        let mod_adept = manifest.inventory_item[mod.plugItemHash].displayProperties.name.includes('Adept')
+                        if(!mod_adept) return mod.plugItemHash // return non adept mods
+                        if(mod_adept) return [] // return empty
+                    })
+                })
+                return (mod_array.length != 0) ? mod_array : null
+            },
+            masterwork() {
+                if(item.inventory.tierTypeName == 'Exotic') {
+                    return socket_indexes.mods.flatMap(index => {
+                        const socket_entry = item.sockets.socketEntries[index]
+                        if(socket_entry.singleInitialItemHash == 1498917124) return {'catalyst': [socket_entry.reusablePlugItems[0].plugItemHash]} // if empty catalyst socked
+                        return socket_entry.reusablePlugItems.flatMap(catalyst => {
+                            if(manifest.inventory_item[catalyst.plugItemHash].displayProperties.name == 'Upgrade Masterwork') return {'catalyst': [catalyst.plugItemHash]}
+                            return []
+                        })
+                    })[0]
+                }
+                else {
+                    if(item.inventory.tierTypeName == 'Legendary') return weapon_masterworks[item.itemTypeDisplayName]
+                }
+            }
+        }
+        const stats = {
+            investment() {
+                return item.investmentStats.reduce((acc, val) => {
+                    if(clarity_random_data.stat_blacklist[val.statTypeHash]) return acc// ignore these stat id's
+                    return ({ ...acc, [val.statTypeHash]: val.value})
+                }, {})
+            },
+            stats() {
+                let stats = item.stats.stats
+                return Object.keys(stats).reduce((acc, val) => {
+                    if(clarity_random_data.stat_blacklist[val]) return acc// ignore these stat id's
+                    return ({ ...acc, [val]: stats[val].value})
+                }, {})
+            },
+            stat_group() {
+                return manifest.stat_group[item.stats.statGroupHash].scaledStats.reduce((acc, val) =>
+                    ({ ...acc, [val.statHash]: val.displayInterpolation}), {}
+                )
+            }
+        }
+        function formula_numbers() {
+            const type = item.itemTypeDisplayName
+            const frame = item.sockets.socketEntries[socket_indexes.intrinsic].singleInitialItemHash
+            if (!wep_formulas[type][frame]) return null // incase frame info is missing not added
+            let category_name = wep_formulas[type][frame].category
+            return wep_formulas[type].category[category_name]
+        }
+
+        return {
+            'name': item.displayProperties.name,
+            'icon': item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
+            'type': item.itemTypeDisplayName, // hand cannon, sniper, shotgun...
+            'ammo': clarity_random_data.ammo[item.equippingBlock.ammoType], // primary, special, heavy...
+            'slot': manifest.item_category[item.itemCategoryHashes[0]].shortTitle, // kinetic, energy, power...
+            'damage_type': manifest.damage_type[item.defaultDamageTypeHash].displayProperties.name, // arch, solar, void...
+            'item_type': 'weapon',
+            'adept': (item.displayProperties.name.match(/ \(Timelost\)| \(Adept\)/)) ? true : false,
+            'tier': item.inventory.tierTypeName, // legendary, exotic...
+            'formula_numbers': formula_numbers(),
+            'sockets': {
+                'perks': {
+                    'random':  sockets.curated_random('randomizedPlugSetHash'), // random perks weapon can roll
+                    'curated': sockets.curated_random('reusablePlugSetHash'),   // curated perks weapon can roll
+                },
+                'frame': item.sockets.socketEntries[socket_indexes.intrinsic].singleInitialItemHash,
+                'mods': sockets.mods(), // all mods weapon can use
+                'masterwork': sockets.masterwork()
+            },
+            'stats': {
+                'investment': stats.investment(),
+                'base': stats.stats(),
+                'stat_group': stats.stat_group()
             }
         }
     }
-    function build_description(perk_id, item, unique_id, user_data, index) {
-        const perk_info_json = wep_perks[perk_id]
-        const formula = get_formula(item, wep_formulas)
-        const weapon_stat_group = get_stat_group(item, stat_group)
-        const investment_stats = get_item_investment_stats(unique_id, item.hash, user_data, inventory_item)
-        let description = ''
-        if (perk_info_json) { // adds stat number to description
-            description = perk_info_json.text
-            let min_max = (number) => Math.min(Math.max(number, 10), 100)
-            if (perk_info_json.range_stat) {
-                for (let i = 0; i < perk_info_json.range_stat.length; i++) {
-                    let range_stat    = stat_calculator(investment_stats[1240592695], weapon_stat_group[1240592695], 1240592695)
-                    let zoom_stat     = stat_calculator(investment_stats[3555269338], weapon_stat_group[3555269338], 3555269338)
-                    let range_default = range_calculator(formula, range_stat, zoom_stat, 1)
-                    let range_mod     = range_calculator(formula, min_max(range_stat + perk_info_json.range_stat[i]), zoom_stat + perk_info_json.zoom[i], perk_info_json.zoom_mult[i])
-
-                    let range = range_mod - range_default
-                    let final_range = (range > 0) ? `+${range}` : range
-
-                    description = description.replace(`range_${i}`, `${(final_range * 1).toFixed(2)}m`)
-                    if(final_range == 'NaN') description = perk_info_json.text_fallback
-                }
-            }
-            if (perk_info_json.reload_stat) {
-                for (let i = 0; i < perk_info_json.reload_stat.length; i++) {
-                    let reload_stat = stat_calculator(investment_stats[4188031367], weapon_stat_group[4188031367], 4188031367)
-                    let reload_time_default = reload_calculator(formula, reload_stat, 1) * 1
-                    let reload_time_mod = reload_calculator(formula, min_max(reload_stat + perk_info_json.reload_stat[i]), 1) * 1
-
-                    description = description.replace(`relo_t_${i}`, `${reload_time_mod.toFixed(2)}s`)
-                    description = description.replace(`relo_r_${i}`, `${(reload_time_mod - reload_time_default).toFixed(2)}s`)
-                }
-            }
-        } else { // if perk doesn't have custom description just add default
-            if (inventory_item[perk_id].investmentStats.length == 0) { // except for perks with stats
-                description = `<div class='new_pd'>${inventory_item[perk_id].displayProperties.description}</div>`
-            }
+    function armor(item, manifest) {
+        function perk() {
+            let plug_set_id = item.sockets.socketEntries[11].reusablePlugSetHash
+            if (!plug_set_id) return null
+            return manifest.plug_sets[plug_set_id].reusablePlugItems.map(perk => perk.plugItemHash)
         }
-        if (inventory_item[perk_id].investmentStats.length != 0) {
-            let active_perk_id = user_data.Response.itemComponents.sockets.data[unique_id].sockets[index].plugHash // active perk in this group
-            let new_inv_stats = {...investment_stats} // investment stats with out active perk
-            inventory_item[active_perk_id].investmentStats.forEach(stat => new_inv_stats[stat.statTypeHash] -= stat.value) // remove active perk stats
-            
-            let stat_list = `<table class="Clarity_weapon_stats"><tbody>`
-            let check = true // sets to false if range was added to prevent adding multiple times incase perks has zoom and range stat
-            inventory_item[perk_id].investmentStats.forEach(stat => {
-                const stat_id = stat.statTypeHash
-                let with_perk = stat_calculator(new_inv_stats[stat_id] + stat.value, weapon_stat_group[stat_id], stat.statTypeHash)
-                let with_out_perk = stat_calculator(new_inv_stats[stat_id], weapon_stat_group[stat_id], stat.statTypeHash)
-                let value = Math.round((with_perk - with_out_perk) * 10 ) / 10
-                let final_value = (value > 0) ? `+${value}` : value
-                if (value) {
-                    let name = stat_names[stat_id].displayProperties.name
-                    stat_list += `<tr><th>${final_value}</th><td>${name}</td></tr>`
-                }
-                if (check && (stat_id == 1240592695 || stat_id == 3555269338)) { // if range or zoom stat
-                    let range_stat = {
-                        'perk': with_perk,
-                        'default': with_out_perk
-                    }
-                    let zoom_stat = {
-                        'perk': stat_calculator(investment_stats[3555269338], weapon_stat_group[3555269338], 3555269338),
-                        'default': stat_calculator(new_inv_stats[3555269338], new_inv_stats[3555269338], 3555269338)
-                    }
-                    let range = {
-                        'perk': range_calculator(formula, range_stat.perk, zoom_stat.perk, 1),
-                        'default': range_calculator(formula, range_stat.default, zoom_stat.default, 1)
-                    }
-                    let final_range = (range.perk - range.default > 0) ? `+${(range.perk - range.default).toFixed(2)}` : (range.perk - range.default).toFixed(2)
-                    if (final_range != 0) {
-                        stat_list += `<tr><th>${final_range}m</th><td>Range meters</td></tr>`
-                        check = false
-                    }
-                }
-                if (stat_id == 4188031367) { // if reload stat
-                    let reload_stat = {
-                        'perk': with_perk,
-                        'default': with_out_perk
-                    }
-                    let reload = {
-                        'perk': reload_calculator(formula, reload_stat.perk, 1),
-                        'default': reload_calculator(formula, reload_stat.default, 1)
-                    }
-                    let final_reload = (reload.perk - reload.default > 0) ? `+${(reload.perk - reload.default).toFixed(2)}` : (reload.perk - reload.default).toFixed(2)
-                    stat_list += `<tr><th>${final_reload}s</th><td>Reload time</td></tr>`
-                }
-            })
-            stat_list += `</tbody></table>`
-            description += stat_list
+        return {
+            'name': item.displayProperties.name,
+            'icon': item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
+            'perk': perk(),
+            'item_type': 'armor',
+            'tier': item.inventory.tierTypeName
         }
-        return description
     }
-    function stats(unique_id, item) { // add in game range and reload
-        let final_stats = {}
-        let investment_stats = get_item_investment_stats(unique_id, item.hash, user_data, inventory_item)
-        let weapon_stat_group = {}
-        stat_group[item.stats.statGroupHash].scaledStats.map(stat_array => {weapon_stat_group[stat_array.statHash] = stat_array.displayInterpolation})
-        if (user_data.Response.itemComponents.sockets.data[unique_id].sockets.findIndex(x => x.plugHash == 3511092054) != -1) { // if item has elemental capacitor then add stats
-            let elemental_cap = {}
-            let inv_stats_array = Object.entries(investment_stats)
-            for (let i = 0; i < inv_stats_array.length; i++) { // loop over investment stats
-                const id = inv_stats_array[i][0]
-                const stat = inv_stats_array[i][1]
-                elemental_cap[id] = stat_calculator(stat, weapon_stat_group[id], id)
+    function mod_perk(item, community_data) {
+        function description() {
+            let community_description = community_data[item.hash]?.description
+
+            if(community_description || item.investmentStats.length != 0) {
+                return covert_description(community_description, item)
+            } else {
+                return [{
+                    ele_type: 'div',
+                    textContent: item.displayProperties.description
+                }]
             }
-            final_stats['elemental_cap'] = elemental_cap
+            //else if(item.investmentStats.length != 0) {
+            //     return item.investmentStats.map(stat => {
+            //         return {
+            //             ele_type: 'div',
+            //             className: 'Clarity_stat',
+            //             append: [
+            //                 {
+            //                     ele_type: 'div',
+            //                     textContent: `{stat-id=${stat.statTypeHash}} `
+            //                 },
+            //                 {
+            //                     ele_type: 'div',
+            //                     textContent: clarity_random_data.stat_names[stat.statTypeHash]
+            //                 }
+            //             ]
+            //         }
+            //     })
+            // }
+            // return (community_description) ? covert_description(community_description) :
         }
-        const formula = get_formula(item, wep_formulas)
-        if (formula) {
-            let extra_stats = []
-            if (formula.vpp) {
-                let perk_with_multi = user_data.Response.itemComponents.sockets.data[unique_id].sockets.findIndex(perk => perk.plugHash == 2846385770 || perk.plugHash == 1140096971)
-                let zoom_multi = (perk_with_multi != -1) ? 1.1 : 1
-                let range_stat     = stat_calculator(investment_stats[1240592695], weapon_stat_group[1240592695], 1240592695)
-                let zoom_stat      = stat_calculator(investment_stats[3555269338], weapon_stat_group[3555269338], 3555269338)
-                let range_distance = range_calculator(formula, range_stat, zoom_stat, zoom_multi)
-                extra_stats.push({'name': 'Range', 'value': range_distance, 'letter': 'm'})
-            }
-            if (formula.a) {
-                let reload_stat = stat_calculator(investment_stats[4188031367], weapon_stat_group[4188031367], 4188031367)
-                let reload_time = reload_calculator(formula, reload_stat, 1)
-                extra_stats.push({'name': 'Reload', 'value': reload_time, 'letter': 's'})
-            }
-            final_stats['extra_stats'] = extra_stats
+        function investment() {
+            return item.investmentStats?.reduce((acc, stat) => {
+                if(clarity_random_data.stat_blacklist[stat.statTypeHash]) return acc// ignore these stat id's
+                return ({ ...acc, [stat.statTypeHash]: {value: stat.value, conditional: stat.isConditionallyActive}})
+            }, {})
         }
-        return final_stats
+
+        return {
+            'name': item.displayProperties.name,
+            'icon': item.displayProperties.icon.replace('/common/destiny2_content/icons/', ''),
+            'item_type': (item.displayProperties.name.match(/^Tier [1-9] Weapon$|^Masterwork$| Catalyst$/)) ? 'masterwork' : 'mod_perk',
+            'description': description(),
+            'investment': investment(),
+            'stats': {
+                'reload': community_data[item.hash]?.stats?.reload,
+                'range': community_data[item.hash]?.stats?.range,
+                'handling': community_data[item.hash]?.stats?.handling,
+                'zoom': community_data[item.hash]?.stats?.zoom,
+            }
+        }
     }
-    localStorage.setItem('clarity_data', JSON.stringify(new_item_list))
-    console.timeEnd('timer')
+}
+
+function user_data() {
+    clarity_user_data = {}
+    Promise.all([
+        fetch_bungie('user_info'),
+        indexed_DB('keyval-store', 'keyval', 'd2-manifest')
+    ])
+    .then(data => {
+        if(!data[0]) return
+        let parser_start = Date.now()
+        let user_data = data[0].Response
+        let manifest = {
+            inventory_item: data[1].DestinyInventoryItemDefinition,
+            stat_group:     data[1].DestinyStatGroupDefinition,
+            stat_names:     data[1].DestinyStatDefinition,
+            item_category:  data[1].DestinyItemCategoryDefinition,
+            damage_type:    data[1].DestinyDamageTypeDefinition,
+            plug_sets:      data[1].DestinyPlugSetDefinition,
+            socket_type:    data[1].DestinySocketTypeDefinition,
+        }
+
+        let all_items = user_data.profileInventory.data.items
+        Object.values(user_data.characterInventories.data).forEach(x => all_items = all_items.concat(x.items))
+        Object.values(user_data.characterEquipment  .data).forEach(x => all_items = all_items.concat(x.items))
+
+        for (let i = 0; i < all_items.length; i++) {
+            const unique_id = all_items[i].itemInstanceId
+            if(!unique_id) continue // check if it has instanced (unique) id
+            let item = manifest.inventory_item[all_items[i].itemHash]
+            if (item.itemType == 3) {
+                clarity_user_data[unique_id] = get_unique_items(unique_id, user_data, manifest, all_items[i].itemHash, 'weapon'/*, all_items[i].state*/)
+            }
+            if (item.itemType == 2  && item.inventory.tierTypeName == 'Exotic') {
+                clarity_user_data[unique_id] = get_unique_items(unique_id, user_data, manifest, all_items[i].itemHash, 'armor')
+            }
+        }
+        console.log(`%c User data parsed in: ${Date.now() - parser_start} ms`, 'border: 3px solid green; padding: 2px')
+    })
+    function get_unique_items(unique_id, user_data, manifest, id, type, state) {
+        function check_type(id) {
+            let perk_types = clarity_random_data.perk_types
+            if (perk_types[manifest.inventory_item[id].plug.plugCategoryHash]) return true
+            return false
+        }
+        const sockets = {
+            perks: {
+                active() {
+                    return user_data.itemComponents.sockets.data[unique_id].sockets
+                    .flatMap(perk => {
+                        return (
+                            perk.isEnabled &&
+                            perk.isVisible &&
+                            check_type(perk.plugHash)
+                        ) ? perk.plugHash : []
+                    })
+                },
+                rolled() {
+                    const data = user_data.itemComponents.reusablePlugs.data[unique_id]?.plugs
+                    if(!data) return
+                    let perk_array = Object.values(data)
+                    .map(perk_slot => {
+                        return perk_slot.flatMap(perk => {
+                            return (
+                                perk.canInsert &&
+                                perk.enabled &&
+                                check_type(perk.plugItemHash)
+                            ) ? perk.plugItemHash : []
+                        })
+                    })
+                    .filter(array => array.length != 0)
+
+                    return (perk_array.length != 0) ? perk_array : undefined
+                }
+            },
+            masterwork() {
+                return user_data.itemComponents.sockets.data[unique_id].sockets.find(masterwork => {
+                    let x = manifest.inventory_item[masterwork.plugHash]?.plug.plugCategoryIdentifier
+                    if(!x) return false
+                    return (x.includes('masterwork') && !x.includes('tracker'))
+                })?.plugHash
+            },
+            mod() {
+                return user_data.itemComponents.sockets.data[unique_id].sockets.find(perks_mods =>
+                    manifest.inventory_item[perks_mods.plugHash]?.itemTypeDisplayName == 'Weapon Mod'
+                )?.plugHash
+            }
+        }
+        try {
+            clarity_manifest[id].name
+        } catch  {
+            id
+            debugger
+        }
+        if (type == 'weapon') return {
+            'name': clarity_manifest[id].name,
+            'id': id,
+            'item_type': type,
+            // 'exotic_masterwork': (state == 5 || state == 4) ? true : false,
+            'sockets': {
+                'perks': {
+                    'active': sockets.perks.active(),
+                    'rolled': sockets.perks.rolled()
+                },
+                'masterwork': sockets.masterwork(),
+                'mod': sockets.mod()
+            }
+        }
+        return {
+            'name': clarity_manifest[id].name,
+            'id': id,
+            'item_type': type,
+            'sockets': {
+                'perks': user_data.itemComponents.sockets.data[unique_id].sockets[11].plugHash
+            }
+        }
+
+    }
 }

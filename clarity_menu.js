@@ -1,31 +1,15 @@
-if (local_get('clarity_locations')) {
-    info_button_observer()
-} else {window.addEventListener('storage', _ => {if (local_get('clarity_locations')) info_button_observer()} )}
-function info_button_observer() {
-    let jd = local_get('clarity_locations').clarity_menu
-    let observer = new MutationObserver((_o, quit) => {
-        let header = document.querySelector(jd.dim_header)
-        if (header){
-            info_button(jd)
-            quit.disconnect()
-        }
-    })
-    observer.observe(document, {
-        childList: true,
-        subtree: true
-    })
-}
+window.addEventListener('header_ready', () => info_button())
 //  (っ◔◡◔)っ
 document.querySelector('html').append(element_creator('style', {'id': 'clarity_dark_mode'})) // create place for dark mode css
 function info_button() {
-    const jd = local_storage('clarity_locations').clarity_menu
+    const jd = local_storage('clarity_settings').class_names.locations
     let clarity_menu = element_creator('div', {'textContent': 'Clarity menu', 'className': 'Clarity_menu_button'}) // create button 'Clarity menu'
 
     let new_menu       = element_creator('div',{'className':'Clarity_new_menu'})
     let sheet_img      = element_creator('img',{}, {'img': 'images/spreadsheet.png'})
-    let range_calc_img = element_creator('img',{}, {'img': 'images/range_calc.png'})
-    let pip1n_img      = element_creator('img',{}, {'img': 'images/pip1n.png'})
-    let court_img      = element_creator('img',{}, {'img': 'images/court.png'})
+    // let range_calc_img = element_creator('img',{}, {'img': 'images/range_calc.png'})
+    // let pip1n_img      = element_creator('img',{}, {'img': 'images/pip1n.png'})
+    // let court_img      = element_creator('img',{}, {'img': 'images/court.png'})
     let gunsmith_img   = element_creator('img',{}, {'img': 'images/gunsmith.png'})
     function create_top_text() {
         let top_text_box = element_creator('div', {'className': 'Clarity_menu_top_text'})
@@ -36,19 +20,61 @@ function info_button() {
         top_text_box.append(top_text)
         return top_text_box
     }
-    function create_sources_box() {
-        let sources_box = element_creator('div', {'className': 'Clarity_links_box'})
 
-        let sources_box_text = element_creator('div', {'textContent': 'Links to Sources used creating this extension', 'className': 'Clarity_menu_box_name'})
+    let sources_box = fragment_creator([
+        {
+            // ele_type: 'div',
+            className: 'Clarity_links_box',
+            append: [
+                { // sources_box_text
+                    // ele_type: 'div',
+                    textContent: 'Links to Sources used creating this extension',
+                    className: 'Clarity_menu_box_name'
+                },
+                { // Pip1n img
+                    ele_type: 'img',
+                    local_img: 'images/pip1n.png',
+                },
+                { // Pip1n
+                    ele_type: 'a',
+                    textContent: 'Mods, Abilities, and More by Pip1n',
+                    target: '_blank',
+                    href: 'https://docs.google.com/spreadsheets/d/1WaxvbLx7UoSZaBqdFr1u32F2uWVLo-CJunJB4nlGUE4/'
+                },
+                { // Court img
+                    ele_type: 'img',
+                    local_img: 'images/court.png',
+                },
+                { // Court
+                    ele_type: 'a',
+                    textContent: 'Damage Buffs, Debuffs, and Modifiers by Court',
+                    target: '_blank',
+                    href: 'https://docs.google.com/spreadsheets/d/1i1KUwgVkd8qhwYj481gkV9sZNJQCE-C3Q-dpQutPCi4/'
+                },
+                { // Van_Holden & sereni img
+                    ele_type: 'img',
+                    local_img: 'images/sereni.png',
+                },
+                { // Van_Holden & sereni
+                    ele_type: 'a',
+                    textContent: 'Reload Speed started by Van Holden',
+                    target: '_blank',
+                    href: 'https://docs.google.com/spreadsheets/d/13heG_rKRB9UU5DpvRbl1q11WGFs8QPPzpFA60uIOT8w/'
+                },
+                { // Mmonx img
+                    ele_type: 'img',
+                    local_img: 'images/range_calc.png',
+                },
+                { // Mmonx
+                    ele_type: 'a',
+                    textContent: 'Weapon Range Calculator by Mmonx',
+                    target: '_blank',
+                    href: 'https://destinyindepth.com/range_calculator/'
+                },
+            ]
+        }
+    ])
 
-        let Pip1n      = element_creator('a', {'textContent': 'Mods, Abilities, and More by Pip1n',            'target': '_blank', 'href': 'https://docs.google.com/spreadsheets/d/1WaxvbLx7UoSZaBqdFr1u32F2uWVLo-CJunJB4nlGUE4/'})
-        let Court      = element_creator('a', {'textContent': 'Damage Buffs, Debuffs, and Modifiers by Court', 'target': '_blank', 'href': 'https://docs.google.com/spreadsheets/d/1i1KUwgVkd8qhwYj481gkV9sZNJQCE-C3Q-dpQutPCi4/'})
-        let Van_Holden = element_creator('a', {'textContent': 'Reload Speed started by Van Holden',            'target': '_blank', 'href': 'https://docs.google.com/spreadsheets/d/13heG_rKRB9UU5DpvRbl1q11WGFs8QPPzpFA60uIOT8w/'})
-        let Mmonx      = element_creator('a', {'textContent': 'Weapon Range Calculator by Mmonx',              'target': '_blank', 'href': 'https://destinyindepth.com/range_calculator/'})
-
-        sources_box.append(sources_box_text, pip1n_img, Pip1n, court_img, Court, sheet_img.cloneNode(), Van_Holden, range_calc_img, Mmonx)
-        return sources_box
-    }
     function create_useful_links_box() {
         let useful_links_box = element_creator('div', {'className': 'Clarity_links_box'})
 
@@ -108,7 +134,7 @@ function info_button() {
         return button
     }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    new_menu.append(create_top_text(), create_sources_box(), create_useful_links_box(), create_settings_box(), create_dark_mode_settings_box())
+    new_menu.append(create_top_text(), sources_box, create_useful_links_box(), create_settings_box(), create_dark_mode_settings_box())
     clarity_menu.append(new_menu)
     document.querySelector(jd.dim_header).prepend(clarity_menu)
 
@@ -125,26 +151,31 @@ function open_close() {
         menu_window.classList.remove('Clarity_show_menu')
     })
 }
-if (local_storage('clarity_locations').clarity_menu && local_storage('clarity_settings').dark_mode) dark_mode()
+if (local_storage('clarity_settings').dark_mode) dark_mode()
 function dark_mode(){
-    const jd = local_storage('clarity_locations').clarity_menu
-    const colors = local_storage('clarity_settings').dark_mode_colors
+    const settings = local_storage('clarity_settings')
+    const colors = settings.dark_mode_colors
+    const jd = settings.class_names.styles
 
     document.documentElement.style.setProperty('--clarity_background_1', colors.background_color_1);
     document.documentElement.style.setProperty('--clarity_background_2', colors.background_color_2);
     document.documentElement.style.setProperty('--clarity_masterwork_item', colors.masterwork_item);
     document.documentElement.style.setProperty('--clarity_masterwork_item_text', colors.masterwork_item_text);
 
+    const background_color = `{background: radial-gradient(circle at 50% 70px, var(--clarity_background_1) 0%, var(--clarity_background_2) 100%); background-position: center top; background-repeat: no-repeat; background-size: 100vw 100vh;}`
     document.getElementById('clarity_dark_mode').textContent = `
-    ${jd.main_background}                  {background: radial-gradient(circle at 50% 70px, var(--clarity_background_1) 0%, var(--clarity_background_2) 100%); background-position: center top; background-repeat: no-repeat; background-size: 100vw 100vh;}
-    ${jd.farming_mode_background}          {background: radial-gradient(circle at calc(50% - 305px) 70px, var(--clarity_background_1) 0%, var(--clarity_background_2) 100%); background-size: 100vw 100vh;}
-    ${jd.organizer_background}             {background-color: hsl(0deg, 0%, 0%, 0.3);}
-    ${jd.background_under_item}            {background-color: hsla(0, 0%, 0%, 0); color: hsl(0, 0%, 85%);}
-    ${jd.background_under_masterwork_item} {background-color: var(--clarity_masterwork_item); color: var(--clarity_masterwork_item_text);}
-    ${jd.item_image}                       {border: 1px solid hsla(0, 0%, 0%, 0);;}
-    ${jd.masterwork_item_image}            {border: 1px solid var(--clarity_masterwork_item);}
-    ${jd.thumbs_up_icon}                   {color: hsl(202, 81%, 39%);}
+    ${jd.background_color[0]} ${background_color}
+    ${jd.background_color[1]} ${background_color}
+    ${jd.background_color[2]} ${background_color}
+    ${jd.background_color[3]} ${background_color}
+
+    ${jd.items.background}            {background-color: hsla(0, 0%, 0%, 0); color: hsl(0, 0%, 85%);}
+    ${jd.items.masterwork_background} {background-color: var(--clarity_masterwork_item); color: var(--clarity_masterwork_item_text);}
+    ${jd.items.item_image_border}     {border: 1px solid hsla(0, 0%, 0%, 0);}
+    ${jd.items.thumbs_up_icon}        {color: hsl(202, 81%, 39%);}
     `
+    // ${jd.organizer_background}    {background-color: hsl(0deg, 0%, 0%, 0.3);}
+    // ${jd.masterwork_item_image}   {border: 1px solid var(--clarity_masterwork_item);}
 }
 function dark_mode_toggle() {
     let dark_mode_button = document.getElementById('dark_mode_toggle')

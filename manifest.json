@@ -1,41 +1,53 @@
 {
     "manifest_version": 2,
     "name": "Clarity, A DIM Companion",
-    "version": "1.5.16",
+    "version": "1.6.6",
     "author": "Icemourne",
-    "description": "Bringing the truth to light in their gear management. Extension aimed to improve Destiny item manager",
+    "description": "This extension expands upon the capabilities of Destiny Item Manager (DIM) by providing new features and better descriptions.",
     "homepage_url": "https://github.com/Ice-mourne/DIM_Better_name_pending",
     "icons": { "128": "images/icon.png" },
     "content_scripts": [
         {
             "matches": ["https://app.destinyitemmanager.com/*", "https://beta.destinyitemmanager.com/*"],
             "js": [
-                "tools/element_creator.js",
-                "tools/random_tools.js",
+                "tools/storage.js",
+                "tools/random.js",
+                "tools/random_data.js",
 
+                "main_data_handling/find_classNames.js",
                 "main_data_handling/flow_handler.js",
-                "main_data_handling/random_functions.js",
                 "main_data_handling/auth.js",
+
+                "main_data_handling/work_space.js",
+
                 "main_data_handling/handle_data.js",
 
-                "d2_gunsmith.js",
+
                 "clarity_menu.js",
-                "stuff.js"
+                "stuff.js",
+
+                "adding_data/armor/description.js",
+
+                "adding_data/weapon/stats.js",
+                "adding_data/weapon/description.js",
+                "adding_data/weapon/numbers.js"
             ],
             "css": [
-                "styles/css/style.css",
-                "styles/css/d2_gunsmith.css",
                 "styles/css/clarity_menu.css",
+                "styles/css/auth.css",
+
+                "styles/css/descriptions.css",
+
                 "styles/css/weapon_perks.css",
-                "styles/css/weapons.css"
+
+                "styles/css/weapons.css",
+                "styles/css/armor.css"
             ]
         }
     ],
     "web_accessible_resources": ["/images/*"],
     "permissions": [
-        "https://ice-mourne.github.io/Clarity-A-DIM-Companion-json/*",
         "https://ice-mourne.github.io/Database-for-Clarity/Database/*",
-        "https://www.bungie.net/*",
-        "webRequest"
+        "https://www.bungie.net/*"
     ]
 }
