@@ -97,7 +97,7 @@ async function fetch_bungie(auth_type, code) {
 			// 'authorization': `Bearer ${auth?.access_token}`
 		},
 		user_info: {
-			'link': `Destiny2/${user?.platform}/Profile/${user?.id}/?components=102,201,205,304,305,310`,
+			'link': `Destiny2/${user?.platform}/Profile/${user?.id}/?components=100,102,103,200,201,202,205,300,301,305,306,307,800,308,310,309,900,1100,1200`,//102,201,205,304,305,310`,
 			'method': 'GET',
 			'authorization': `Bearer ${auth?.access_token}`
 		}
