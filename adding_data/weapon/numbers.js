@@ -255,14 +255,6 @@ class Wep_stats {
             }), {}
         )
     }
-    // calculate_stats(type_list, subtract) {
-    //     let perk_list = this.create_perk_list(type_list)
-
-    //     if(subtract) return get_item_stats(this.static_item, perk_list)
-
-    //     this.stats = get_item_stats(this.static_item, perk_list)
-    //     return this
-    // }
     subtract_stats() {
         this.subtracted_stats = Object.entries(this.subtracted_stats)
         .reduce(

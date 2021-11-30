@@ -7,33 +7,6 @@ async function fetch_database(file) {
     })
 }
 
-/**
-    ** Creates HTML fragment
-    * @param {array} properties Array of objects with properties
-    * @returns {HTMLElement} HTML Fragment containing HTML Elements
-    ** fragment_creator([
-    **   {
-    **       ele_type: 'string' || ele_ns: {ns: name space url, type: 'string'} || `don't include and it will default to div`,
-    **       local_img: img location // used for browser extensions
-    **       attribute name: 'string', // attribute name => for example div, id, img, style, ect...
-    **       event_listener: [
-    **          {type: 'string', fn: callback function}, // add as many as you want
-    **       ],
-    **       set_attribute: [
-    **          {name: 'string', value: 'string'}, // add as many as you want
-    **       ],
-    **       append: [
-    **          {
-    **              // same as previously but everything hare will be appended to this element
-    **          }
-    **       ]
-    **   }
-    **   {
-    **      // new object new element
-    **      // values same as above
-    **   }
-    ** ])
-*/
 function fragment_creator(properties) {
     let fragment = document.createDocumentFragment()
     create_element(properties, fragment)

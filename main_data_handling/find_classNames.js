@@ -1,30 +1,4 @@
 function get_class_names(start_flow_handler) {
-    // ClassNames can change and break extensions functionally
-    // This will update classNames as needed.
-
-    /* let template = {
-        styles: {
-            background_color: [],
-            items: {
-                masterwork_background: '',
-                background: '',
-                thumbs_up_icon: '.app-icon.no-pointer-events.fas.fa-thumbs-up',
-                item_image_border: '.item-img'
-            }
-        },
-        locations: {
-            dim_header: '',
-            refresh_button: '.app-icon.no-pointer-events.fas.fa-sync',
-            item_info: {
-                perks: '',
-                stats: '',
-                compare: '',
-                name: '',
-                description: ''
-            }
-        }
-    } */
-
     window.addEventListener('inventory_ready', update_classNames_1)
     function update_classNames_1() {
         let old_background_color = 'radial-gradient(circle at 50% 70px, rgb(57, 57, 86) 0%, rgb(22, 22, 39) 100%)'

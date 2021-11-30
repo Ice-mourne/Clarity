@@ -307,25 +307,6 @@ function handle_data() {
                     textContent: item.displayProperties.description
                 }]
             }
-            //else if(item.investmentStats.length != 0) {
-            //     return item.investmentStats.map(stat => {
-            //         return {
-            //             ele_type: 'div',
-            //             className: 'Clarity_stat',
-            //             append: [
-            //                 {
-            //                     ele_type: 'div',
-            //                     textContent: `{stat-id=${stat.statTypeHash}} `
-            //                 },
-            //                 {
-            //                     ele_type: 'div',
-            //                     textContent: clarity_random_data.stat_names[stat.statTypeHash]
-            //                 }
-            //             ]
-            //         }
-            //     })
-            // }
-            // return (community_description) ? covert_description(community_description) :
         }
         function investment() {
             return item.investmentStats?.reduce((acc, stat) => {
