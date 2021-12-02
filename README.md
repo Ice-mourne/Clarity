@@ -13,7 +13,7 @@
 - Clarity is available for Chrome and other Chromium-Based Browsers like Opera, MS Edge, and Brave here: [Clarity, A DIM Companion](https://d2clarity.page.link/chrome)
 
 - We might rerelease Clarity on the Firefox store later but until then, we suggest using it with a different, Chromium-based browser like Edge as an application.
- - Add the extension to Edge from the Chrome Web Store, go to the DIM website and log in. After doing that, go to Edge Settings (three horizontal lines on the top right), select "Apps" in the menu, and click "Install Destiny Item Manager".
+-- Add the extension to Edge from the Chrome Web Store, go to the DIM website and log in. After doing that, go to Edge Settings (three horizontal lines on the top right), select "Apps" in the menu, and click "Install Destiny Item Manager".
 
 # Does Clarity support mobile? - No
 - Unfortunately, it doesn't work on mobile ever since we lost access to our Firefox Developer account.
