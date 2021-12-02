@@ -12,22 +12,21 @@
 # Can I get this extension on my browser store? - Yes, on the Chrome Web Store
 - Clarity is available for Chrome and other Chromium-Based Browsers like Opera, MS Edge, and Brave here: [Clarity, A DIM Companion](https://d2clarity.page.link/chrome)
 
-- We might rerelease Clarity on the Firefox store later but until then, we suggest using it with a different, Chromium-based browser like Edge as an application.
--- Add the extension to Edge from the Chrome Web Store, go to the DIM website and log in. After doing that, go to Edge Settings (three horizontal lines on the top right), select "Apps" in the menu, and click "Install Destiny Item Manager".
+- We might rerelease Clarity on the Firefox Store at a later date but until then, we suggest using it with a different, Chromium-based browser like Edge as a downloaded browser application. Here's how to do that:
+  - Add the extension to **Edge** from the [Chrome Web Store](https://d2clarity.page.link/chrome), go to the [DIM website](https://beta.destinyitemmanager.com) and log in. After doing that, go to **Edge Settings** (three horizontal lines on the top right), select **"Apps"** in the menu, and click **"Install Destiny Item Manager"**.
 
 # Does Clarity support mobile? - No
 - Unfortunately, it doesn't work on mobile ever since we lost access to our Firefox Developer account.
-- We would love to support mobile devices but we do not want to mess with the Firefox store again so a dedicated mobile app would be preferred. But we simply don't have the time and resources for that at the moment so don't get your hopes up.
+- We do not support mobile devices currently but would love to eventually have a standalone application. Unfortunately, we simply do not have the time and resources for that at the moment so don't get your hopes up.
 
 # Manual Installation
 - Join our [Discord Server](https://d2clarity.page.link/discord)
 - The latest version and the Installation Guide can always be found there.
-- New releases always come out with a delay on the Chrome Web Store so here is where you can grab them the earliest.
-- In case you don't want to join Discord you can get maybe the latest version [here](https://github.com/Ice-mourne/Clarity-A-DIM-Companion/releases) file called 'Source code(zip)'
-- I'm just bad at keeping everything updated
+- New releases always come out with a small delay on the Chrome Web Store so there is where you can grab them the earliest.
+- You can also grab the latest version [here](https://github.com/Ice-mourne/Clarity-A-DIM-Companion/releases). It will be the file called **'Source code  (zip)'**.
 
 # Credits
 - Big thanks to AE×GS from Massive Breakdown discord for paying the 5$ fee needed for a Chrome developer account
 - Big thanks to Icemourne from the Clarity discord for making me pay the $5 fee needed for a Chrome developer account - Shadow
-- Readme was updated by my Discord moderator, Fading Shadow
+- The Readme was updated by my Discord moderator, Fading Shadow
 - Big thanks to Fading Shadow for the help with the descriptions and fixing the mess I call my Discord server
