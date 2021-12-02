@@ -7,14 +7,10 @@
 - DIM Dark Mode with custom color options
 - Improved Recoil Direction Display
 - UI reworks
-- And more upcoming features in the works (Check the [Discord](https://d2clarity.page.link/discord) for more details)
+- Additional features are constantly in the works (Check the [Discord](https://d2clarity.page.link/discord) for more details)
 
 # Can i get this extension on my browser store? - Yes, on the Chrome Web Store
 - Clarity is available for Chrome and other Chromium-Based Browsers like Opera, MS Edge, and Brave here: [Clarity, A DIM Companion](https://d2clarity.page.link/chrome)
-- Big thx to AE×GS from Massive Breakdown discord for paying 5$ fee needed for a Chrome developer account
-- Big thx to Icemourne from the Massive Breakdown discord for making me pay the $5 fee needed for a Chrome developer account
-- Readme was updated by my discord moderator Fading Shadow
-- Big thx to Fading Shadow for help with all descriptions and fixing mess i call my discord server
 
 # Does Clarity support mobile? - No
 - Unfortunately it doesn't work on mobile ever since we lost access to our firefox Developer account.
@@ -24,5 +20,11 @@
 - Join our [Discord Server](https://d2clarity.page.link/discord)
 - The latest version and the Installation Guide can always be found there.
 - New releases always come out with a delay on the Chrome Web Store so here is where you can grab them the earliest.
-- Incase you don't want to join discord you can get maybe the latest version [here](https://github.com/Ice-mourne/Clarity-A-DIM-Companion/releases) file called 'Source code(zip)'
+- In case you don't want to join discord you can get maybe the latest version [here](https://github.com/Ice-mourne/Clarity-A-DIM-Companion/releases) file called 'Source code(zip)'
 - I'm just bad at keeping everything updated
+
+# Credits
+- Big thanks to AE×GS from Massive Breakdown discord for paying 5$ fee needed for a Chrome developer account
+- Big thanks to Icemourne from the Clarity discord for making me pay the $5 fee needed for a Chrome developer account - Shadow
+- Readme was updated by my Discord moderator, Fading Shadow
+- Big thanks to Fading Shadow for the help with the descriptions and fixing the mess I call my Discord server
