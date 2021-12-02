@@ -22,7 +22,7 @@
 # Manual Installation
 - Join our [Discord Server](https://d2clarity.page.link/discord)
 - The latest version and the Installation Guide can always be found there.
-- New releases always come out with a small delay on the Chrome Web Store so there is where you can grab them the earliest.
+- New releases always come out with a small delay on the Chrome Web Store so that is where you can grab the new updates earlier.
 - You can also grab the latest version [here](https://github.com/Ice-mourne/Clarity-A-DIM-Companion/releases). It will be the file called **'Source code  (zip)'**.
 
 # Credits
