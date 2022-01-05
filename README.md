@@ -10,7 +10,7 @@
 - Additional features are constantly in the works (Join our [Discord Server](https://d2clarity.page.link/discord) for more details)
 
 # Where can I download Clarity?
-- Clarity is available for Chrome and other Chromium-Based Browsers like Opera, Microsoft Edge, and Brave here: [Clarity, A DIM Companion](https://d2clarity.page.link/chrome)
+- Clarity is available for Chrome and other Chromium-Based Browsers like Opera, Microsoft Edge, and Brave on the [Chrome Web Store](https://d2clarity.page.link/chrome)
 - You might have to allow external browser store downloads on some Chromium-Based browsers so just click the button/popup and you should be fine.
 - We recommend using the [Beta version of DIM](https://beta.destinyitemmanager.com) for the latest features available. 
 
