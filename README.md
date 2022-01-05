@@ -3,7 +3,7 @@
 
 # Features
 - Extremely detailed Perk and Mod descriptions
-- In-Game Range, Reload Speed, Draw Speed, and Stow speed calculators for weapons
+- In-Game Range, Reload Speed, Ready Speed, and Stow speed calculators for weapons
 - DIM Dark Mode with custom color options
 - Improved Recoil Direction Display
 - UI reworks
