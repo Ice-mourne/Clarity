@@ -19,7 +19,7 @@
   - Go to the [Beta DIM website](https://beta.destinyitemmanager.com) and log in.
   - Click the button at the end of the Address Bar to install DIM as an application. Alternatively, open the **Edge Settings** dropdown menu, select **"Apps"**, and click **"Install Destiny Item Manager"**.
 
-# Does Clarity have mobile support? - No
+# Does Clarity have mobile support?
 - We do not support mobile devices currently but would love to eventually have a standalone application. Unfortunately, we simply do not have the time and resources for that at the moment so don't get your hopes up.
 
 # Manual Installation
@@ -27,6 +27,15 @@
 - The latest version and the Installation Guide can always be found there.
 - New releases always come out with a small delay on the Chrome Web Store so that is where you can grab the new updates earlier.
 - You can also grab the latest version [here](https://github.com/Ice-mourne/Clarity-A-DIM-Companion/releases). It will be the file called **'Source code  (zip)'**.
+
+# Our Links
+- Clarity Website: https://d2clarity.wordpress.com/
+  - Central front-end hub: Links, Install Guide, About Page, Developer Logs
+- Clarity Discord Server: https://d2clarity.page.link/discord
+  - User Support, Bug Reports, Developer Logs, Planned Feature List, Feature Requests
+- Clarity Chrome Store Listing: https://d2clarity.page.link/chrome
+  - Download Clarity from here
+- This GitHub Page: https://d2clarity.page.link/github
 
 # Credits
 - Big thanks to AE×GS from Massive Breakdown discord for paying the 5$ fee needed for a Chrome developer account
