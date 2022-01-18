@@ -6,6 +6,9 @@
     "description": "This extension expands upon the capabilities of Destiny Item Manager (DIM) by providing new features and better descriptions.",
     "homepage_url": "https://github.com/Ice-mourne/DIM_Better_name_pending",
     "icons": { "128": "images/icon.png" },
+    "background": {
+        "scripts": ["background.js"]
+    },
     "content_scripts": [
         {
             "matches": ["https://app.destinyitemmanager.com/*", "https://beta.destinyitemmanager.com/*"],
@@ -45,6 +48,9 @@
     "web_accessible_resources": ["/images/*"],
     "permissions": [
         "https://ice-mourne.github.io/Database-for-Clarity/Database/*",
-        "https://www.bungie.net/*"
+        "https://www.bungie.net/*",
+        "http://www.light.gg/*",
+        "activeTab",
+        "tabs"
     ]
 }
