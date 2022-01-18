@@ -16,6 +16,7 @@
                 "tools/storage.js",
                 "tools/random.js",
                 "tools/random_data.js",
+                "tools/jquery.js",
 
                 "main_data_handling/find_classNames.js",
                 "main_data_handling/flow_handler.js",
@@ -49,7 +50,7 @@
     "permissions": [
         "https://ice-mourne.github.io/Database-for-Clarity/Database/*",
         "https://www.bungie.net/*",
-        "http://www.light.gg/*",
+        "https://www.light.gg/*",
         "activeTab",
         "tabs"
     ]

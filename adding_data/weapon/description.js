@@ -1,6 +1,6 @@
 window.addEventListener('weapon_pressed', e => {
     open_community_rolls(e.detail)
-    add_weapon_perks(e.detail) 
+    add_weapon_perks(e.detail)
 })
 
 function open_community_rolls(unique_id) {
@@ -9,14 +9,47 @@ function open_community_rolls(unique_id) {
     if (itemid) {
         link = 'https://www.light.gg/db/items/' + itemid + '#community-average'
         console.log('Item popup pressed , light.gg link : ' + link)
-        let w = 350
-        let h = 570
-        let left = (screen.width/2)-(w/2)
-        let top = (screen.height/2)-(h/2)
+        
+        let w = 350, h = 570, left = (screen.width/2)-(w/2), top = (screen.height/2)-(h/2)
         let windowData = {'url': link, 'type': 'popup', 'width': w, 'height': h, 'left': left, 'top': top}
-        chrome.runtime.sendMessage({open_popup: windowData}, function(response) {
-          console.log("got back");
-        });
+
+        chrome.runtime.sendMessage({open_popup: windowData}, 
+            (openPopUpResponse) => {
+                console.log("open_popup returned")
+                console.log(openPopUpResponse)
+
+                chrome.runtime.sendMessage({ get_community_rolls: { tabId: openPopUpResponse.tabId } }, 
+                    (communityRollsResponse) => {
+                        console.log("get_community_rolls returned")
+                        console.log(communityRollsResponse)
+
+                        let rollsHtml = $($.parseHTML( communityRollsResponse.rollsDivHtml ) )
+
+                        $.each(rollsHtml.children(), (perkIndex, perkData) => { 
+                            $(perkData).children().each((i, perkDetails) => {
+                                
+                                switch(perkDetails.className) {
+                                    case 'percent':
+                                        console.log(perkDetails.innerText)
+                                        break;
+
+                                    case 'relative-percent-container':
+                                        console.log(perkDetails.children[0].style.backgroundColor)
+                                        break;
+
+                                    case 'item show-hover':
+                                        console.log(perkDetails.getAttribute('data-id'))
+                                        break;
+                                }
+
+                            })
+                        })
+
+                        console.log(nodeNames)
+                    }
+                )
+            }
+        );
     }
 }
 
