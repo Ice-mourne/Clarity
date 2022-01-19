@@ -7,13 +7,13 @@ function open_community_rolls(unique_id) {
     const itemid = clarity_user_data[unique_id]?.id
 
     if (itemid) {
-        link = 'https://www.light.gg/db/items/' + itemid + '#community-average'
+        let link = 'https://www.light.gg/db/items/' + itemid + '#community-average'
         console.log('Item popup pressed , light.gg link : ' + link)
         
         let w = 350, h = 570, left = (screen.width/2)-(w/2), top = (screen.height/2)-(h/2)
         let windowData = {'url': link, 'type': 'popup', 'width': w, 'height': h, 'left': left, 'top': top}
 
-        chrome.runtime.sendMessage({open_popup: windowData}, 
+        chrome.runtime.sendMessage({ open_popup: windowData }, 
             (openPopUpResponse) => {
                 console.log("open_popup returned")
                 console.log(openPopUpResponse)
@@ -25,27 +25,111 @@ function open_community_rolls(unique_id) {
 
                         let rollsHtml = $($.parseHTML( communityRollsResponse.rollsDivHtml ) )
 
+                        let rollData = []
+                        let rollIndex = 0
+                        let column = 0
+                        $(rollsHtml).each((colIndex, elem) => {
+
+                            if(elem instanceof HTMLUListElement){
+                                column++;
+                            } else {
+                                return
+                            }
+
+                            $(elem).children('li').each((rowIndex, liElem) => {
+
+                                rollData[rollIndex] = { }
+
+                                $(liElem).children().each((i, perkDetails) => {
+                                
+                                    switch(perkDetails.className) {
+                                        case 'percent':
+                                            console.log(perkDetails.innerText)
+                                            rollData[rollIndex] = {...{
+                                                percent: perkDetails.innerText,
+                                                column: column,
+                                                place : rowIndex + 1
+                                            }}
+                                            break;
+    
+                                        case 'relative-percent-container':
+                                            console.log(perkDetails.children[0].style.backgroundColor)
+                                            rollData[rollIndex].color = perkDetails.children[0].style.backgroundColor
+                                            break;
+    
+                                        case 'item show-hover':
+                                            console.log(perkDetails.getAttribute('data-id'))
+                                            rollData[rollIndex].perkId = perkDetails.getAttribute('data-id')
+                                            break;
+                                    }
+    
+                                })
+
+                                rollIndex++
+                            })
+                        })
+
+/*
                         $.each(rollsHtml.children(), (perkIndex, perkData) => { 
+
+                            rollData[perkIndex] = { }
+                            rollPlace = 1;
+
                             $(perkData).children().each((i, perkDetails) => {
                                 
                                 switch(perkDetails.className) {
                                     case 'percent':
                                         console.log(perkDetails.innerText)
+                                        rollData[perkIndex].percent = perkDetails.innerText
+
+                                        //calculate roll place
+                                        if (perkIndex > 0 && rollData[perkIndex-1].percent) {
+                                            let curAvg = parseFloat(rollData[perkIndex].percent)
+                                            let prevAvg = parseFloat(rollData[perkIndex-1].percent)
+
+                                            if(curAvg > prevAvg) {
+
+                                            }
+                                        }
+
                                         break;
 
                                     case 'relative-percent-container':
                                         console.log(perkDetails.children[0].style.backgroundColor)
+                                        rollData[perkIndex].color = perkDetails.children[0].style.backgroundColor
                                         break;
 
                                     case 'item show-hover':
                                         console.log(perkDetails.getAttribute('data-id'))
+                                        rollData[perkIndex].perkId = perkDetails.getAttribute('data-id')
                                         break;
                                 }
 
                             })
                         })
+*/
 
-                        console.log(nodeNames)
+                        console.log(rollData)
+
+                        const unique_item = clarity_user_data[unique_id]
+                        const static_item = clarity_manifest[unique_item.id]
+
+                        const rolled_perks = unique_item.sockets.perks.rolled || static_item.sockets.perks.curated.map(list => list.map(perk => perk.id)) || unique_item.sockets.perks.active.map(perk => [perk])
+                        const active_perks = unique_item.sockets.perks.active
+
+                        for (const perkId of rolled_perks.flat()) {
+
+                            let rdata = rollData.filter( roll => roll.perkId == perkId)
+
+                            let perkElem = $(`.Clarity_perk#${perkId}`)
+
+                            if (perkElem && perkElem.length && rdata && rdata.length) {
+                                perkElem.children('.Clarity_icon_container')[0].style.borderColor = rdata[0].color
+                                perkElem.children('.Clarity_icon_container')[0].style.borderWidth = 'medium'
+                                perkElem.children('.Clarity_perk_name')[0].innerText += ` [ ${rdata[0].place} - ${rdata[0].percent} ]`
+                                //perkElem[0].style.backgroundColor = rdata.color
+                            }
+                        }
                     }
                 )
             }

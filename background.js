@@ -1,11 +1,14 @@
 var lastTabId;
+var lastUrl;
 
 var MyPopupWindow = () => {
-    //TODO: move popup logic here
+    //TODO: move all popup logic here
 }
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
+
+        // Open pop-up handler
         if (request.open_popup) {
 
             let createPopup = (windowData) => {
@@ -14,9 +17,11 @@ chrome.runtime.onMessage.addListener(
                         
                         if (window) {
                             lastTabId = window.tabs[0].id
+                            lastUrl = windowData.url
                             console.log("popup opened from extension " + windowData.url)
                         } else {
                             lastTabId = null
+                            lastUrl = null
                             console.log("can't open popup")
                             if (chrome.runtime.lastError) console.log(chrome.runtime.lastError)
                         }
@@ -28,16 +33,28 @@ chrome.runtime.onMessage.addListener(
             }
 
             if (lastTabId) {
-                chrome.tabs.update(lastTabId, { url: request.open_popup.url }, 
-                    (tab) => {
-                        if (!tab) {
-                            if (chrome.runtime.lastError) console.log(chrome.runtime.lastError)
-                            createPopup(request.open_popup)
+                chrome.tabs.get(lastTabId, async (existingTab) => {
+                    if (!existingTab) {
+                        if (chrome.runtime.lastError) console.log(chrome.runtime.lastError)
+                        createPopup(request.open_popup)
+                    } else {
+                        if(lastUrl && lastUrl == request.open_popup.url) {
+                            sendResponse({ tabId: lastTabId })
                         } else {
-                            sendResponse({ tabId: tab.id })
+                            chrome.tabs.update(lastTabId, { url: request.open_popup.url }, 
+                                (tab) => {
+                                    if (!tab) {
+                                        createPopup(request.open_popup)
+                                    } else {
+                                        lastUrl = request.open_popup.url
+                                        sendResponse({ tabId: tab.id })
+                                    }
+                                }
+                            )
                         }
+                        
                     }
-                )
+                })
             } else {
                 createPopup(request.open_popup)
             }
@@ -46,6 +63,7 @@ chrome.runtime.onMessage.addListener(
             return true
         }
 
+        //Get community rolls from opened pop up
         if(request.get_community_rolls){
             chrome.tabs.executeScript( request.get_community_rolls.tabId,
             {   //details
