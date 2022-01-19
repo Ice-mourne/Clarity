@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener(
 
             let createPopup = (windowData) => {
                 chrome.windows.create(windowData,
-                    (window) => {
+                    async (window) => {
                         
                         if (window) {
                             lastTabId = window.tabs[0].id
@@ -42,12 +42,22 @@ chrome.runtime.onMessage.addListener(
                             sendResponse({ tabId: lastTabId })
                         } else {
                             chrome.tabs.update(lastTabId, { url: request.open_popup.url }, 
-                                (tab) => {
+                                async (tab) => {
                                     if (!tab) {
                                         createPopup(request.open_popup)
                                     } else {
-                                        lastUrl = request.open_popup.url
-                                        sendResponse({ tabId: tab.id })
+                                        //lastUrl = request.open_popup.url
+                                        //sendResponse({ tabId: tab.id })
+
+                                        let updateListener = (tabId, info) => {
+                                            if (info.status === 'complete') {
+                                                lastUrl = request.open_popup.url
+                                                chrome.tabs.onUpdated.removeListener(updateListener);
+                                                sendResponse({ tabId: tab.id })
+                                            }
+                                        }
+
+                                        chrome.tabs.onUpdated.addListener(updateListener);
                                     }
                                 }
                             )
@@ -68,7 +78,7 @@ chrome.runtime.onMessage.addListener(
             chrome.tabs.executeScript( request.get_community_rolls.tabId,
             {   //details
                 allFrames: true,
-                runAt: 'document_end',
+                runAt: 'document_idle',
                 code: `(function getCommunityRolls() {
                     var communityDiv = document.getElementById('community-average')
                     if(communityDiv){
@@ -79,7 +89,7 @@ chrome.runtime.onMessage.addListener(
                 })()
                 `,
             },
-                (injectionResults) => {
+                async (injectionResults) => {
                     /*
                     for (const frameResult of injectionResults) {
                         console.log('Frame Title: ' + frameResult)   

@@ -14,12 +14,12 @@ function open_community_rolls(unique_id) {
         let windowData = {'url': link, 'type': 'popup', 'width': w, 'height': h, 'left': left, 'top': top}
 
         chrome.runtime.sendMessage({ open_popup: windowData }, 
-            (openPopUpResponse) => {
+            async (openPopUpResponse) => {
                 console.log("open_popup returned")
                 console.log(openPopUpResponse)
 
                 chrome.runtime.sendMessage({ get_community_rolls: { tabId: openPopUpResponse.tabId } }, 
-                    (communityRollsResponse) => {
+                    async (communityRollsResponse) => {
                         console.log("get_community_rolls returned")
                         console.log(communityRollsResponse)
 
@@ -68,46 +68,6 @@ function open_community_rolls(unique_id) {
                                 rollIndex++
                             })
                         })
-
-/*
-                        $.each(rollsHtml.children(), (perkIndex, perkData) => { 
-
-                            rollData[perkIndex] = { }
-                            rollPlace = 1;
-
-                            $(perkData).children().each((i, perkDetails) => {
-                                
-                                switch(perkDetails.className) {
-                                    case 'percent':
-                                        console.log(perkDetails.innerText)
-                                        rollData[perkIndex].percent = perkDetails.innerText
-
-                                        //calculate roll place
-                                        if (perkIndex > 0 && rollData[perkIndex-1].percent) {
-                                            let curAvg = parseFloat(rollData[perkIndex].percent)
-                                            let prevAvg = parseFloat(rollData[perkIndex-1].percent)
-
-                                            if(curAvg > prevAvg) {
-
-                                            }
-                                        }
-
-                                        break;
-
-                                    case 'relative-percent-container':
-                                        console.log(perkDetails.children[0].style.backgroundColor)
-                                        rollData[perkIndex].color = perkDetails.children[0].style.backgroundColor
-                                        break;
-
-                                    case 'item show-hover':
-                                        console.log(perkDetails.getAttribute('data-id'))
-                                        rollData[perkIndex].perkId = perkDetails.getAttribute('data-id')
-                                        break;
-                                }
-
-                            })
-                        })
-*/
 
                         console.log(rollData)
 
