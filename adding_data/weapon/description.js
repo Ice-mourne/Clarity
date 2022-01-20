@@ -21,7 +21,6 @@ function open_community_rolls(unique_id) {
                 chrome.runtime.sendMessage({ get_community_rolls: { tabId: openPopUpResponse.tabId } }, 
                     async (communityRollsResponse) => {
                         console.log("get_community_rolls returned")
-                        console.log(communityRollsResponse)
 
                         let rollsHtml = $($.parseHTML( communityRollsResponse.rollsDivHtml ) )
 
@@ -44,7 +43,6 @@ function open_community_rolls(unique_id) {
                                 
                                     switch(perkDetails.className) {
                                         case 'percent':
-                                            console.log(perkDetails.innerText)
                                             rollData[rollIndex] = {...{
                                                 percent: perkDetails.innerText,
                                                 column: column,
@@ -53,12 +51,10 @@ function open_community_rolls(unique_id) {
                                             break;
     
                                         case 'relative-percent-container':
-                                            console.log(perkDetails.children[0].style.backgroundColor)
                                             rollData[rollIndex].color = perkDetails.children[0].style.backgroundColor
                                             break;
     
                                         case 'item show-hover':
-                                            console.log(perkDetails.getAttribute('data-id'))
                                             rollData[rollIndex].perkId = perkDetails.getAttribute('data-id')
                                             break;
                                     }
@@ -68,8 +64,6 @@ function open_community_rolls(unique_id) {
                                 rollIndex++
                             })
                         })
-
-                        console.log(rollData)
 
                         const unique_item = clarity_user_data[unique_id]
                         const static_item = clarity_manifest[unique_item.id]
