@@ -41,41 +41,69 @@
 }) ()
 
 ;( () => { //--- looks for item clicks
+
+    var lastDispatchedUniqueId;
     window.addEventListener('inventory_ready', () => {
         document.getElementById('app').addEventListener('click', event => {
             if(!clarity_user_data) handle_data() // browser can delete this if it was deleted get new data
 
-            function searchElemRecursively(target, callback, levels, current = 0) {
-                if (!target) return
-            
+            let isOrganizer = document.location.href.indexOf('organizer') > 0
+
+            //TODO : replace with proper jquery 
+            function SearchElemRecursively(target, callback, levels, current = 0) {
+                if (!target) return            
                 let ret = callback(target);
-            
-                if (ret == null && current < levels) {
-                    return searchElemRecursively(target.parentElement, callback, levels, current + 1)
-                } else {
-                    return ret
-                }
+                
+                return (!ret && current < levels) ? 
+                    SearchElemRecursively(target.parentElement, callback, levels, current + 1) :
+                    ret
             }
-        
-            let unique_id = searchElemRecursively(event.target, (elem) => {
-                if (elem.classList.contains('item') && elem.id) {
-                    if(!elem.parentElement.classList.contains('item-drag-container')) return // this will prevent adding descriptions to wrong place
-                    return elem.id;
+
+            let itemElement = SearchElemRecursively(event.target, (elem) => {
+                if (elem.classList.contains('item')) {
+                       if(elem.parentElement.classList.contains('item-drag-container'))
+                            return elem;
                 }
             }, 3)
 
-            //in case we can't find it , we'll keep trying
-            if(!unique_id) {
+            let unique_id
 
-                let isOpeningSheet = searchElemRecursively(event.target, (elem) => {
-                    if (elem.classList.contains('item-popup')) {
-                        return true
-                    }
+            if(itemElement && itemElement.id){
+                unique_id = itemElement.id
+            } 
+            else if (isOrganizer) {
+
+                let isOpeningSheet = SearchElemRecursively(event.target, (elem) => {
+                        return (elem.classList.contains('item-popup'))
                 }, 5)
 
-                if(isOpeningSheet) {
+                if(!isOpeningSheet) {
+                    let itemPopup = $(document.body).find('.item-popup').get(0)
+
+                    if(itemPopup.children().find(event.target).lenght) {
+                        //avoiding click from inside the popup
+                        return
+                    } else {
+                        let openSheetLink = itemPopup.find('a')[0]
+                        //try to get data opening the sheet page
+                        if(openSheetLink) {
+                            openSheetLink.click()
+                            return
+                        }
+                    }              
+                } 
+                else if (isOpeningSheet && !event.isTrusted) {
                     try {
-                        unique_id = $(document.body).find('.sub-bucket').children('.item')[0].id //item id on full sheet
+                        if(event.isTrusted == false) { //if its our simulated click
+
+                            let subBucket = $(document.body).find('.sub-bucket')[0]
+                            unique_id = $(subBucket).children('.item')[0].id //item id on full sheet
+                            
+                            let closeSheet = $(document.body).find('.sheet-close')[0]
+                            if(closeSheet)
+                                closeSheet.click()
+                        }
+
                     } catch (error) {
                         console.log('Error getting itemid ' + error)
                     }
@@ -86,7 +114,10 @@
                 let item_type = clarity_user_data[unique_id]?.item_type
                 switch (item_type) {
                     case 'weapon':
-                        window.dispatchEvent(new CustomEvent('weapon_pressed', {detail: unique_id}))
+                        if(lastDispatchedUniqueId !== unique_id) {
+                            lastDispatchedUniqueId = unique_id
+                            window.dispatchEvent(new CustomEvent('weapon_pressed', {detail: unique_id}))
+                        }
                         break
                     case 'armor':
                         window.dispatchEvent(new CustomEvent('armor_pressed', {detail: unique_id}))
