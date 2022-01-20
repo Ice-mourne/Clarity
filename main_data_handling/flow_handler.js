@@ -78,11 +78,11 @@
                 if(!isOpeningSheet) {
                     let itemPopup = $(document.body).find('.item-popup').get(0)
 
-                    if(itemPopup.children().find(event.target).lenght) {
+                    if(itemPopup && $(itemPopup).children().find(event.target).length) {
                         //avoiding click from inside the popup
                         return
                     } else {
-                        let openSheetLink = itemPopup.find('a')[0]
+                        let openSheetLink = $(itemPopup).find('a')[0]
                         //try to get data opening the sheet page
                         if(openSheetLink) {
                             openSheetLink.click()
