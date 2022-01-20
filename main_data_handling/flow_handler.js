@@ -90,17 +90,14 @@
                         }
                     }              
                 } 
-                else if (isOpeningSheet && !event.isTrusted) {
+                else if (isOpeningSheet && !event.isTrusted) { //if its our simulated click
                     try {
-                        if(event.isTrusted == false) { //if its our simulated click
-
-                            let subBucket = $(document.body).find('.sub-bucket')[0]
-                            unique_id = $(subBucket).children('.item')[0].id //item id on full sheet
-                            
-                            let closeSheet = $(document.body).find('.sheet-close')[0]
-                            if(closeSheet)
-                                closeSheet.click()
-                        }
+                        let subBucket = $(document.body).find('.sub-bucket')[0]
+                        unique_id = $(subBucket).children('.item')[0].id //item id on full sheet
+                        
+                        let closeSheet = $(document.body).find('.sheet-close')[0]
+                        if(closeSheet)
+                            closeSheet.click()
 
                     } catch (error) {
                         console.log('Error getting itemid ' + error)
