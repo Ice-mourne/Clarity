@@ -41,8 +41,6 @@
 }) ()
 
 ;( () => { //--- looks for item clicks
-
-    var lastDispatchedUniqueId;
     window.addEventListener('inventory_ready', () => {
         document.getElementById('app').addEventListener('click', event => {
             if(!clarity_user_data) handle_data() // browser can delete this if it was deleted get new data
@@ -114,10 +112,7 @@
                 let item_type = clarity_user_data[unique_id]?.item_type
                 switch (item_type) {
                     case 'weapon':
-                        if(lastDispatchedUniqueId !== unique_id) {
-                            lastDispatchedUniqueId = unique_id
-                            window.dispatchEvent(new CustomEvent('weapon_pressed', {detail: unique_id}))
-                        }
+                        window.dispatchEvent(new CustomEvent('weapon_pressed', {detail: unique_id}))
                         break
                     case 'armor':
                         window.dispatchEvent(new CustomEvent('armor_pressed', {detail: unique_id}))
