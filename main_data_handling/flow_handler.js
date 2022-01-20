@@ -45,26 +45,58 @@
         document.getElementById('app').addEventListener('click', event => {
             if(!clarity_user_data) handle_data() // browser can delete this if it was deleted get new data
 
-            let unique_id
-            function get_unique_id(target, x) {
+            function searchElemRecursively(target, callback, levels, current = 0) {
                 if (!target) return
-                if (target.classList.contains('item') && target.id) {
-                    if(!target.parentElement.classList.contains('item-drag-container')) return // this will prevent adding descriptions to wrong place
-                    unique_id = target.id
+            
+                let ret = callback(target);
+            
+                if (ret == null && current < levels) {
+                    return searchElemRecursively(target.parentElement, callback, levels, current + 1)
+                } else {
+                    return ret
                 }
-                if (x < 3) get_unique_id(target.parentElement, x + 1)
             }
-            get_unique_id(event.target, 0)
+        
+            let unique_id = searchElemRecursively(event.target, (elem) => {
+                if (elem.classList.contains('item') && elem.id) {
+                    if(!elem.parentElement.classList.contains('item-drag-container')) return // this will prevent adding descriptions to wrong place
+                    return elem.id;
+                }
+            }, 3)
 
-            let item_type = clarity_user_data[unique_id]?.item_type
-            switch (item_type) {
-                case 'weapon':
-                    window.dispatchEvent(new CustomEvent('weapon_pressed', {detail: unique_id}))
-                    break
-                case 'armor':
-                    window.dispatchEvent(new CustomEvent('armor_pressed', {detail: unique_id}))
-                    break
+            //in case we can't find it , we'll keep trying
+            if(!unique_id) {
+
+                let isOpeningSheet = searchElemRecursively(event.target, (elem) => {
+                    if (elem.classList.contains('item-popup')) {
+                        return true
+                    }
+                }, 5)
+
+                if(isOpeningSheet) {
+                    try {
+                        unique_id = $(document.body).find('.sub-bucket').children('.item')[0].id //item id on full sheet
+                    } catch (error) {
+                        console.log('Error getting itemid ' + error)
+                    }
+                }
             }
+
+            if(unique_id) {
+                let item_type = clarity_user_data[unique_id]?.item_type
+                switch (item_type) {
+                    case 'weapon':
+                        window.dispatchEvent(new CustomEvent('weapon_pressed', {detail: unique_id}))
+                        break
+                    case 'armor':
+                        window.dispatchEvent(new CustomEvent('armor_pressed', {detail: unique_id}))
+                        break
+                }
+
+                return
+            }
+
+
         })
     }, {once: true})
 }) ()
