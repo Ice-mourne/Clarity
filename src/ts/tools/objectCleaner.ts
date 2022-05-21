@@ -1,8 +1,7 @@
-
 /**
  ** Removes null, undefined, empty strings, empty arrays, and empty objects from nested objects and arrays.
  */
-export function objectCleaner<T> (dirtyObject: T): T {
+export function objectCleaner<T>(dirtyObject: T): T {
    const obj = { ...dirtyObject }
    const remover = (obj: any) => {
       for (const key in obj) {

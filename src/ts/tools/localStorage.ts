@@ -5,14 +5,14 @@ interface Settings {
          background: string[]
          items: {}
       }
-   },
+   }
    descriptionVersion: number
    manifestVersion: string
 }
 
 // creates a new settings object and saves in localStorage if it doesn't exist
 // this is needed for first startup and if deleted
-function setInitialSettings (): void {
+function setInitialSettings(): void {
    const settings: Settings = {
       darkMode: {
          enabled: false,
@@ -27,7 +27,7 @@ function setInitialSettings (): void {
    localStorage.setItem('ClaritySettings', JSON.stringify(settings))
 }
 
-export function updateSettings (pathString: string, value: any): void {
+export function updateSettings(pathString: string, value: any): void {
    // gets to location provided for example if location provided is 'darkMode.locations.background'
    // it will go to settings > darkMode > locations > background and return value from it
    const pathArr = pathString.split('.')
@@ -43,7 +43,7 @@ export function updateSettings (pathString: string, value: any): void {
    localStorage.setItem('ClaritySettings', JSON.stringify(settings))
 }
 
-export function getSettings (): Settings {
+export function getSettings(): Settings {
    const settingsString = localStorage.getItem('ClaritySettings')
    if (!settingsString) {
       setInitialSettings()

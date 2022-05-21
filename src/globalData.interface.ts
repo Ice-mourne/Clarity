@@ -5,7 +5,7 @@ export interface ClarityData {
       haveUserData: boolean
       platformSelection: boolean
    }
-   menuState:  boolean
+   menuState: boolean
    dimVersion: string
    disableTheme: boolean
    locations: {

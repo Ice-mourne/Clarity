@@ -1,7 +1,7 @@
 import { ClarityData, UsersInventorySockets } from '@interfaces/ts/userData/clarityUser'
 import { ClarityManifest, InventoryItem } from '@interfaces/ts/manifest/clarityManifest'
 
-export function calculateStats (context: ClarityData) {
+export function calculateStats(context: ClarityData) {
    const manifest = context.manifest
    const staticItem = context.clickedItem?.static?.item
    const uniqueItem = context.clickedItem?.unique
@@ -29,7 +29,7 @@ export function calculateStats (context: ClarityData) {
        ** Check if number ends with 0.5
        ** If yes round down otherwise round
       */
-      function simpleRound (stat: number) {
+      function simpleRound(stat: number) {
          return stat % 1 === 0.5 ? Math.floor(stat) : Math.round(stat)
       }
 
@@ -49,7 +49,7 @@ export function calculateStats (context: ClarityData) {
    return namedStats
 }
 
-function calculateInvStats (staticItem: InventoryItem, sockets: UsersInventorySockets, manifest: ClarityManifest) {
+function calculateInvStats(staticItem: InventoryItem, sockets: UsersInventorySockets, manifest: ClarityManifest) {
    const itemInvStats = staticItem.investmentStats?.reduce((acc, stat) => {
       acc[stat.statTypeHash] = acc[stat.statTypeHash] + stat.value || stat.value
       return acc

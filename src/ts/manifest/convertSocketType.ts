@@ -1,7 +1,7 @@
 import { BungieManifest } from '@interfaces/ts/manifest/bungieManifest'
 import { SocketTypeNames } from '@interfaces/ts/manifest/clarityManifest'
 
-export function convertSocketType (manifest: BungieManifest) {
+export function convertSocketType(manifest: BungieManifest) {
    const socketType = manifest.DestinySocketTypeDefinition
 
    return Object.entries(socketType).reduce((acc, [key, value]) => {

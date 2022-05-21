@@ -1,6 +1,6 @@
 import { BungieInventoryItem, BungieManifest } from '@interfaces/ts/manifest/bungieManifest'
 
-export function extraInvItem (item: BungieInventoryItem, manifest: BungieManifest) {
+export function extraInvItem(item: BungieInventoryItem, manifest: BungieManifest) {
    const getObjectiveNames = (objectiveArr: number[] | undefined) => {
       if (!objectiveArr) return
 

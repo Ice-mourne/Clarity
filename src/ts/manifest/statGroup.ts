@@ -1,7 +1,7 @@
 import { BungieManifest } from '@interfaces/ts/manifest/bungieManifest'
 import { StatGroup } from '@interfaces/ts/manifest/clarityManifest'
 
-export function getStatGroup (manifest: BungieManifest) {
+export function getStatGroup(manifest: BungieManifest) {
    return Object.entries(manifest.DestinyStatGroupDefinition).reduce((acc, [key, value]) => {
       if (value.scaledStats.length === 0) return acc
 

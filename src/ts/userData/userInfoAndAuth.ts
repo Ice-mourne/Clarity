@@ -1,7 +1,7 @@
 import { ClarityAuth } from '@interfaces/ts/userData/clarityUser'
 import { fetchBungieUser } from '@ts/userData/fetchBungieUser'
 
-export async function getUserAuth (code: string) {
+export async function getUserAuth(code: string) {
    const authResp = await fetchBungieUser('authorization', { code })
    const authData = (await authResp.json()) as ClarityAuth
    const updatedAuthData = {
@@ -12,7 +12,7 @@ export async function getUserAuth (code: string) {
    return updatedAuthData
 }
 
-export async function getUserInfo (AuthData: ClarityAuth) {
+export async function getUserInfo(AuthData: ClarityAuth) {
    const currentUser = await fetchBungieUser('currentUser', { auth: AuthData })
    const userData = await currentUser.json()
 
@@ -40,7 +40,7 @@ export async function getUserInfo (AuthData: ClarityAuth) {
    return profiles
 }
 
-export async function getRefreshedAuth (auth: ClarityAuth) {
+export async function getRefreshedAuth(auth: ClarityAuth) {
    const refreshedAuth = await fetchBungieUser('tokenRefresh', { auth })
    const newAuthData = (await refreshedAuth.json()) as ClarityAuth
    const updatedAuthData = {

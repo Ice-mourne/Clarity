@@ -6,8 +6,8 @@ import { convertBungieManifest } from './manifest'
 import indexStorage from '@tools/indexedDB'
 import { objectCleaner } from '@tools/objectCleaner'
 
-export async function getManifest (): Promise<ClarityManifest> {
-   async function getVersionLocation () {
+export async function getManifest(): Promise<ClarityManifest> {
+   async function getVersionLocation() {
       const resp = await fetch('https://www.bungie.net/Platform/Destiny2/Manifest/')
       const data = (await resp.json()) as BungieManifestInfo
       const version = data.Response.version
@@ -15,7 +15,7 @@ export async function getManifest (): Promise<ClarityManifest> {
       return { location: locations, version }
    }
 
-   async function getBungieManifest (location: { [key: string]: string }): Promise<BungieManifest> {
+   async function getBungieManifest(location: { [key: string]: string }): Promise<BungieManifest> {
       const locationList = [
          'DestinyBreakerTypeDefinition',
          'DestinyCollectibleDefinition',

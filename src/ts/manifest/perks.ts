@@ -2,7 +2,7 @@ import { InventoryItem, PerksAndStuff, PlugSet } from '@interfaces/ts/manifest/c
 
 import { BungieManifest } from '@interfaces/ts/manifest/bungieManifest'
 
-export function getPerksAndShit (
+export function getPerksAndShit(
    bungieManifest: BungieManifest,
    plugSet: { [key: string]: Array<PlugSet> },
    items: { [key: string]: InventoryItem }
@@ -45,7 +45,7 @@ export function getPerksAndShit (
    return perksAndStuff as { [key: string]: PerksAndStuff } // because of type conversion and my laziness
 }
 
-function getDataFromPerksAndStuff (manifest: BungieManifest, itemHash: string, socketType: string) {
+function getDataFromPerksAndStuff(manifest: BungieManifest, itemHash: string, socketType: string) {
    const item = manifest.DestinyInventoryItemDefinition[itemHash]
    const bungieCollectible = manifest.DestinyCollectibleDefinition
    return {

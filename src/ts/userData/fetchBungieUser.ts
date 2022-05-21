@@ -2,7 +2,7 @@ import { AuthType, ClarityAuth, ClarityUser } from '@interfaces/ts/userData/clar
 
 let numberOfRetries = 0
 
-export async function fetchBungieUser (
+export async function fetchBungieUser(
    authType: AuthType,
    userData: {
       auth?: ClarityAuth

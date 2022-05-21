@@ -1,6 +1,6 @@
 import { BungieManifest } from '@interfaces/ts/manifest/bungieManifest'
 
-export function getStatNames (manifest: BungieManifest) {
+export function getStatNames(manifest: BungieManifest) {
    const stats = manifest.DestinyStatDefinition
 
    return Object.entries(stats).reduce((acc, [key, value]) => {

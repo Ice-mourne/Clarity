@@ -13,7 +13,7 @@ export default function useLocationFinder(setClarityData: Updater<ClarityData>) 
       draft.disableTheme = true
    })
 
-   let locations: ClarityData['locations'] = {
+   const locations: ClarityData['locations'] = {
       backgroundColor: [],
       dimMenu: '',
       header: '',
@@ -79,7 +79,7 @@ export default function useLocationFinder(setClarityData: Updater<ClarityData>) 
 
          // background before
          if (
-            nodeStylesBefore.backgroundImage ==
+            nodeStylesBefore.backgroundImage ===
             'radial-gradient(circle at 50% 70px, rgb(57, 57, 86) 0%, rgb(22, 22, 39) 100%)'
          ) {
             locations.backgroundColor.push(`.${[...node?.classList].join('.')}::before`)
@@ -87,7 +87,7 @@ export default function useLocationFinder(setClarityData: Updater<ClarityData>) 
 
          // background
          if (
-            nodeStyles.backgroundImage ==
+            nodeStyles.backgroundImage ===
             'radial-gradient(circle at 50% 70px, rgb(57, 57, 86) 0%, rgb(22, 22, 39) 100%)'
          ) {
             locations.backgroundColor.push(`.${[...node.classList].join('.')}`)
@@ -151,7 +151,7 @@ export default function useLocationFinder(setClarityData: Updater<ClarityData>) 
             nodeStyles.left === '1px' &&
             nodeStyles.top === '1px' &&
             nodeStyles.backgroundImage.startsWith(
-               `url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAEOSURBVHhe7d2xEcIwEABBiX5owHRh6nQZNGAKgsSZCT1csptI8d/8KNTc1+UzyN`
+               'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAEOSURBVHhe7d2xEcIwEABBiX5owHRh6nQZNGAKgsSZCT1csptI8d/8KNTc1+UzyN'
             ) &&
             node.parentNode.classList.contains('item')
          ) {
@@ -181,7 +181,7 @@ export default function useLocationFinder(setClarityData: Updater<ClarityData>) 
             nodeStyles.left === '1px' &&
             nodeStyles.top === '1px' &&
             nodeStyles.backgroundImage.startsWith(
-               `url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAJgklEQVR4AWI8t87oBYCd8rBuGAZi6N1JUQbIrJkiY6bM4EoE1EHvqb+WHsPvG5AJU522JQ/znpY03GzJ3YTovcvcVFcO5WbU8eH/OZ8R91B241c6wEzowJUUZnqlXMiZ`
+               'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAJgklEQVR4AWI8t87oBYCd8rBuGAZi6N1JUQbIrJkiY6bM4EoE1EHvqb+WHsPvG5AJU522JQ/znpY03GzJ3YTovcvcVFcO5WbU8eH/OZ8R91B241c6wEzowJUUZnqlXMiZ'
             ) &&
             node.parentNode.classList.contains('item')
          ) {
@@ -192,7 +192,7 @@ export default function useLocationFinder(setClarityData: Updater<ClarityData>) 
             nodeStyles.left === '1px' &&
             nodeStyles.top === '1px' &&
             nodeStyles.backgroundImage.startsWith(
-               `url(\"https://beta.destinyitemmanager.com/static/exotic-masterwork-8987e7.png\")`
+               'url("https://beta.destinyitemmanager.com/static/exotic-masterwork-8987e7.png")'
             ) &&
             node.parentNode.classList.contains('item')
          ) {

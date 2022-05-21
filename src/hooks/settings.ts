@@ -20,8 +20,8 @@ export function loadSettings(setClarityData: Updater<ClarityData>): void {
    const settings = JSON.parse(settingsString)
 
    setClarityData((draft) => {
-      settings.locations ? (draft.locations = settings.locations) : null
-      settings.theme ? (draft.theme = settings.theme) : null
-      settings.dimVersion ? (draft.dimVersion = settings.dimVersion) : null
+      if (settings.locations) draft.locations = settings.locations
+      if (settings.theme) draft.theme = settings.theme
+      if (settings.dimVersion) draft.dimVersion = settings.dimVersion
    })
 }

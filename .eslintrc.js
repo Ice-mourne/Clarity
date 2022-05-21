@@ -16,5 +16,13 @@ module.exports = {
    ignorePatterns: ['**/interfaces/**/*.ts'],
    rules: {
       'indent': ['error', 3],
+      'space-before-function-paren': [
+         'error',
+         {
+            anonymous: 'always',
+            named: 'never',
+            asyncArrow: 'always'
+         }
+      ]
    }
 }

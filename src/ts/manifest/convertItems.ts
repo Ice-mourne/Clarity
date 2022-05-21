@@ -6,7 +6,7 @@ import primaryAmmo from '@assets/ammoSVG/primary.svg'
 import specialAmmo from '@assets/ammoSVG/special.svg'
 import { statBlacklist } from '@ts/improvedBungieData/dataForLookup'
 
-export function convertItems (itemWeapon: BungieInventoryItem, manifest: BungieManifest, socketType: { [key: string]: string }) {
+export function convertItems(itemWeapon: BungieInventoryItem, manifest: BungieManifest, socketType: { [key: string]: string }) {
    const item = itemWeapon
    const inventoryBucket = manifest.DestinyInventoryBucketDefinition
    const damageType = manifest.DestinyDamageTypeDefinition

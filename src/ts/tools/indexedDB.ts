@@ -22,7 +22,7 @@ const dbType = {
    }
 }
 
-export default async function indexStorage (name: indexStorageNames, action: indexStorageAction, data?: any) {
+export default async function indexStorage(name: indexStorageNames, action: indexStorageAction, data?: any) {
    return await new Promise((resolve, reject) => {
       const dbInfo = dbType[name]
       const dbOpen = indexedDB.open(dbInfo.db)

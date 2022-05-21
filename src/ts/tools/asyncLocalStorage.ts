@@ -5,7 +5,7 @@
  * @param time Time to wait between checks
  * @returns Promise with value from localStorage
  */
-export default async function asyncLocalStorage (key: string, time: number = 50) {
+export default async function asyncLocalStorage(key: string, time: number = 50) {
    const data: Promise<string> = new Promise((resolve, reject) => {
       const interval = setInterval(() => {
          if (!localStorage.getItem(key)) return

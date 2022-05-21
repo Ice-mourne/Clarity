@@ -10,7 +10,7 @@ import { getPlugSet } from './plugSet'
 import { getStatGroup } from './statGroup'
 import { getStatNames } from './getStatNames'
 
-export function convertBungieManifest (manifest: BungieManifest) {
+export function convertBungieManifest(manifest: BungieManifest) {
    const inventoryItem = _.merge(manifest.DestinyInventoryItemDefinition, InventoryItemFixes)
    const powerCap = manifest.DestinyPowerCapDefinition
 

@@ -8,7 +8,7 @@ import { getRefreshedAuth } from './userInfoAndAuth'
 import { getUserProfileDIM } from '@ts/dataDIM/getUserProfileDIM'
 import { toCamelCase } from '@tools/toCamelCase'
 
-export async function getUserInventory (manifest: ClarityManifest) {
+export async function getUserInventory(manifest: ClarityManifest) {
    const clarityUser = (await asyncLocalStorage('clarityUser')) as ClarityUser[]
    let clarityAuth = (await asyncLocalStorage('clarityAuthorization')) as ClarityAuth
 

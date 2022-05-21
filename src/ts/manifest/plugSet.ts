@@ -2,7 +2,7 @@ import { InventoryItem, PlugSet } from '@interfaces/ts/manifest/clarityManifest'
 
 import { BungieManifest } from '@interfaces/ts/manifest/bungieManifest'
 
-export function getPlugSet (
+export function getPlugSet(
    manifest: BungieManifest,
    items: { [key: string]: InventoryItem }
 ): { [key: string]: PlugSet[] } {

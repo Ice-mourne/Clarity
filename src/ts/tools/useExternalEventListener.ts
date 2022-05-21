@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
  * @param {string} eventType addEventListener event type
  * @returns event
  */
-export function useExternalEventListener (targetName: string, eventType: keyof HTMLElementEventMap) {
+export function useExternalEventListener(targetName: string, eventType: keyof HTMLElementEventMap) {
    const [externalEvent, setExternalEvent] = useState<Event | null>(null)
    useEffect(
       () => document.querySelector(targetName)?.addEventListener(eventType, (e) => setExternalEvent(e)),
