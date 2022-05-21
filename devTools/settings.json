@@ -1,0 +1,24 @@
+{
+   "version": "1.7.0.2",
+   "chromeManifest": {
+      "manifest_version": 3,
+      "background": {
+         "service_worker": "serviceWorker.js"
+      },
+      "permissions": [
+         "tabs"
+      ]
+   },
+   "firefoxManifest": {
+      "manifest_version": 2,
+      "background": {
+         "scripts": [
+            "serviceWorker.js"
+         ]
+      },
+      "permissions": [
+         "tabs",
+         "https://www.bungie.net/*"
+      ]
+   }
+}

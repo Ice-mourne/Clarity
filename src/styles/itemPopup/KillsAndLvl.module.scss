@@ -1,0 +1,60 @@
+.objectiveContainer {
+   padding: 4px 10px 4px;
+   background: hsl(0, 0%, 20%);
+}
+.objectiveContent {
+   position: relative;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   background: hsl(0, 0%, 13%);
+   min-height: 17px;
+}
+
+.progressBar {
+   position: absolute;
+   top: 0;
+   left: 0;
+   bottom: 0;
+   background-color: hsl(131, 26%, 50%)
+}
+.progressBarRed {
+   background-color: hsl(11, 63%, 52%);
+}
+
+.description {
+   position: relative;
+   padding: 0 4px;
+}
+.shapingDate {
+   padding: 0 4px;
+}
+.percentage {
+   margin-right: 4px;
+}
+
+// --------------------------------------------
+.killsContainer {
+   padding: 4px 10px 4px;
+   margin: 4px 0;
+   display: flex;
+   background: hsl(0, 0%, 20%);
+}
+
+.killsContent {
+   width: 50%;
+   display: flex;
+   flex-direction: row;
+   img {
+      width: 16px;
+      height: 16px;
+   }
+}
+
+.killsDescription {
+   margin: 0 3px;
+}
+.killsValue {
+   color: hsl(38, 80%, 56%);
+   font-weight: bold;
+}

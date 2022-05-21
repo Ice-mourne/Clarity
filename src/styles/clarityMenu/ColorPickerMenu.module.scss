@@ -1,0 +1,18 @@
+.colorPreview {
+   border-radius: 5px;
+   width: 50px;
+   height: 20px;
+   margin: 0 7px;
+   border-color: hsl(38, 80%, 56%);
+   border-style: ridge;
+   border-width: 1px;
+}
+.colorPickerContainer {
+   transform: translate(55px, 25px);
+   position: absolute;
+}
+.colorPicker {
+   display: flex;
+   flex-direction: row;
+   white-space: break-spaces;
+}

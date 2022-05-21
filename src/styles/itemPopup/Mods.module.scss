@@ -1,0 +1,44 @@
+.container {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+   background-color: hsl(0, 0%, 20%);
+   padding: 6px 10px;
+   img {
+      width: calc(32 / 50 * var(--item-size));
+      height: calc(32 / 50 * var(--item-size));
+   }
+}
+.intrinsic {
+   display: flex;
+   flex-direction: row;
+   img {
+      width: calc(33.6 / 50 * var(--item-size));
+      height: calc(33.6 / 50 * var(--item-size));
+      margin-right: 3px;
+   }
+}
+
+.mods {
+   display: flex;
+   flex-direction: row;
+}
+.watermark {
+   position: absolute;
+   left: 1px;
+   top: 1px;
+}
+
+.socket {
+   width: calc(32 / 50 * var(--item-size));
+   height: calc(32 / 50 * var(--item-size));
+   border: 1px solid hsl(0, 0%, 53%);
+   padding: 1px;
+   margin-left: 4px;
+   position: relative;
+}
+
+.socket:hover {
+   outline: 1px solid hsl(38, 80%, 56%);
+}

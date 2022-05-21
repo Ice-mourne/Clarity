@@ -1,0 +1,19 @@
+.creators {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   font-size: 13px;
+   min-height: 25px;
+   white-space: break-spaces;
+   a {
+      text-decoration: none;
+   }
+   a:hover {
+      color: hsl(38deg 80% 56%);
+   }
+   img {
+      width: 20px;
+      height: 20px;
+      margin-right: 3px;
+   }
+}

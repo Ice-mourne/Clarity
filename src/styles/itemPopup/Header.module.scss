@@ -1,0 +1,81 @@
+.header {
+   font-size: 15px;
+   line-height: 17px;
+   letter-spacing: -0.02em;
+   padding: 10px;
+}
+
+.Legendary {
+   background-color: hsl(277, 36%, 29%);
+   color: hsl(0, 0%, 93%);
+   a {
+      color: inherit;
+   }
+}
+.Legendary-masterwork {
+   background-image: url('/static/masterworkHeader-c90798.png');
+   background-repeat: repeat-x;
+   background-size: cover;
+   background-position: top center;
+}
+
+.Exotic {
+   background-color: hsl(48, 77%, 43%);
+   color: hsl(0, 0%, 13%);
+   a {
+      color: inherit;
+   }
+}
+.Exotic-masterwork {
+   background-image: url('/static/exoticMasterworkHeader-c45fc6.png');
+   background-repeat: repeat-x;
+   background-size: cover;
+   background-position: top center;
+}
+
+.name {
+   text-transform: uppercase;
+   font-weight: 600;
+   font-family: Helvetica, Arial, sans-serif;
+   font-size: 21px;
+   line-height: 24px;
+   text-decoration: none;
+}
+.bottom {
+   display: flex;
+   justify-content: space-between;
+   margin-top: 4px;
+}
+.left {
+   flex: 1;
+   display: flex;
+   align-self: flex-end;
+   align-items: center;
+}
+.right {
+   display: flex;
+   align-self: flex-end;
+   align-items: center;
+}
+.type {
+   opacity: 0.7;
+   word-break: break-word;
+}
+.ammo {
+   margin: 0 2px 0 6px;
+   height: 14px;
+   width: 19px;
+   opacity: 0.9;
+}
+.breaker {
+   margin: 0 4px;
+   width: 15px;
+   height: 15px;
+}
+.element {
+   height: 16px;
+   width: 16px;
+}
+.power {
+   margin: 0 4px 0 2px;
+}

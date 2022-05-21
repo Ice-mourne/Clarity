@@ -1,0 +1,22 @@
+.notes_box {
+   display: flex;
+   margin: 5px 10px 5px;
+   white-space: pre-wrap;
+
+}
+.button {
+   font-weight: bold;
+   &:hover {
+      color: hsl(38, 80%, 56%);
+      cursor: pointer;
+   }
+}
+.pencil {
+   width: 12px;
+   height: 12px;
+   font-weight: 900;
+   padding-right: 3px;
+}
+.note_text {
+   font-weight: normal;
+}

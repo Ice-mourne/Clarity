@@ -1,0 +1,80 @@
+.authWindow {
+   position: fixed;
+   top: 40%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   background-color: hsl(240, 21%, 9%);
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 10px 15px;
+   border-radius: 8px;
+   font-size: 1rem;
+   box-shadow: 0 0 20px 20px hsl(240, 27%, 12%);
+   z-index: 69;
+}
+
+.nameArea {
+   display: flex;
+   flex-direction: row;
+   margin-bottom: 7px;
+   div {
+      font-size: 1.5rem;
+      font-weight: bold;
+   }
+}
+
+.logo {
+   width: 32px;
+   height: 32px;
+   margin-left: 10px;
+   margin-right: 10px;
+   animation: logo-spin infinite 15s linear;
+}
+@keyframes logo-spin {
+   from {
+      transform: rotate(0deg);
+   }
+   to {
+      transform: rotate(360deg);
+   }
+}
+
+.button {
+   background-color: hsl(38, 80%, 56%);
+   border-radius: 5px;
+   border-color: hsl(38, 80%, 56%);
+   padding: 5px 8px;
+   font-size: large;
+   margin-top: 7px;
+   margin-bottom: 7px;
+   cursor: pointer;
+}
+
+.privacyPolicy {
+   font-size: 1.3rem;
+   margin-top: 5px;
+   margin-bottom: 5px;
+}
+
+.policyText {
+   font-size: 1rem;
+   white-space: pre-wrap;
+   div {
+      margin: 5px 0;
+   }
+   div:first-child {
+      text-align: center;
+   }
+   div:last-child {
+      margin: 0;
+   }
+}
+
+.platformSection {
+   height: unset;
+   font-size: 0.9rem;
+   margin-top: 5px;
+   border: 1px solid transparent;
+   color: hsl(0, 0%, 100%);
+}

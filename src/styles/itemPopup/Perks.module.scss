@@ -1,0 +1,57 @@
+.perk_box {
+   display: flex;
+   flex-direction: column;
+   div:last-child {
+      border-bottom: none;
+   }
+}
+.perk_list {
+   display: flex;
+   flex-wrap: wrap;
+   flex-direction: row;
+   align-items: flex-start;
+   border-bottom: 1px solid hsl(0, 0%, 20%);
+   padding: 6px 10px;
+   div:last-child {
+      margin-right: 0;
+   }
+}
+
+.perk {
+   display: flex;
+   flex-direction: row;
+   cursor: pointer;
+   margin-right: 1em;
+}
+.perk_active {
+   flex: 1 1 0%;
+}
+.icon_container {
+   width: calc(24 / 50 * 54px);
+   height: calc(24 / 50 * 54px);
+   position: relative;
+   border: 1px solid hsl(0, 0%, 100%);
+   border-radius: 50%;
+   padding: 1px;
+   img {
+      height: 100%;
+      width: 100%;
+   }
+}
+.icon_container_active {
+   background-color: hsl(207, 45%, 51%);
+}
+.name {
+   align-self: center;
+   margin-left: 5px;
+   display: none;
+}
+.name_active {
+   display: block;
+}
+
+.description {
+   order: 69;
+   width: 100%;
+   margin-top: 3px;
+}

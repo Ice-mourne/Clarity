@@ -1,0 +1,14 @@
+.menuLinks {
+   display: flex;
+   flex-direction: column;
+   text-transform: uppercase;
+   letter-spacing: 1px;
+   margin-right: 20px;
+   a {
+      text-decoration: none;
+      margin-bottom: 9px;
+      min-height: 18px;
+      font-size: 14px;
+      color:  hsl(0deg 0% 87%);
+   }
+}

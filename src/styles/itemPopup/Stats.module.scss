@@ -1,0 +1,31 @@
+.statsContainer {
+   display: grid;
+   grid-auto-rows: minmax(12px, auto);
+   grid-template-columns: repeat(2, min-content) 1fr;
+   margin: 10px;
+   gap: 4px 0px;
+   * {
+      line-height: 12px;
+      white-space: nowrap;
+      vertical-align: middle;
+   }
+}
+
+.statName {
+   text-align: right;
+   margin-right: 8px;
+   grid-column: 1 / auto;
+}
+
+.statValue {
+   font-variant-numeric: tabular-nums;
+   text-align: right !important;
+   grid-column: 2 / auto;
+}
+
+.statBar {
+   margin-left: 8px;
+   background-color: rgb(51, 51, 51);
+   display: flex;
+   grid-column: -2 / -1;
+}
