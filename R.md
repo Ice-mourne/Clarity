@@ -19,8 +19,10 @@
   - Go to the [Beta DIM website](https://beta.destinyitemmanager.com) and log in.
   - Click the button at the end of the Address Bar to install DIM as an application. Alternatively, open the **Edge Settings** dropdown menu, select **"Apps"**, and click **"Install Destiny Item Manager"**.
 
-# Does Clarity have mobile support?
-- We do not support mobile devices currently but would love to eventually have a standalone application. Unfortunately, we simply do not have the time and resources for that at the moment so don't get your hopes up.
+# Does Clarity support mobile? - Yes
+- Yes it does, but it's not fully supported yet.
+- Browsers like Yandex, Kiwi (best in my opinion), Bromite, and Dolphin support browser extensions.
+- But parts of Clarity are not made in mobile friendly design.
 
 # Manual Installation
 - Join our [Discord Server](https://d2clarity.page.link/discord)
