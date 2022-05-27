@@ -1,4 +1,4 @@
-import { ProviderContext } from '@components/provider/DataProvider'
+import { ProviderContext } from '@components/provider/DataProvider_old'
 import { calculateStats } from '@ts/calculations/calculateStats'
 import styles from '@styles/itemPopup/stats.module.scss'
 import { useContext } from 'react'

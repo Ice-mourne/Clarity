@@ -1,19 +1,25 @@
-import { ClarityDataContext, SetClarityDataContext } from '@components/DataProvider'
-import { useContext, useState } from 'react'
+import { ChangeEvent, useContext, useState } from 'react'
+import { SetThemeContext, ThemeContext } from '@components/provider/ThemeProvider'
+import { useGetThemeValue, useResetTheme, useUpdateTheme } from '@hooks/useGetUpdateTheme'
 
 import ColorPickerMenu from '../ColorPickerMenu'
+import RangeInput from '../RangeInput'
 import styles from '@styles/ClarityMenu/menuContent/CustomTheme.module.scss'
 
 export function CustomTheme() {
+   const themes = useContext(ThemeContext)
+   const setTheme = useContext(SetThemeContext)
+
    const [display, setDisplay] = useState<{ [key: string]: boolean }>({
       background: false,
       allInventoryItems: false,
       masterwork: false,
       deepsight: false,
-      consumableAtCapacity: false,
-      atCapacityMaxStackSize: false,
+      consumableCapped: false,
+      consumableFullStack: false,
       thumbs: false,
-      tags: false
+      tags: false,
+      settings: false
    })
 
    const handleClick = (key: string) => {
@@ -23,186 +29,233 @@ export function CustomTheme() {
       })
    }
 
-   const setClarityData = useContext(SetClarityDataContext)
-   const clarityData = useContext(ClarityDataContext)
+   const changeBorderType = (event: ChangeEvent<HTMLSelectElement>, location: Array<string>) => {
+      useUpdateTheme(themes, setTheme, 'border', location, event.target.value)
+   }
 
-   const backgroundOptions = clarityData.theme.background
+   const jsx = {
+      settings: <div className={styles.content}> Work in progress </div>,
+      background: (
+         <div className={styles.content}>
+            <span>Circle color</span>
+            <ColorPickerMenu location={['background', 'circleColor']} />
 
-   const arrowDown = <span className="app-icon no-pointer-events fas fa-caret-down collapse-icon"></span>
+            <span>Circle size</span>
+            <RangeInput min={0} max={100} location={['background', 'circleSize']} />
+            <button onClick={() => useResetTheme(themes, setTheme, ['background', 'circleSize'])}>Reset</button>
+
+            <span>Circle spread</span>
+            <RangeInput min={0} max={200} location={['background', 'circleSpread']} />
+            <button onClick={() => useResetTheme(themes, setTheme, ['background', 'circleSpread'])}>Reset</button>
+
+            <span>Circle vertical position</span>
+            <RangeInput min={-100} max={100} location={['background', 'circlePositionVertical']} />
+            <button onClick={() => useResetTheme(themes, setTheme, ['background', 'circlePositionVertical'])}>
+               Reset
+            </button>
+
+            <span>Circle horizontal position</span>
+            <RangeInput min={0} max={100} location={['background', 'circlePositionHorizontal']} />
+            <button onClick={() => useResetTheme(themes, setTheme, ['background', 'circlePositionHorizontal'])}>
+               Reset
+            </button>
+
+            <span>Background color</span>
+            <ColorPickerMenu location={['background', 'backgroundColor']} />
+         </div>
+      ),
+      allInventoryItems: (
+         <div className={styles.content}>
+            <span>Border Type</span>
+            <select onChange={(e) => changeBorderType(e, ['inventoryItems', 'all', 'borderType'])}>
+               <option value="fullBorder">Full border</option>
+               <option value="minimalBorder">Minimal border</option>
+               <option value="noBorder">No border</option>
+            </select>
+            <span>Border</span>
+            <ColorPickerMenu location={['inventoryItems', 'all', 'border']} />
+            <span>Bottom background</span>
+            <ColorPickerMenu location={['inventoryItems', 'all', 'bottomBackground']} />
+            <span>Power lvl</span>
+            <ColorPickerMenu location={['inventoryItems', 'all', 'powerLevel']} />
+         </div>
+      ),
+      consumableCapped: (
+         <div className={styles.content}>
+            <span>Border Type</span>
+            <select onChange={(e) => changeBorderType(e, ['inventoryItems', 'consumable', 'capped', 'borderType'])}>
+               <option value="fullBorder">Full border</option>
+               <option value="minimalBorder">Minimal border</option>
+               <option value="noBorder">No border</option>
+            </select>
+            <span>Border</span>
+            <ColorPickerMenu location={['inventoryItems', 'consumable', 'capped', 'border']} />
+            <span>Bottom background</span>
+            <ColorPickerMenu location={['inventoryItems', 'consumable', 'capped', 'bottomBackground']} />
+            <span>Number of items</span>
+            <ColorPickerMenu location={['inventoryItems', 'consumable', 'capped', 'numberOfItems']} />
+         </div>
+      ),
+      consumableFullStack: (
+         <div className={styles.content}>
+            <span>Bottom background</span>
+            <ColorPickerMenu location={['inventoryItems', 'consumable', 'fullStack', 'bottomBackground']} />
+            <span>Number of items</span>
+            <ColorPickerMenu location={['inventoryItems', 'consumable', 'fullStack', 'numberOfItems']} />
+         </div>
+      ),
+      deepsight: (
+         <div className={styles.content}>
+            <span>Border Type</span>
+            <select onChange={(e) => changeBorderType(e, ['inventoryItems', 'deepsight', 'borderType'])}>
+               <option value="fullBorder">Full border</option>
+               <option value="minimalBorder">Minimal border</option>
+               <option value="noBorder">No border</option>
+            </select>
+            <span>Border</span>
+            <ColorPickerMenu location={['inventoryItems', 'deepsight', 'border']} />
+            <span>Bottom background</span>
+            <ColorPickerMenu location={['inventoryItems', 'deepsight', 'bottomBackground']} />
+            <span>Power lvl</span>
+            <ColorPickerMenu location={['inventoryItems', 'deepsight', 'powerLevel']} />
+         </div>
+      ),
+      masterwork: (
+         <div className={styles.content}>
+            <span>Border Type</span>
+            <select onChange={(e) => changeBorderType(e, ['inventoryItems', 'masterwork', 'borderType'])}>
+               <option value="fullBorder">Full border</option>
+               <option value="noBorder">No border</option>
+            </select>
+            <span>Border</span>
+            <ColorPickerMenu location={['inventoryItems', 'masterwork', 'border']} />
+            <span>Bottom background</span>
+            <ColorPickerMenu location={['inventoryItems', 'masterwork', 'bottomBackground']} />
+            <span>Power lvl</span>
+            <ColorPickerMenu location={['inventoryItems', 'masterwork', 'powerLevel']} />
+         </div>
+      ),
+      tags: (
+         <div className={styles.content}>
+            <span>Archive</span>
+            <ColorPickerMenu location={['inventoryItems', 'tags', 'archive']} />
+            <span>Favorite</span>
+            <ColorPickerMenu location={['inventoryItems', 'tags', 'favorite']} />
+            <span>Infuse</span>
+            <ColorPickerMenu location={['inventoryItems', 'tags', 'infuse']} />
+            <span>Junk</span>
+            <ColorPickerMenu location={['inventoryItems', 'tags', 'junk']} />
+            <span>Keep</span>
+            <ColorPickerMenu location={['inventoryItems', 'tags', 'keep']} />
+            <span>Lock</span>
+            <ColorPickerMenu location={['inventoryItems', 'tags', 'lock']} />
+            <span>Note</span>
+            <ColorPickerMenu location={['inventoryItems', 'tags', 'note']} />
+         </div>
+      ),
+      thumbs: (
+         <div className={styles.content}>
+            <span>Down</span>
+            <ColorPickerMenu location={['inventoryItems', 'thumbsDown']} />
+            <span>Up</span>
+            <ColorPickerMenu location={['inventoryItems', 'thumbsUp']} />
+         </div>
+      )
+   }
+   const caretDown = <span className="app-icon no-pointer-events fas fa-caret-down collapse-icon"></span>
+   const caretRight = <span className="app-icon no-pointer-events fas fa-caret-right collapse-icon"></span>
    return (
       <>
-         <title>Custom Theme</title> {/* todo replace title its for internal use only this */}
-         <div className={styles.colorDisplay}>
-            <div className={styles.span2} onClick={() => handleClick('background')}>
+         <title>Custom Theme</title>
+
+         <div className={styles.themeOptions}>
+            <div>
+               <div className={styles.option} onClick={() => handleClick('settings')}>
+                  {display.settings ? caretDown : caretRight}
+                  <span className={styles.name}>Settings</span>
+               </div>
+            </div>
+            {display.settings ? jsx.settings : null}
+
+            {/* Background */}
+            <div
+               className={`${styles.option} ${display.background ? styles.optionSelected : ''}`}
+               onClick={() => handleClick('background')}
+            >
+               {display.background ? caretDown : caretRight}
                <span className={styles.name}>Background</span>
-               {arrowDown}
             </div>
-            {display.background ? (
-               <>
-                  <span>Circle color</span>
-                  <ColorPickerMenu identifier="theme.background.centerColor" />
-                  <span>Circle size</span>
-                  <input
-                     type="range"
-                     min="0"
-                     max="100"
-                     value={backgroundOptions.centerColorSpread}
-                     onChange={(e) => {
-                        setClarityData((draft) => {
-                           draft.theme.background.centerColorSpread = Number(e.target.value)
-                        })
-                     }}
-                  />
-                  <span>Circle spread</span>
-                  <input
-                     type="range"
-                     min="0"
-                     max="200"
-                     value={backgroundOptions.surroundingColorSpread}
-                     onChange={(e) => {
-                        setClarityData((draft) => {
-                           draft.theme.background.surroundingColorSpread = Number(e.target.value)
-                        })
-                     }}
-                  />
-                  <span>Circle vertical position</span>
-                  <input
-                     type="range"
-                     min="-100"
-                     max="100"
-                     value={backgroundOptions.centerColorVertical / 2}
-                     onChange={(e) => {
-                        setClarityData((draft) => {
-                           draft.theme.background.centerColorVertical = Number(e.target.value) * 2
-                        })
-                     }}
-                  />
-                  <span>Circle horizontal position</span>
-                  <input
-                     type="range"
-                     min="0"
-                     max="100"
-                     value={backgroundOptions.centerColorHorizontal}
-                     onChange={(e) => {
-                        setClarityData((draft) => {
-                           draft.theme.background.centerColorHorizontal = Number(e.target.value)
-                        })
-                     }}
-                  />
-                  <span>Background color</span>
-                  <ColorPickerMenu identifier="theme.background.surroundingColor" />
-               </>
-            ) : null}
+            {display.background ? jsx.background : null}
 
-            <div className={styles.span2} onClick={() => handleClick('allInventoryItems')}>
+            {/* All inventory items */}
+            <div
+               className={`${styles.option} ${display.allInventoryItems ? styles.optionSelected : ''}`}
+               onClick={() => handleClick('allInventoryItems')}
+            >
+               {display.allInventoryItems ? caretDown : caretRight}
                <span className={styles.name}>All inventory items</span>
-               {arrowDown}
             </div>
-            {display.allInventoryItems ? (
-               <>
-                  <span>Border</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.all.border" />
-                  <span>Bottom background</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.all.bottom" />
-                  <span>Power lvl</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.all.powerLevel" />
-               </>
-            ) : null}
+            {display.allInventoryItems ? jsx.allInventoryItems : null}
 
-            <div className={styles.span2} onClick={() => handleClick('consumableAtCapacity')}>
-               <span className={styles.name}>Consumable at capacity (can't get more)</span>
-               {arrowDown}
+            {/* Consumable capped */}
+            <div
+               className={`${styles.option} ${display.consumableCapped ? styles.optionSelected : ''}`}
+               onClick={() => handleClick('consumableCapped')}
+            >
+               {display.consumableCapped ? caretDown : caretRight}
+               <span className={styles.name}>Consumable capped</span>
             </div>
-            {display.consumableAtCapacity ? (
-               <>
-                  <span>Border</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.consumable.atCapacity.border" />
-                  <span>Bottom background</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.consumable.atCapacity.bottom" />
-                  <span>Number of items</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.consumable.atCapacity.numberOfItems" />
-               </>
-            ) : null}
+            {display.consumableCapped ? jsx.consumableCapped : null}
 
-            <div className={styles.span2} onClick={() => handleClick('atCapacityMaxStackSize')}>
+            {/* Consumable full stack */}
+            <div
+               className={`${styles.option} ${display.consumableFullStack ? styles.optionSelected : ''}`}
+               onClick={() => handleClick('consumableFullStack')}
+            >
+               {display.consumableFullStack ? caretDown : caretRight}
                <span className={styles.name}>Consumable full stack</span>
-               {arrowDown}
             </div>
-            {display.atCapacityMaxStackSize ? (
-               <>
-                  <span>Bottom background</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.consumable.maxStackSize.bottom" />
-                  <span>Number of items</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.consumable.maxStackSize.numberOfItems" />
-               </>
-            ) : null}
+            {display.consumableFullStack ? jsx.consumableFullStack : null}
 
-            <div className={styles.span2} onClick={() => handleClick('deepsight')}>
+            {/* Deepsight */}
+            <div
+               className={`${styles.option} ${display.deepsight ? styles.optionSelected : ''}`}
+               onClick={() => handleClick('deepsight')}
+            >
+               {display.deepsight ? caretDown : caretRight}
                <span className={styles.name}>Deepsight</span>
-               {arrowDown}
             </div>
-            {display.deepsight ? (
-               <>
-                  <span>Border</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.deepsight.border" />
-                  <span>Bottom background</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.deepsight.bottom" />
-                  <span>Power lvl</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.deepsight.powerLevel" />
-               </>
-            ) : null}
+            {display.deepsight ? jsx.deepsight : null}
 
-            <div className={styles.span2} onClick={() => handleClick('masterwork')}>
+            {/* Masterwork */}
+            <div
+               className={`${styles.option} ${display.masterwork ? styles.optionSelected : ''}`}
+               onClick={() => handleClick('masterwork')}
+            >
+               {display.masterwork ? caretDown : caretRight}
                <span className={styles.name}>Masterwork</span>
-               {arrowDown}
             </div>
-            {display.masterwork ? (
-               <>
-                  <span>Border</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.masterwork.border" />
-                  <span>Bottom background</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.masterwork.bottom" />
-                  <span>Power lvl</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.masterwork.powerLevel" />
-               </>
-            ) : null}
+            {display.masterwork ? jsx.masterwork : null}
 
-            <div className={styles.span2} onClick={() => handleClick('tags')}>
+            {/* Tags */}
+            <div
+               className={`${styles.option} ${display.tags ? styles.optionSelected : ''}`}
+               onClick={() => handleClick('tags')}
+            >
+               {display.tags ? caretDown : caretRight}
                <span className={styles.name}>Tags</span>
-               {arrowDown}
             </div>
+            {display.tags ? jsx.tags : null}
 
-            {display.tags ? (
-               <>
-                  <span>Archive</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.tags.archive" />
-                  <span>Favorite</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.tags.favorite" />
-                  <span>Infuse</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.tags.infuse" />
-                  <span>Junk</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.tags.junk" />
-                  <span>Keep</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.tags.keep" />
-                  <span>Lock</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.tags.lock" />
-                  <span>Note</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.tags.note" />
-               </>
-            ) : null}
-
-            <div className={styles.span2} onClick={() => handleClick('thumbs')}>
+            {/* Thumbs */}
+            <div
+               className={`${styles.option} ${display.thumbs ? styles.optionSelected : ''}`}
+               onClick={() => handleClick('thumbs')}
+            >
+               {display.thumbs ? caretDown : caretRight}
                <span className={styles.name}>Thumbs</span>
-               {arrowDown}
             </div>
-            {display.thumbs ? (
-               <>
-                  <span>Down</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.thumbsDown" />
-                  <span>Up</span>
-                  <ColorPickerMenu identifier="theme.inventoryItems.thumbsUp" />
-               </>
-            ) : null}
+            {display.thumbs ? jsx.thumbs : null}
          </div>
       </>
    )

@@ -1,4 +1,4 @@
-import { ProviderContext, SetProviderContext } from './DataProvider'
+import { ProviderContext, SetProviderContext } from './DataProvider_old'
 import { useCallback, useContext, useEffect, useState } from 'react'
 
 import { ClarityData } from '@interfaces/ts/userData/clarityUser'

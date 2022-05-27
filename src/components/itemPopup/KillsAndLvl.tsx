@@ -1,4 +1,4 @@
-import { ProviderContext } from '@components/provider/DataProvider'
+import { ProviderContext } from '@components/provider/DataProvider_old'
 import styles from '@styles/itemPopup/KillsAndLvl.module.scss'
 import { useContext } from 'react'
 

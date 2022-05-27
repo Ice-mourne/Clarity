@@ -1,7 +1,7 @@
 import { PerksAndStuff, SocketTypeNames } from '@interfaces/ts/manifest/clarityManifest'
 import { UsersInventorySockets, UsersInventory_Sockets_Rolled } from '@interfaces/ts/userData/clarityUser'
 
-import { ProviderContext } from '@components/provider/DataProvider'
+import { ProviderContext } from '@components/provider/DataProvider_old'
 import styles from '@styles/itemPopup/Perks.module.scss'
 import { useContext } from 'react'
 

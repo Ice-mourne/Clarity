@@ -1,7 +1,7 @@
 import { ChangeEvent, useContext, useState } from 'react'
+import { ProviderContext, SetProviderContext } from '@components/provider/DataProvider_old'
 
 import styles from '@styles/itemPopup/Notes.module.scss'
-import { ProviderContext, SetProviderContext } from '@components/provider/DataProvider'
 
 export default function Notes() {
    const context = useContext(ProviderContext)

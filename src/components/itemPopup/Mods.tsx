@@ -1,6 +1,6 @@
 import { PerksAndStuff, SocketTypeNames } from '@interfaces/ts/manifest/clarityManifest'
 
-import { ProviderContext } from '@components/provider/DataProvider'
+import { ProviderContext } from '@components/provider/DataProvider_old'
 import styles from '@styles/itemPopup/mods.module.scss'
 import { useContext } from 'react'
 

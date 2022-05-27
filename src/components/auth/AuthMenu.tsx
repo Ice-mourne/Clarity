@@ -1,4 +1,4 @@
-import { ProviderContext, SetProviderContext } from '@components/provider/DataProvider'
+import { ProviderContext, SetProviderContext } from '@components/provider/DataProvider_old'
 import { getUserAuth, getUserInfo } from '@ts/userData/userInfoAndAuth'
 import { useContext, useState } from 'react'
 

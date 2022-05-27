@@ -1,138 +1,303 @@
+import { ClarityData, Theme } from '@interfaces/globalData.interface'
+
 import { ClarityDataContext } from '@components/DataProvider'
 import { useContext } from 'react'
+import { useGetTheme } from '@hooks/useGetUpdateTheme'
 
-export default function ThemeApplier() {
-   const clarityData = useContext(ClarityDataContext)
-   const locations = clarityData.locations
-   const invItemLock = clarityData.locations.inventoryItems
-
-   const theme = clarityData.theme
-   const invItemTheme = clarityData.theme.inventoryItems
-
+const backgroundStyles = (location: ClarityData['locations'], theme: Theme['background']) => {
    const background = `
-      background: radial-gradient(circle at ${theme.background.centerColorHorizontal}% ${theme.background.centerColorVertical}%,
-         ${theme.background.centerColor} ${theme.background.centerColorSpread}%,
-         ${theme.background.surroundingColor} ${theme.background.surroundingColorSpread}%);
+      background: radial-gradient(circle at ${theme.circlePositionHorizontal[0]}% ${theme.circlePositionVertical[0]}%,
+         ${theme.circleColor[0]} ${theme.circleSize[0]}%,
+         ${theme.backgroundColor[0]} ${theme.circleSpread[0]}%);
       background-repeat: no-repeat;
       background-size: 100vw 100vh;
    `
-
-   if (!invItemLock || !invItemTheme) return
-
-   const styles = `
-      ${locations.backgroundColor?.[0]},
-      ${locations.backgroundColor?.[1]},
-      ${locations.backgroundColor?.[2]},
-      ${locations.backgroundColor?.[3]} {
+   return `
+      ${location.backgroundColor?.[0]},
+      ${location.backgroundColor?.[1]},
+      ${location.backgroundColor?.[2]},
+      ${location.backgroundColor?.[3]} {
          ${background}
          background-position: center -44px;
       }
-      ${locations.backgroundColor?.[1]} {
+      ${location.backgroundColor?.[1]} {
          background-position: center top;
       }
+   `
+}
 
-      ${invItemLock.all.bottom} {
-         background-color: ${invItemTheme.all.bottom};
-         color: ${invItemTheme.all.powerLevel};
+const invItemAllStyles = (
+   location: ClarityData['locations']['inventoryItems']['all'],
+   theme: Theme['inventoryItems']['all']
+) => {
+   return `
+      ${'' /* All inventory items > bottom part */}
+      ${location.bottom} {
+         ${theme.bottomBackground[1] ? `background-color: ${theme.bottomBackground[0]};` : ''}
+         ${theme.powerLevel[1] ? `color: ${theme.powerLevel[0]};` : ''}
+         ${
+            theme.borderType === 'fullBorder'
+               ? `
+                  border: none;
+                  border-left: 1px solid;
+                  border-right: 1px solid;
+                  border-bottom: 1px solid;
+                  border-color: ${theme.border[0]};
+               `
+               : ''
+         }
       }
-      ${invItemLock.all.border} {
-         border-color: ${invItemTheme.all.border};
+      ${'' /* All inventory items > img */}
+      ${location.img} {
+         ${theme.powerLevel[1] ? `color: ${theme.powerLevel[0]};` : ''}
+         ${
+            theme.borderType === 'fullBorder'
+               ? `
+               border: none;
+               border: 1px solid;
+               border-color: ${theme.border[0]};
+             `
+               : theme.border[0].match(/#.{6}00$/) || theme.borderType === 'noBorder'
+               ? `border: none;`
+               : `border-color: ${theme.border[0]};`
+         }
       }
-      ${invItemLock.all.invisibleBorder} {
+
+      ${'' /* Items with out border */}
+      ${location.imgWithInvisibleBorder} {
          border-color: #00000000;
-      }
-      ${invItemLock.all.watermark} ${
-         invItemTheme.all.border.match(/#.{6}00$/) ? `{
-            top: 0px;
-            left: 0px;
-            height: var(--item-size);
-            width: var(--item-size);
-         }` : `{}`
+         background-color: #00000000;
       }
 
-      ${invItemLock.consumable.atCapacity.bottom} {
-         background-color: ${invItemTheme.consumable.atCapacity.bottom};
-         color: ${invItemTheme.consumable.atCapacity.numberOfItems};
-      }
-      ${invItemLock.consumable.atCapacity.commonBorder},
-      ${invItemLock.consumable.atCapacity.rareBorder},
-      ${invItemLock.consumable.atCapacity.legendaryBorder},
-      ${invItemLock.consumable.atCapacity.exoticBorder} {
-         border-color: ${invItemTheme.consumable.atCapacity.border};
+      ${'' /* If border is invisible adust watermark*/}
+      ${location.watermark} ${
+      theme.border[0].match(/#.{6}00$/)
+         ? `{
+                  top: 0px;
+                  left: 0px;
+                  height: var(--item-size);
+                  width: var(--item-size);
+               }`
+         : `{}`
+   }
+   `
+}
+
+const consumableStyles = (
+   location: ClarityData['locations']['inventoryItems']['consumable'],
+   theme: Theme['inventoryItems']['consumable']
+) => {
+   return `
+      ${'' /* Consumable items caped > bottom part */}
+      ${location.capped.bottom} {
+         ${theme.capped.bottomBackground[1] ? `background-color: ${theme.capped.bottomBackground[0]};` : ''}
+         ${theme.capped.numberOfItems[1] ? `color: ${theme.capped.numberOfItems[0]};` : ''}
+         ${
+            theme.capped.borderType === 'fullBorder'
+               ? `
+            border: none;
+            border-left: 1px solid;
+            border-right: 1px solid;
+            border-bottom: 1px solid;
+            border-color: ${theme.capped.border[0]};
+         `
+               : ''
+         }
       }
 
-      ${invItemLock.consumable.maxStackSize.bottom} {
-         background-color: ${invItemTheme.consumable.maxStackSize.bottom};
-         color: ${invItemTheme.consumable.maxStackSize.numberOfItems};
+      ${'' /* Consumable items caped > img */}
+      ${location.capped.commonItemImg},
+      ${location.capped.rareItemImg},
+      ${location.capped.legendaryItemImg},
+      ${location.capped.exoticItemImg} {
+         ${
+            theme.capped.borderType === 'fullBorder'
+               ? `
+               border: none;
+               border-left: 1px solid;
+               border-right: 1px solid;
+               border-top: 1px solid;
+               border-color: ${theme.capped.border[0]};
+            `
+               : theme.capped.border[0].match(/#.{6}00$/) || theme.capped.borderType === 'noBorder'
+               ? `border: none;`
+               : `border-color: ${theme.capped.border[0]};`
+         }
       }
 
-      ${invItemLock.deepsight.border} {
-         border-color: ${invItemTheme.deepsight.border};
+      ${'' /* Consumable items full stack > bottom part */}
+      ${location.fullStack.bottom} {
+         ${theme.fullStack.bottomBackground[1] ? `background-color: ${theme.fullStack.bottomBackground[0]};` : ''}
+         ${theme.fullStack.numberOfItems[1] ? ` color: ${theme.fullStack.numberOfItems[0]};` : ''}
       }
-      ${invItemLock.deepsight.borderImg} {
+   `
+}
+
+const deepsightStyles = (
+   location: ClarityData['locations']['inventoryItems']['deepsight'],
+   theme: Theme['inventoryItems']['deepsight']
+) => {
+   return `
+      ${location.img} {
+         ${
+            theme.borderType === 'fullBorder'
+               ? `
+               border: none;
+               border-left: 1px solid;
+               border-right: 1px solid;
+               border-top: 1px solid;
+               border-color: ${theme.border[0]};
+            `
+               : theme.border[0].match(/#.{6}00$/) || theme.borderType === 'noBorder'
+               ? `border: none;`
+               : `border-color: ${theme.border[0]};`
+         }
+      }
+      ${location.imgBorderImg} {
+         ${
+            theme.border[0].match(/#.{6}00$/) || theme.borderType === 'noBorder'
+               ? 'background-image: none;'
+               : `
+                  top: 0px;
+                  left: 0px;
+                  height: var(--item-size);
+                  width: var(--item-size);
+                  background-image: none;
+                  border: inset 2px;
+                  border-style: solid;
+                  border-color: ${theme.border[0]};
+               `
+         }
+
+      }
+      ${location.bottom} {
+         background-color: ${theme.bottomBackground[0]};
+         color: ${theme.powerLevel[0]};
+         ${
+            theme.borderType === 'fullBorder'
+               ? `
+               border: none;
+               border-left: 1px solid;
+               border-right: 1px solid;
+               border-bottom: 1px solid;
+               border-color: ${theme.border[0]};
+            `
+               : theme.border[0].match(/#.{6}00$/) || theme.borderType === 'noBorder'
+               ? `border: none;`
+               : `
+                  border-color: ${theme.border[0]};
+                  border-left: none;
+                  border-right: none;
+                  border-bottom: none;
+               `
+         }
+      }
+   `
+}
+
+const masterworkStyles = (
+   location: ClarityData['locations']['inventoryItems']['masterwork'],
+   theme: Theme['inventoryItems']['masterwork']
+) => {
+   return `
+      ${location.bottom} {
+         ${theme.bottomBackground[1] ? `background-color: ${theme.bottomBackground[0]};` : ''}
+         ${theme.powerLevel[1] ? `color: ${theme.powerLevel[0]};` : ''}
+         ${
+            theme.borderType === 'fullBorder'
+               ? `
+            border: none;
+            border-left: 1px solid;
+            border-right: 1px solid;
+            border-bottom: 1px solid;
+            border-color: ${theme.border[0]};
+         `
+               : ''
+         }
+      }
+      ${location.img} {
+         ${theme.powerLevel[1] ? `color: ${theme.powerLevel[0]};` : ''}
+         ${
+            theme.borderType === 'fullBorder'
+               ? `
+               border: none;
+               border-left: 1px solid;
+               border-right: 1px solid;
+               border-top: 1px solid;
+               border-color: ${theme.border[0]};
+            `
+               : theme.border[0].match(/#.{6}00$/) || theme.borderType === 'noBorder'
+               ? `border: none;`
+               : `border-color: ${theme.border[0]};`
+         }
+      }
+      ${location.imgBorderImg},
+      ${location.imgBorderImgExotic} {
          top: 0px;
          left: 0px;
          height: var(--item-size);
          width: var(--item-size);
-         background-image: none;
-         border: inset 2px;
-         border-style: solid;
-         border-color: ${invItemTheme.deepsight.border};
       }
-      ${invItemLock.deepsight.bottom} {
-         background-color: ${invItemTheme.deepsight.bottom};
-         color: ${invItemTheme.deepsight.powerLevel};
-         border-bottom: 1px solid;
-         border-left: 1px solid;
-         border-right: 1px solid;
-         border-color: ${invItemTheme.deepsight.border};
-      }
+   `
+}
 
-      ${invItemLock.masterwork.bottom} {
-         background-color: ${invItemTheme.masterwork.bottom};
-         color: ${invItemTheme.masterwork.powerLevel};
+const tagStyles = (theme: Theme['inventoryItems']['tags']) => {
+   return `
+      .item .fa-archive {
+         ${theme.archive[1] ? `color: ${theme.archive[0]};` : ''}
       }
-      ${invItemLock.masterwork.border} {
-         border-color: ${invItemTheme.masterwork.border};
+      .item .fa-heart {
+         ${theme.favorite[1] ? `color: ${theme.favorite[0]};` : ''}
       }
-      ${invItemLock.masterwork.borderImg},
-      ${invItemLock.masterwork.exoticBorderImg} {
-         top: 0px;
-         left: 0px;
-         height: var(--item-size);
-         width: var(--item-size);
+      .item .fa-bolt {
+         ${theme.infuse[1] ? `color: ${theme.infuse[0]};` : ''}
       }
+      .item .fa-ban {
+         ${theme.junk[1] ? `color: ${theme.junk[0]};` : ''}
+      }
+      .item .fa-tag {
+         ${theme.keep[1] ? `color: ${theme.keep[0]};` : ''}
+      }
+      .item .fa-lock {
+         ${theme.lock[1] ? `color: ${theme.lock[0]};` : ''}
+      }
+      .item .fa-sticky-note {
+         ${theme.note[1] ? `color: ${theme.note[0]};` : ''}
+      }
+   `
+}
 
-      ${invItemLock.tags.junk} {
-         color: ${invItemTheme.tags.junk};
+const thumbStyles = (theme: Theme['inventoryItems']) => {
+   return `
+      .item .fa-thumbs-down {
+         ${theme.thumbsDown[1] ? `color: ${theme.thumbsDown[0]};` : ''}
       }
-      ${invItemLock.tags.keep} {
-         color: ${invItemTheme.tags.keep};
+      .item .fa-thumbs-up {
+         ${theme.thumbsUp[1] ? `color: ${theme.thumbsUp[0]};` : ''}
       }
-      ${invItemLock.tags.lock} {
-         color: ${invItemTheme.tags.lock};
-      }
-      ${invItemLock.tags.note} {
-         color: ${invItemTheme.tags.note};
-      }
+   `
+}
 
-      ${invItemLock.tags.archive} {
-         color: ${invItemTheme.tags.archive};
-      }
-      ${invItemLock.tags.favorite} {
-         color: ${invItemTheme.tags.favorite};
-      }
-      ${invItemLock.tags.infuse} {
-         color: ${invItemTheme.tags.infuse};
-      }
+export default function ThemeApplier() {
+   const clarityData = useContext(ClarityDataContext)
+   const theme = useGetTheme()
 
-      ${invItemLock.thumbsDown} {
-         color: ${invItemTheme.thumbsDown};
-      }
-      ${invItemLock.thumbsUp} {
-         color: ${invItemTheme.thumbsUp};
-      }
-   `//.split('\n').map(s => s.trim()).filter(s => s.length > 0).join(' ')
+   if (!clarityData.locations.inventoryItems || !theme?.inventoryItems) return
+
+   const styles = `
+      ${backgroundStyles(clarityData.locations, theme.background)}
+      ${invItemAllStyles(clarityData.locations.inventoryItems.all, theme.inventoryItems.all)}
+      ${consumableStyles(clarityData.locations.inventoryItems.consumable, theme.inventoryItems.consumable)}
+      ${deepsightStyles(clarityData.locations.inventoryItems.deepsight, theme.inventoryItems.deepsight)}
+      ${masterworkStyles(clarityData.locations.inventoryItems.masterwork, theme.inventoryItems.masterwork)}
+      ${tagStyles(theme.inventoryItems.tags)}
+      ${thumbStyles(theme.inventoryItems)}
+   `
+      .split('\n')
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0)
+      .map((s) => (s.match(/^\.|^\}/) ? s : `   ${s}`))
+      .join('\n')
 
    return clarityData.disableTheme ? null : <style>{styles}</style>
 }

@@ -1,4 +1,4 @@
-import { ClarityData } from 'src/globalData.interface'
+import { ClarityData } from '@interfaces/globalData.interface'
 import { Updater } from 'use-immer'
 
 export default function useLocationFinder(setClarityData: Updater<ClarityData>) {
@@ -19,45 +19,34 @@ export default function useLocationFinder(setClarityData: Updater<ClarityData>) 
       header: '',
       inventoryItems: {
          all: {
-            border: '.item-img',
+            img: '.item-img',
             bottom: '',
             watermark: '',
-            invisibleBorder: ''
+            imgWithInvisibleBorder: ''
          },
          consumable: {
-            atCapacity: {
+            capped: {
                bottom: '',
-               commonBorder: '',
-               rareBorder: '',
-               legendaryBorder: '',
-               exoticBorder: ''
+               commonItemImg: '',
+               rareItemImg: '',
+               legendaryItemImg: '',
+               exoticItemImg: ''
             },
-            maxStackSize: {
+            fullStack: {
                bottom: ''
             }
          },
          deepsight: {
-            border: '',
-            borderImg: '',
+            img: '',
+            imgBorderImg: '',
             bottom: ''
          },
          masterwork: {
-            border: '',
+            img: '',
             bottom: '',
-            borderImg: '',
-            exoticBorderImg: ''
-         },
-         tags: {
-            archive: '.app-icon.no-pointer-events.fas.fa-archive',
-            favorite: '.app-icon.no-pointer-events.fas.fa-heart',
-            infuse: '.app-icon.no-pointer-events.fas.fa-bolt',
-            junk: '.app-icon.no-pointer-events.fas.fa-ban',
-            keep: '.app-icon.no-pointer-events.fas.fa-tag',
-            lock: '.app-icon.no-pointer-events.fas.fa-lock',
-            note: '.app-icon.no-pointer-events.fas.fa-sticky-note'
-         },
-         thumbsDown: '.app-icon.no-pointer-events.fas.fa-thumbs-down',
-         thumbsUp: '.app-icon.no-pointer-events.fas.fa-thumbs-up'
+            imgBorderImg: '',
+            imgBorderImgExotic: ''
+         }
       }
    }
 
@@ -99,18 +88,18 @@ export default function useLocationFinder(setClarityData: Updater<ClarityData>) 
          }
 
          // invisible border
-         if (nodeStyles.border === '1px solid rgba(0, 0, 0, 0)' && node.parentNode.classList.contains('item')) {
-            locations.inventoryItems.all.invisibleBorder = `.${[...node.classList].join('.')}`
+         if (nodeStyles.border === '1px solid rgba(0, 0, 0, 0)' && node.parentNode.classList.value === 'item') {
+            locations.inventoryItems.all.imgWithInvisibleBorder = `.${[...node.classList].join('.')}`
          }
 
          // masterwork border
          if (nodeStyles.border === '1px solid rgb(234, 222, 139)' && node.parentNode.classList.contains('item')) {
-            locations.inventoryItems.masterwork.border = `.${[...node.classList].join('.')}`
+            locations.inventoryItems.masterwork.img = `.${[...node.classList].join('.')}`
          }
 
          // deepsight border
          if (nodeStyles.border === '1px solid rgb(210, 83, 54)' && node.parentNode.classList.contains('item')) {
-            locations.inventoryItems.deepsight.border = `.${[...node.classList].join('.')}`
+            locations.inventoryItems.deepsight.img = `.${[...node.classList].join('.')}`
          }
 
          // consumable at capacity border common (can't get more)
@@ -119,7 +108,7 @@ export default function useLocationFinder(setClarityData: Updater<ClarityData>) 
             nodeStyles.backgroundColor === 'rgb(54, 111, 66)' &&
             node.parentNode.classList.contains('item')
          ) {
-            locations.inventoryItems.consumable.atCapacity.commonBorder = `.${[...node.classList].join('.')}`
+            locations.inventoryItems.consumable.capped.commonItemImg = `.${[...node.classList].join('.')}`
          }
          // consumable at capacity border rare (can't get more)
          if (
@@ -127,7 +116,7 @@ export default function useLocationFinder(setClarityData: Updater<ClarityData>) 
             nodeStyles.backgroundColor === 'rgb(80, 118, 163)' &&
             node.parentNode.classList.contains('item')
          ) {
-            locations.inventoryItems.consumable.atCapacity.rareBorder = `.${[...node.classList].join('.')}`
+            locations.inventoryItems.consumable.capped.rareItemImg = `.${[...node.classList].join('.')}`
          }
          // consumable at capacity border legendary (can't get more)
          if (
@@ -135,7 +124,7 @@ export default function useLocationFinder(setClarityData: Updater<ClarityData>) 
             nodeStyles.backgroundColor === 'rgb(82, 47, 101)' &&
             node.parentNode.classList.contains('item')
          ) {
-            locations.inventoryItems.consumable.atCapacity.legendaryBorder = `.${[...node.classList].join('.')}`
+            locations.inventoryItems.consumable.capped.legendaryItemImg = `.${[...node.classList].join('.')}`
          }
          // consumable at capacity border exotic (can't get more)
          if (
@@ -143,7 +132,7 @@ export default function useLocationFinder(setClarityData: Updater<ClarityData>) 
             nodeStyles.backgroundColor === 'rgb(206, 174, 51)' &&
             node.parentNode.classList.contains('item')
          ) {
-            locations.inventoryItems.consumable.atCapacity.exoticBorder = `.${[...node.classList].join('.')}`
+            locations.inventoryItems.consumable.capped.exoticItemImg = `.${[...node.classList].join('.')}`
          }
 
          // deepsight border img
@@ -155,7 +144,7 @@ export default function useLocationFinder(setClarityData: Updater<ClarityData>) 
             ) &&
             node.parentNode.classList.contains('item')
          ) {
-            locations.inventoryItems.deepsight.borderImg = `.${[...node.classList].join('.')}`
+            locations.inventoryItems.deepsight.imgBorderImg = `.${[...node.classList].join('.')}`
             locations.inventoryItems.deepsight.bottom = `.${[...node.nextSibling.classList].join('.')}`
          }
 
@@ -185,7 +174,7 @@ export default function useLocationFinder(setClarityData: Updater<ClarityData>) 
             ) &&
             node.parentNode.classList.contains('item')
          ) {
-            locations.inventoryItems.masterwork.borderImg = `.${[...node.classList].join('.')}`
+            locations.inventoryItems.masterwork.imgBorderImg = `.${[...node.classList].join('.')}`
          }
          // exotic masterwork border img
          if (
@@ -196,7 +185,7 @@ export default function useLocationFinder(setClarityData: Updater<ClarityData>) 
             ) &&
             node.parentNode.classList.contains('item')
          ) {
-            locations.inventoryItems.masterwork.exoticBorderImg = `.${[...node.classList].join('.')}`
+            locations.inventoryItems.masterwork.imgBorderImgExotic = `.${[...node.classList].join('.')}`
          }
 
          // item bottom background
@@ -211,7 +200,7 @@ export default function useLocationFinder(setClarityData: Updater<ClarityData>) 
             nodeStyles.backgroundColor === 'rgb(245, 220, 86)' &&
             node.parentNode.classList.contains('item')
          ) {
-            locations.inventoryItems.consumable.atCapacity.bottom = `.${[...node.classList].join('.')}`
+            locations.inventoryItems.consumable.capped.bottom = `.${[...node.classList].join('.')}`
          }
 
          // consumable max stack (can get more)
@@ -221,7 +210,7 @@ export default function useLocationFinder(setClarityData: Updater<ClarityData>) 
             nodeStyles.backgroundColor === 'rgb(221, 221, 221)' &&
             node.parentNode.classList.contains('item')
          ) {
-            locations.inventoryItems.consumable.maxStackSize.bottom = `.${[...node.classList].join('.')}`
+            locations.inventoryItems.consumable.fullStack.bottom = `.${[...node.classList].join('.')}`
          }
 
          // masterwork watermark

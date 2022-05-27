@@ -1,8 +1,16 @@
 import { ClarityDataContext } from '@components/DataProvider'
+import { ThemeContext } from '@components/provider/ThemeProvider'
 import { useContext } from 'react'
 
 export default function LogData() {
-   const clarityData_ = useContext(ClarityDataContext)
+   const clarityData = useContext(ClarityDataContext)
+   const theme = useContext(ThemeContext)
+
+   const buttonStyle = {
+      cursor: 'pointer',
+      margin: '10px 0',
+      padding: '5px',
+   }
 
    const logElement = (
       <div
@@ -14,11 +22,16 @@ export default function LogData() {
             zIndex: '9999',
             fontSize: '20px',
             padding: '10px',
-            cursor: 'pointer'
+            display: 'flex',
+            flexDirection: 'column'
          }}
-         onClick={() => console.log(clarityData_)}
       >
-         Log Clarity Data
+         <button onClick={() => console.table(clarityData)} style={buttonStyle}>
+            Log Clarity Data
+         </button>
+         <button onClick={() => console.table(theme)} style={buttonStyle}>
+            Log Theme
+         </button>
       </div>
    )
 

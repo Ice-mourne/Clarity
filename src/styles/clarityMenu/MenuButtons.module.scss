@@ -1,0 +1,33 @@
+.headerMenuButton {
+   height: 26px;
+   margin: 0 8px 2px 8px;
+   font-size: 13px;
+   white-space: nowrap;
+   color: white;
+   cursor: pointer;
+   align-content: center;
+   display: flex;
+   align-items: center;
+}
+.headerMenuButton:hover {
+   color: hsl(38, 80%, 56%);
+   transition: color 0.2s linear;
+}
+
+.dimMenuButton {
+   padding: 4px 2rem 4px 1rem;
+   font-size: 16px;
+   margin: 0;
+   cursor: pointer;
+}
+.dimMenuButton:hover {
+   background-color: #3f3f3f;
+   color: white;
+   transition: none;
+}
+@media (max-width: 540px) {
+   .dimMenuButton {
+      font-size: 18px;
+      padding: 6px 2rem;
+   }
+}
