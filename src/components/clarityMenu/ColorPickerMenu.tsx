@@ -1,6 +1,6 @@
 import 'react-color-palette/lib/css/styles.css'
 
-import { Color, ColorPicker, useColor } from 'react-color-palette'
+import { Color, ColorPicker, toColor, useColor } from 'react-color-palette'
 import { SetThemeContext, ThemeContext } from '@components/provider/ThemeProvider'
 import { useContext, useRef, useState } from 'react'
 import { useGetThemeValue, useResetTheme, useUpdateTheme } from '@hooks/useGetUpdateTheme'
@@ -40,7 +40,7 @@ export default function ColorPickerMenu({ location }: { location: Array<string> 
          <div className={styles.colorPicker}>
             <div
                className={styles.colorPreview}
-               style={{ backgroundColor: color.hex }}
+               style={{ backgroundColor: currentColor }}
                onClick={handleOpenClose}
                ref={colorPickerButtonRef}
             ></div>

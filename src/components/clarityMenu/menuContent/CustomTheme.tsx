@@ -67,7 +67,10 @@ export function CustomTheme() {
       allInventoryItems: (
          <div className={styles.content}>
             <span>Border Type</span>
-            <select onChange={(e) => changeBorderType(e, ['inventoryItems', 'all', 'borderType'])}>
+            <select
+               onChange={(e) => changeBorderType(e, ['inventoryItems', 'all', 'borderType'])}
+               value={useGetThemeValue(['inventoryItems', 'all', 'borderType'])[0]}
+            >
                <option value="fullBorder">Full border</option>
                <option value="minimalBorder">Minimal border</option>
                <option value="noBorder">No border</option>
@@ -83,7 +86,10 @@ export function CustomTheme() {
       consumableCapped: (
          <div className={styles.content}>
             <span>Border Type</span>
-            <select onChange={(e) => changeBorderType(e, ['inventoryItems', 'consumable', 'capped', 'borderType'])}>
+            <select
+               onChange={(e) => changeBorderType(e, ['inventoryItems', 'consumable', 'capped', 'borderType'])}
+               value={useGetThemeValue(['inventoryItems', 'consumable', 'capped', 'borderType'])[0]}
+            >
                <option value="fullBorder">Full border</option>
                <option value="minimalBorder">Minimal border</option>
                <option value="noBorder">No border</option>
@@ -107,7 +113,10 @@ export function CustomTheme() {
       deepsight: (
          <div className={styles.content}>
             <span>Border Type</span>
-            <select onChange={(e) => changeBorderType(e, ['inventoryItems', 'deepsight', 'borderType'])}>
+            <select
+               onChange={(e) => changeBorderType(e, ['inventoryItems', 'deepsight', 'borderType'])}
+               value={useGetThemeValue(['inventoryItems', 'deepsight', 'borderType'])[0]}
+            >
                <option value="fullBorder">Full border</option>
                <option value="minimalBorder">Minimal border</option>
                <option value="noBorder">No border</option>
@@ -123,7 +132,10 @@ export function CustomTheme() {
       masterwork: (
          <div className={styles.content}>
             <span>Border Type</span>
-            <select onChange={(e) => changeBorderType(e, ['inventoryItems', 'masterwork', 'borderType'])}>
+            <select
+               onChange={(e) => changeBorderType(e, ['inventoryItems', 'masterwork', 'borderType'])}
+               value={useGetThemeValue(['inventoryItems', 'masterwork', 'borderType'])[0]}
+            >
                <option value="fullBorder">Full border</option>
                <option value="noBorder">No border</option>
             </select>
