@@ -1,4 +1,4 @@
-// import { LineText, Description as descriptionInterface } from 'src/interfaces_2'
+import { LineText, Description as descriptionInterface } from 'src/interfaces_2'
 
 import styles from '@styles/itemPopup/Description.module.scss'
 

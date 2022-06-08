@@ -1,0 +1,42 @@
+[
+   {
+      "version": "1.0.0",
+      "changes": [
+         "Added deepsight power lvl color option",
+         "Few small optimizations (reduced style size)",
+         "Added consumable at capacity border color option",
+         "Added Clarity menu button to left side menu (it was panful)",
+         "Fixed styling on clarity menu button"
+      ]
+   },
+   {
+      "version": "1.0.1",
+      "changes": [
+         "Added deepsight power lvl color option",
+         "Few small optimizations (reduced style size)",
+         "Added consumable at capacity border color option",
+         "Added Clarity menu button to left side menu (it was panful)",
+         "Fixed styling on clarity menu button"
+      ]
+   },
+   {
+      "version": "1.0.2",
+      "changes": [
+         "Added deepsight power lvl color option",
+         "Few small optimizations (reduced style size)",
+         "Added consumable at capacity border color option",
+         "Added Clarity menu button to left side menu (it was panful)",
+         "Fixed styling on clarity menu button"
+      ]
+   },
+   {
+      "version": "1.0.3",
+      "changes": [
+         "Added deepsight power lvl color option",
+         "Few small optimizations (reduced style size)",
+         "Added consumable at capacity border color option",
+         "Added Clarity menu button to left side menu (it was panful)",
+         "Fixed styling on clarity menu button"
+      ]
+   }
+]

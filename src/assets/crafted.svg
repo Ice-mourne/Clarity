@@ -1,0 +1,6 @@
+<svg height="26" width="26">
+	<path d="M0 0 L12 0 L12 3 L10 3 L10 8 Q10 11 7 12 L7 12 L0 12 Z" />
+	<path d="M0 0 L12 0 L12 3 L10 3 L10 8 Q10 11 7 12 L7 12 L0 12 Z" transform="scale(-1,1)  translate(-26,0)" />
+	<path d="M0 0 L12 0 L12 3 L10 3 L10 8 Q10 11 7 12 L7 12 L0 12 Z" transform="scale(-1,-1) translate(-26,-26)" />
+   <path d="M0 0 L12 0 L12 3 L10 3 L10 8 Q10 11 7 12 L7 12 L0 12 Z" transform="scale(1,-1)  translate(0,-26)" />
+</svg>

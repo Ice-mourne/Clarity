@@ -26,7 +26,7 @@ export default function LogData() {
             flexDirection: 'column'
          }}
       >
-         <button onClick={() => console.table(clarityData)} style={buttonStyle}>
+         <button onClick={() => document.dispatchEvent(new Event('inventory_ready'))} style={buttonStyle}>
             Log Clarity Data
          </button>
          <button onClick={() => console.table(theme)} style={buttonStyle}>
